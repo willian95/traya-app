@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Usuarios Inactivos</strong>
+    </ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding justify-content-end>
+	<ion-list>
+	<button ion-item *ngFor="let items of usersArray ; let i =index" (click)="viewDetailsUsers(items,i)">
+		<ion-card   >
+			  <ion-card-header text-center >
+          <ion-avatar id="imgwrap" item-start>
+    				<img [src]="items.image+'?v='+items.user.updated_at" *ngIf="items.image" >
+    			</ion-avatar>
+			    <ion-card-title> {{items.user.name}} </ion-card-title>
+			    <ion-card-subtitle> <small>{{items.user.last_login}}</small> </ion-card-subtitle> <br>
+			    <ion-card-subtitle> <small>Tipo de usuario: {{user_rol}}</small> </ion-card-subtitle>
+			  </ion-card-header>
+			</ion-card>
+
+
+			</button>
+	</ion-list>
+</ion-content>

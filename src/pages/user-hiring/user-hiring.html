@@ -1,0 +1,172 @@
+<ion-header>
+  <ion-navbar >
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+    	Perfil
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col col col-6>
+        <div class="user-photo" padding-top>
+          <ion-avatar>
+            <img class="profile-image" [src]="userimage" *ngIf="userimage">
+          </ion-avatar>
+        </div>
+      </ion-col>
+
+      <ion-col col col-6>
+        <ion-item id="pr1" >
+          <ion-icon name="person" slot="start"></ion-icon>
+          <ion-label color="dark">
+              <h2>
+                {{username}}
+              </h2>
+              <div id="pr2">
+                <span>{{servicesName}}</span>
+                <button ion-button  small (click)="presentActionSheet()" style="margin-top: -6px;">
+                  <ion-icon ios="ios-add" md="md-add"></ion-icon>
+                </button>
+                
+              </div>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-item id="description">
+      <ion-icon name="mail" slot="start"></ion-icon>
+      <ion-label color="dark" id="descriptionLabel">
+        Descripción
+        <p *ngIf="description !=null"> {{description}}</p>
+        <p *ngIf="description ==null || description ==''">El trabajador no ha descrito aún su trabajo</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <small>Última conexión: {{last_conection}}</small>
+      </ion-label>
+    </ion-item>
+
+    <ion-row>
+      <ion-col width-50 *ngIf="usersServices.email != authEmail">
+        <button ion-button full (click)="callNow()">
+          <ion-icon ios="ios-call" md="md-call"></ion-icon>
+        </button>
+
+      </ion-col>
+      <ion-col width-50 *ngIf="usersServices.email != authEmail">
+       <!--<a ion-button full color="secondary" (click)="storeContact(1)"  href="https://wa.me/{{phone}}">-->
+        <a ion-button full color="secondary" (click)="sendWhatsapp( phone )"  href="#">
+        <!--a ion-button full color="secondary"  href="whatsapp://send?phone={{phone}}"-->
+         <ion-icon ios="logo-whatsapp" md="logo-whatsapp"></ion-icon>
+       </a>
+      </ion-col>
+    </ion-row>
+
+    <ion-item padding id="pr3"  *ngIf="usersServices.email != authEmail" style="margin-top: -1px;">
+        <ion-textarea  (click)="createDescription()" readonly  id="comments"  [(ngModel)]="comments"  rows="1" cols="20" placeholder="Explica brevemente tus necesidades" maxlength="300"></ion-textarea>
+    </ion-item>
+    
+    <div *ngIf="usersServices.email == authEmail" style="margin-top: 15px;">
+    <h4 text-center style="font-size: 1.5rem; margin-bottom: -2px;">Mis estrellas</h4>
+    <ionic3-star-rating
+          activeIcon = "ios-star"
+          defaultIcon = "ios-star-outline"
+          activeColor = "#b0428f"
+          defaultColor = "#d0c5cc"
+          readonly="true"
+          [rating]="averageRatingInt">
+      </ionic3-star-rating>
+      <button id="opiniones" full (click)="showOpinions()">
+        Ver opiniones
+      </button>
+    </div>
+      <!-- <small>Caracteres: {{commentsCount}} </small> -->
+
+    
+    <ion-item *ngIf="usersServices.email != authEmail" class="item-no-border">
+      <button  ion-button full (click)="createHiring()">
+        ¿PODÉS  HACERLO?
+      </button>
+    </ion-item >
+      <small class="bottom-border" *ngIf="usersServices.email != authEmail">Este paso no implica contratación, solo le preguntas al trabajador si está disponible para realizar el trabajo</small>
+    
+      <ion-item *ngIf="usersServices.email != authEmail">
+        <ionic3-star-rating
+          activeIcon = "ios-star"
+          defaultIcon = "ios-star-outline"
+          activeColor = "#b0428f"
+          defaultColor = "#d0c5cc"
+          readonly="true"
+          [rating]="averageRatingInt">
+      </ionic3-star-rating>
+  
+      <button id="opiniones" full (click)="showOpinions()">
+        Ver opiniones
+      </button>
+  
+      </ion-item>
+  
+    </ion-grid>
+
+
+  <!-- <ion-list>
+    <ion-item>
+      <ion-icon name="mail" slot="start"></ion-icon>
+      <ion-label>
+        Descripción
+        <ion-input  type="text" placeholder="{{description}}" readonly></ion-input>
+      </ion-label>
+    </ion-item>
+
+    <ion-row>
+      <ion-col width-50>
+        <button ion-button full (click)="callNow()">
+          <ion-icon ios="ios-call" md="md-call"></ion-icon>
+        </button>
+
+      </ion-col>
+      <ion-col width-50>
+       <a ion-button full color="secondary"  href="https://wa.me/{{phone}}">
+         <ion-icon ios="logo-whatsapp" md="logo-whatsapp"></ion-icon>
+       </a>
+      </ion-col>
+    </ion-row>
+
+    <ion-item>
+      <ionic3-star-rating
+        activeIcon = "ios-star"
+        defaultIcon = "ios-star-outline"
+        activeColor = "#b0428f"
+        defaultColor = "#d0c5cc"
+        readonly="true"
+        [rating]="averageRatingInt">
+    </ionic3-star-rating>
+
+    <button id="opiniones" full (click)="showOpinions()">
+      Ver opiniones
+    </button>
+
+    </ion-item>
+
+    <ion-item padding>
+        <ion-input id="comments"  [(ngModel)]="comments" placeholder="Explica brevemente tus necesidad"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button full (click)="createHiring()">
+        ¿Podes hacerlo?
+      </button>
+    </ion-item>
+
+  </ion-list> -->
+
+
+
+
+</ion-content>

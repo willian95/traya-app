@@ -1,0 +1,7 @@
+{
+  "name": "ApkWyn",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

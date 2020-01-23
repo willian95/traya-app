@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Gestionar Servicios</strong>
+    </ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding justify-content-end>
+	<ion-list>
+		<button ion-item *ngFor="let items of servicesArray ; let i =index" (click)="viewDetailsServices(items,i)">
+			<ion-avatar item-start>
+				<img [src]="items.logo+'?v='+items.updated_at" *ngIf="items.logo">
+			</ion-avatar>
+			<div class="row">
+				<div col col-50>
+			<h2>{{items.name}}</h2>
+          </div>
+          <!-- <div col col-50>
+			<ion-checkbox id="logoface" ios="logo-facebook" md="logo-facebook"></ion-checkbox>
+          </div> -->
+			</div>
+		</button>
+	</ion-list>
+</ion-content>

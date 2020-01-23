@@ -1,0 +1,43 @@
+page-maintenance-mode {
+  .myview {
+      background: linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78));
+      -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  .bg{
+    height: 100vh;
+  }
+
+  ion-label {
+    margin: 0;
+    display: block;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: 2rem;
+    text-overflow: ellipsis;
+    white-space: inherit;
+    text-align: justify;
+    color: white;
+  }
+  .button-ios {
+      border-radius: 7px !important;
+      height: 2.8em;
+      font-size: 1.2rem;
+      color: #fff;
+      margin: 0.4rem 0.2rem;
+      padding: 0 1em;
+  }
+  .button-md {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+}

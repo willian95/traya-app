@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Detalle del usuario</strong>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button tappable (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+      <div align="center">
+        <img class="profile-image" [src]="image" *ngIf="image">
+      </div>
+<ion-item>
+        <ion-label floating>Nombre</ion-label>
+        <ion-input type="text" [(ngModel)]="name"  readonly></ion-input>
+      </ion-item>
+
+            <ion-item>
+        <ion-label floating>Email:</ion-label>
+        <ion-input type="text" [(ngModel)]="email"  readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Tipo de usuario</ion-label>
+        <ion-input type="text" [(ngModel)]="user_rol"  readonly></ion-input>
+      </ion-item>
+
+      <div id="buttons" class="row" padding >
+        <div col col-50 *ngIf="deleted_at != null">
+          <button ion-button full color="primary" (click)="enableUser()">Habilitar usuario</button>
+        </div>
+          <div col col-50 *ngIf="deleted_at == null">
+            <button ion-button full color="danger" (click)="deleteUser()">Deshabilitar usuario</button>
+          </div>
+        </div>
+</ion-content>

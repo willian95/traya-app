@@ -1,0 +1,108 @@
+page-login {
+
+.urgent-notification .toast-message:before {
+  content: '\f267';
+  color: black;
+  display: inline-block;
+  font-family: "Ionicons";
+  font-style: normal;
+  font-weight: bolder;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  padding-right: 10px;
+  font-size: 2rem;
+}
+  
+.ion-logo-facebook:before {
+   color: white !important ;
+} 
+  .myview {
+    background: linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78));
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.bg{
+  height: 100%;
+  width: 100% !important;
+}
+  h1{
+    color:white;
+  }
+  .button-ios {
+      border-radius: 7px !important;
+      height: 2.8em;
+      font-size: 1.2rem;
+      color: #fff;
+      background-color: #b0428f;
+      margin: 0.4rem 0.2rem;
+      padding: 0 1em;
+  }
+  .button-md {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #b0428f;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+  span.redes {
+     font-size: 12px;
+    position: relative;
+    left: 0.7rem;
+}
+.item-md{
+ width: 100%;
+   background-color: rgba(14, 13, 13, 0);
+   border: 0px solid black;
+}
+
+
+
+.item-ios {
+  width: 100%;
+  background-color: rgba(14, 13, 13, 0);
+  border: 0px solid black;
+}
+
+.item-ios.item-block .item-inner {
+  padding-right: 8px;
+  padding-right: 8px;
+  border-bottom: none;
+}
+
+#login input  {
+  width: 100%;
+  padding: .375rem .75rem;
+  font-size: 2rem;
+  line-height: 1.5;
+  background: rgba(14, 13, 13, 0.7);
+   background-clip: padding-box;
+  border: 1px solid black;
+  color: #fff;
+  border-radius: .25rem;
+  -webkit-box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+ion-grid.grid {
+    padding-top: 6rem;
+}
+button#showPassword {
+   position: relative;
+   left: 4px;
+   bottom: 1px !important;
+   border: 1px solid #b0428f;
+   border-radius: 2px !important;
+}
+
+.item-md.item-block .item-inner {
+    padding-right: 8px;
+    border-bottom: none;
+}
+}

@@ -1,0 +1,50 @@
+<img src="assets/imgs/bg.png" class="bg">
+
+
+<!-- -->
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Registrar servicios</strong>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="myview">
+  <ion-grid>
+    <ion-row justify-content-center >
+      <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+         <div text-center>
+          <h1>Registrar servicios</h1>
+        </div>
+
+        <!-- LOGIN WITH APP -->
+        <div id="registerServices" padding>
+          <ion-item>
+            <div align="center">
+              <img class="profile-image" [src]="image" *ngIf="image">
+            </div>
+          </ion-item>
+          <ion-label color="light">Nombre</ion-label>
+          <ion-input [(ngModel)]="name" type="text" placeholder="Nombre"></ion-input>
+          <ion-label color="light">Descripción</ion-label>
+          <ion-input [(ngModel)]="description" type="text" placeholder="Descripción"></ion-input>
+          <ion-item>
+          <input type="file" name="file" id="file" class="inputfile" accept="image/*" (change)="convertBase64($event)"/>
+          <label for="file">Imagen del servicio</label>
+        </ion-item>
+        </div>
+
+        <div padding>
+            <button ion-button full (click)="addServices()">Registrar</button>
+
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

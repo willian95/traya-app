@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Modo Mantenimiento</strong>
+    </ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+<img src="assets/imgs/bg.png" class="bg">
+
+<ion-content padding id="welcome" class="myview">
+  <ion-label>
+    Al habilitar el modo mantenimiento, se le mostrará una pantalla a todos los usuarios de la aplicación, indicando que la aplicación aun esta en desarrollo
+  </ion-label>
+
+  <div id="buttons" class="row" padding >
+    <div col col-50>
+      <button ion-button full  (click)="changeStatus(true)">Habilitar</button>
+    </div>
+
+    <div col col-50>
+      <button ion-button full color="danger" (click)="changeStatus(false)">Deshabilitar</button>
+    </div>
+
+
+
+  </div>
+</ion-content>

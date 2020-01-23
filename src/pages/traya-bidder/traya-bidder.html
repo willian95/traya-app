@@ -1,0 +1,30 @@
+
+<!-- -->
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>TRAYA</strong> <small><i>Trabajador</i></small>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button tappable (click)="presentNotifications()">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+      <button style="margin-left: 10px;" ion-button (click)="showConfirm()">
+        <ion-icon name="contacts"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content  class="myview">
+  <super-tabs>
+    <super-tab [root]="page1" title="Solicitudes"></super-tab>
+    <!-- <super-tab [root]="page2" title="Historial"></super-tab> -->
+  </super-tabs>
+
+
+</ion-content>

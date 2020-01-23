@@ -1,0 +1,166 @@
+page-hiring-details {
+  ion-row.row {
+      border-bottom: 0.55px solid #c8c7cc;
+  }
+  .action-sheet-cancel{
+    color: red !important;
+  }
+  .date {
+    white-space: pre;
+}
+.viewMore {
+    background: #7f0093;
+    color: white;
+    border-radius: 5px;
+}
+.dateTime {
+    position: relative;
+    left: 1vh;
+    }
+
+  .my-class{
+      padding: 2px;
+      font-weight: bold;
+      color: white !important;
+      background-color: #ec88b0;
+      // border-radius: 20px;
+  }
+  #secondary{
+    background-color: #4FCE5D !important;
+  }
+  .my-class2{
+      padding: 2px;
+      font-weight: bold;
+      color: white !important;
+      font-size: 1.5rem !important;
+      // border-radius: 20px;
+  }
+  #pr1.item-md.item-block .item-inner {
+    padding-right: 8px;
+    border-bottom: none !important;
+}
+.button-small-md {
+    height: 1.5em !important;
+    font-size: 1rem;
+    padding: 0 0.9em;
+}
+  .badge2{
+    color: #080808 !important;
+  background-color: #f7f7f7 !important;
+  border-radius: 20px !important;
+  }
+
+
+  .mbsc-card-subtitle {
+    // text-align: center !important;
+    font-size:13px;
+    color:#c5b4b4;
+}
+.dateActive{
+  color:white !important;
+}
+
+.mbsc-card-subtitle-active{
+  color:white !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+  .mbsc-card-subtitle-services{
+    text-align: center !important;
+    font-size:12px;
+    color:#c5b4b4;
+}
+.mbsc-card-subtitle-status{
+  text-align: center !important;
+}
+
+.button-ios {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.4rem;
+    background-color: #8E4162;
+    color: #fff;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+
+.button-md {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #8E4162;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+
+.item-ios[detail-push] .item-inner, button.item-ios:not([detail-none]) .item-inner, a.item-ios:not([detail-none]) .item-inner {
+    background-image: none !important;
+    padding-right: 32px;
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
+}
+h5.mbsc-card-title.mbsc-bold {
+    text-align: center !important;
+}
+
+.badge-md-primary {
+    color: #fff;
+    background-color: #b0428f;
+    border-radius: 20px;
+}
+
+.badge-ios-primary {
+    color: #fff;
+    background-color: #b0428f;
+    border-radius: 20px;
+}
+span#create {
+    position: relative;
+    top: 7px;
+}
+button#notColor {
+  text-transform: capitalize;
+
+    background: none;
+    border-radius: 7px !important;
+    height: 2.8em;
+    /* font-size: 1rem; */
+    color: #131111;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: none;
+    transition: none;
+    transition: none;
+    transition:  none;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1.1em;
+}
+
+#cancelar.button-md {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #c10d00;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+span#delete{
+  color:white;
+  position: relative;
+    top: 10px;
+}
+button#cancelar2 {
+    position: relative;
+    top: 10px;
+    background-color: #c10d00;
+
+}
+
+
+}

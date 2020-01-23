@@ -1,0 +1,65 @@
+
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>TRAYA</strong>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<img src="assets/imgs/bg.png" class="bg">
+
+<ion-content padding class="myview">
+  <ion-grid>
+    <ion-row justify-content-center >
+      <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+         <div text-center class="animated fadeInDown">
+          <h1>¡Bienvenido!</h1>
+        </div>
+
+      <!--LOGIN WITH FACEBOOK AND GOOGLE  -->
+       <!--  <div id="buttons" class="row animated fadeInDown" padding  >
+          <div col col-50>
+            <button ion-button full (click)="loginFacebook()">
+              <ion-icon ios="logo-facebook" md="logo-facebook"></ion-icon>
+              <span class="redes">Facebook</span>
+            </button>
+          </div>
+
+          <div col col-50>
+            <button ion-button full (click)="doGoogleLogin()">
+              <ion-icon ios="logo-google" md="logo-google"></ion-icon>
+              <span class="redes">Google</span>
+            </button>
+          </div>
+        </div> -->
+
+        <!-- LOGIN WITH APP -->
+        <div id="login" padding>
+            <ion-item>
+              <ion-input [(ngModel)]="email" type="text" placeholder="Correo Electrónico"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input [(ngModel)]="password" type="{{passwordType}}" placeholder="Contraseña"></ion-input>
+              <button id="showPassword"  ion-button clear icon-only  type="button" item-right (click)="showPasswordText()">
+                <ion-icon *ngIf="!showPasswordTextBand" name="eye"> </ion-icon>
+                <ion-icon *ngIf="showPasswordTextBand" name="eye-off"> </ion-icon>
+              </button>
+            </ion-item>
+           
+        </div>
+
+        <div padding class="animated fadeInDown">
+            <button ion-button full (click)="login()">Acceder</button>
+        </div>
+         <ion-item text-center>
+              <button ion-button  size="small" color="secondary" (click)="recoveryPassword()">Recuperar contraseña</button>
+           </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,87 @@
+<ion-menu side="left" id="authenticated" [content]="content">
+  <ion-header>
+    <ion-toolbar class="user-profile">
+    <div id="header" [class.hide]="validateHeaderMain" padding>
+        <img src="assets/imgs/logo_traya.png" class="logo2" alt="Traya"/>
+        <small>TRAYA</small>
+    </div>
+      <ion-grid [class.hide]="!validateHeaderMain">
+        <ion-row>
+          <ion-col col-4>
+              <div class="user-avatar">
+                <img [src]="image" *ngIf="image" style="height: 68px;width: 68px;">
+              </div>
+
+                <button id="viewProfilePage" ion-button  (click)="viewProfilePage()" menuClose>
+                   <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+                </button>
+
+          </ion-col>
+          <ion-col padding-top col-8>
+            <h2 ion-text class="no-margin bold text-white">
+              <!-- {{username | async}} -->
+              {{name}}
+            </h2>
+          </ion-col>
+        </ion-row>
+
+        <ion-row no-padding class="other-data">
+          <ion-col no-padding class="column">
+            <button ion-button icon-left small   menuClose (click)="viewProfilePage()">
+              <ion-icon name="contact"></ion-icon>
+              Editar Perfil
+            </button>
+          </ion-col>
+          <ion-col no-padding class="column">
+            <button ion-button icon-left small full  menuClose (click)="confirmLogout()">
+              <ion-icon name="log-out"></ion-icon>
+              Cerrar Sesión
+            </button>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content color="primary">
+
+    <ion-list class="user-list">
+      <button ion-item menuClose class="text-1x" *ngFor="let menuItem of appMenuItems" (click)="openPage(menuItem)">
+        <ion-icon item-left [name]="menuItem.icon" color="primary"></ion-icon>
+        <span ion-text color="primary">{{menuItem.title}}</span>
+      </button>
+
+         <button ion-item menuClose class="text-1x"  (click)="viewLoginPage()" [class.hide]="validateHeaderMain">
+          <ion-icon item-left name="log-in" color="primary"></ion-icon>
+          <span ion-text color="primary">Conectarse</span>
+        </button>
+
+         <button ion-item menuClose class="text-1x"  (click)="viewRegisterPage()" [class.hide]="validateHeaderMain">
+          <ion-icon item-left name="contact" color="primary"></ion-icon>
+          <span ion-text color="primary">Registrarse</span>
+        </button>
+
+        <button ion-item menuClose class="text-1x"  (click)="viewAboutTrayaPage()">
+          <ion-icon item-left name="information-circle" color="primary"></ion-icon>
+          <span ion-text color="primary">Acerca de TRAYA</span>
+        </button>
+
+        <button ion-item menuClose class="text-1x"  (click)="viewContactPage()">
+          <ion-icon item-left name="mail" color="primary"></ion-icon>
+          <span ion-text color="primary">Contáctanos</span>
+        </button>
+
+        
+       
+      <ion-item>
+        <button id="share"ion-button full (click)="shareApplication()">Compartir APP</button>
+      </ion-item>
+
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

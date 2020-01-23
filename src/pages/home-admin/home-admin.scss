@@ -1,0 +1,53 @@
+page-home-admin {
+.myview {
+    background: linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78));
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.bg{
+  height: 100vh;
+}
+
+img.logo {
+    height: 27vh;
+}
+
+h1 {
+    margin-top: 2rem;
+    font-size: 3.6rem !important;
+}
+
+#welcome div{
+  color:white;
+}
+
+#buttons{
+  padding-top: 12rem !important;
+}
+
+#description{
+  padding-top: 10rem !important;
+}
+
+.button-ios {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.6rem;
+    color: #fff;
+    background-color: #b0428f;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+
+.button-md {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #b0428f;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+}

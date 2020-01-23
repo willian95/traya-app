@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-navbar color="header">
+  
+  <button ion-button menuToggle menuClose (click)="goToMainPage()">
+    <ion-icon name="arrow-back"></ion-icon>
+  </button>
+    <ion-title>
+      <strong>Mis Servicios</strong>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button tappable (click)="presentNotifications()">
+        <ion-icon name="notifications">
+          <!-- ({{notificationNumber}}) -->
+        </ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div align="center">
+    <img class="profile-image" [src]="userimage" *ngIf="userimage">
+  </div>
+  <ion-item>
+    <ion-label floating>Nombre</ion-label>
+    <ion-input type="text" [(ngModel)]="name" name="name"  readonly></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Email</ion-label>
+    <ion-input type="email" [(ngModel)]="email" name="email"  readonly></ion-input>
+  </ion-item>
+
+  <ion-item padding>
+    <ion-label>Servicios</ion-label>
+    <ion-select [(ngModel)]="services_id" multiple="true">
+      <ion-option  *ngFor="let items of servicesArray"  value="{{items.id}}">{{items.name}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+
+  <ion-item *ngFor="let items of servicesNameArray">
+    <ion-label>{{items.name}}</ion-label>
+  </ion-item>
+
+
+   <ion-item>
+    <ion-label stacked>Descripción</ion-label>
+    <ion-textarea id="description"  [(ngModel)]="description"  rows="3" cols="20"  maxlength="300"  (ionChange)="countCharacter($event)" placeholder="Aquí deberá describir brevemente los servicios en los que usted se ha asociado "></ion-textarea>
+  </ion-item>
+  <small id="count" [class.hide]="rol_id ==1">Caracteres: {{descriptionCount}} </small>
+
+
+  <div padding>
+    <button ion-button full (click)="associateUsers()">Asociar</button>
+  </div>
+
+
+
+</ion-content>

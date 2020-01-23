@@ -1,0 +1,60 @@
+page-details-services {
+.profile-image{
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+      }
+      .button-full-md {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+    border-right-width: 0;
+    border-left-width: 0;
+    border-radius: 14px;
+}
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+    color: white !important;
+    background-color: black;
+    display: inline-block;
+    width: 9%;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    background: rgba(14, 13, 13, 0);
+    background-clip: padding-box;
+    color: #000;
+    border-radius: .25rem;
+ 
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #fff;
+}
+.inputfile + label {
+  cursor: pointer; /* "hand" cursor */
+}
+.inputfile:focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+  pointer-events: none;
+}
+#plus {
+    position: relative;
+    right: 21%;
+    bottom: 9vh;
+    border-radius: 1rem;
+    background: rgba(0, 0, 0, 0.66)!important;
+
+}
+}

@@ -1,0 +1,48 @@
+<img src="assets/imgs/bg.png" alt="" class="bg">
+
+<!-- -->
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <h3>Contáctanos</h3>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="myview">
+  <ion-grid>
+    <ion-row justify-content-center >
+      <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+         <div text-center>
+          <h1>Envíanos tu Comentario</h1>
+          <h5 > ¡tu opinión nos interesa! </h5>
+        </div>
+
+        	<div id="login">
+          <ion-item>
+          	 <ion-input id="name" [(ngModel)]="name" type="text" placeholder="Nombre"></ion-input>
+          </ion-item>
+
+          <ion-item>
+          	 <ion-input id="email" [(ngModel)]="email" type="text" placeholder="Correo"></ion-input>
+          </ion-item>
+
+           <ion-item>
+          	 <ion-textarea id="comments"  [(ngModel)]="comments"  rows="3" cols="20" placeholder="Ingresa el comentario" maxlength="300"></ion-textarea>
+          </ion-item>
+        	</div>
+           
+       
+
+        <div padding>
+            <button ion-button full (click)="sendMessage()">Enviar</button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-navbar >
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+    	Historial
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding >
+	<div padding>
+ 	<ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+ </div>
+	<ion-list *ngIf="hiringsArray != null">
+		<button ion-item *ngFor="let items of hiringsArray ; let i =index" (click)="viewDetails(items,i)">
+			<ion-card no-margin margin-bottom class="full-width">
+				<ion-item tappable  class="border-bottom">
+					<!-- if(index==hiringsArray.length) -->
+					<ion-avatar item-end>
+						<img [src]="items.service_logo" *ngIf="items.service_logo">
+					</ion-avatar>
+					<div class="mbsc-card-subtitle" *ngIf="user_rol == 2"  >{{items.applicant.name }}</div>
+					<div class="mbsc-card-subtitle" *ngIf="user_rol == 1"  >{{items.bidder.name }}</div>
+
+
+					<!--<ionic3-star-rating
+					activeIcon = "ios-star"
+					defaultIcon = "ios-star-outline"
+					activeColor = "#b0428f"
+					defaultColor = "#d0c5cc"
+					readonly="true"
+					fontSize = "16px"
+					[rating]="averageRatingInt">
+				</ionic3-star-rating>-->
+
+					<ion-avatar item-start>
+						<img [src]="items.bidder.image" *ngIf="items.bidder.image">
+					</ion-avatar>
+				</ion-item>
+
+				<ion-item class="border-bottom" *ngIf="items.description != null" >
+						<span>{{items.description}}</span>
+				</ion-item>
+
+				<ion-item>
+					<ion-row >
+            <ion-col width-50 >
+              <div>
+                <div class="mbsc-card-subtitle-date">{{items.time_last_history}}<br>{{items.date_last_history}} </div>
+              </div>
+            </ion-col>
+            <ion-col width-50  >
+              <div class="mbsc-card-subtitle">
+				<ion-badge color="primary" *ngIf="items.status_id ==4 "   [ngClass]="{'statusCalificado': items.status=='Calificado'}"> Calificado </ion-badge>
+              	<ion-badge color="primary" *ngIf="items.status_id ==5 "  [ngClass]="{'statusCancelado': items.status=='Cancelado'}">Cancelado</ion-badge>
+
+              </div>
+            </ion-col>
+          </ion-row>
+				</ion-item>
+			</ion-card>
+		</button>
+	</ion-list>
+
+	<ion-list *ngIf="hiringsArray == null || hiringsArray =='' " padding>
+		<h4 text-center>No hay solicitudes canceladas y/o calificadas </h4>
+
+	</ion-list>
+</ion-content>

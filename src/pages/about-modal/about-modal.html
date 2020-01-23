@@ -1,0 +1,64 @@
+<!-- -->
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <h3>Acerca de TRAYA</h3>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<img src="assets/imgs/bg.png" class="bg">
+
+
+<ion-content padding class="myview" >
+  <ion-grid>
+    <ion-row  >
+     <div id="header" style="text-align: center">
+          <span> <strong>TRAYA</strong> <i>app de servicios</i> </span>
+          <p> <strong>Contratar servicios</strong> es fácil, seguí estos 3 pasos:</p>
+          
+        </div>
+    </ion-row>
+      <div id="contenido">
+    <ion-list>
+          <ion-item>
+       <ion-label>
+       <ion-badge color="primary">1</ion-badge> 
+       Pregúntale a él o los trabajadores si están disponibles = <ion-badge color="primary">¿PODÉS HACERLO?</ion-badge>
+     </ion-label>
+      </ion-item>
+
+      <ion-item>
+          <ion-label>
+        <ion-badge color="primary">2</ion-badge>
+          De los <ion-badge color="primary">Trabajadores disponibles</ion-badge>, elegí por calificación al que más te convenga =  <ion-badge color="primary">CONTRATAR</ion-badge>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+          <ion-label>
+          <ion-badge color="primary">3</ion-badge>
+          Por último, solo debes valorar el trabajo = <ion-badge color="primary">CALIFICAR</ion-badge></ion-label>
+      </ion-item>
+    </ion-list>
+      </div>
+
+    <div id="footer" padding>
+      <small>TRAYA actúa solo como nexo entre trabajadores y usuarios, incentiva los buenos trabajos, pero no se responsabiliza por ellos. TRAYA no cobra por sus servicios, es GRATIS!</small>
+      </div>
+
+         <div id="buttons" class="row" padding >
+          <div col col-50>
+          <button ion-button full (click)="dontSee()">No ver más</button>
+
+          </div>
+          <div col col-50>
+            <button ion-button full (click)="closeModal()">Cerrar</button>
+          </div>
+        </div>
+
+  </ion-grid>
+
+</ion-content>

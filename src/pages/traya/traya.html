@@ -1,0 +1,33 @@
+
+<!-- -->
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>TRAYA</strong> <small><i>Usuario</i></small>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button tappable (click)="presentNotifications()">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+      <!--<button class="contact-btn" ion-button (click)="changeUserType()">-->
+      <button class="contact-btn" ion-button (click)="showConfirm()">
+        <ion-icon name="contacts"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content  class="myview">
+  <super-tabs  tabsPlacement="top"  toolbarColor="primary" indicatorColor="primary" (tabSelect)="onTabSelect($event)">
+    <super-tab [root]="page1" title="Servicios"></super-tab>
+    <super-tab [root]="page2" title="Solicitudes"></super-tab>
+  </super-tabs>
+
+
+
+
+</ion-content>

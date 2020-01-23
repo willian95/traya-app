@@ -1,0 +1,27 @@
+<ion-toolbar >
+    <ion-searchbar [(ngModel)]="searchText" (ionInput)="search()" placeholder="Buscar"></ion-searchbar>
+  </ion-toolbar>
+
+<ion-content padding justify-content-end>
+	
+ <div padding>
+ 	<ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+ </div>
+
+	<ion-list *ngIf="servicesArray != null">
+		<button ion-item *ngFor="let items of servicesArray ; let i =index" (click)="viewUsers(items,i)">
+			<ion-avatar item-start>
+				<img class="imgServices" [src]="items.logo" *ngIf="items.logo">
+				<div id="countBidders" *ngIf="items.usersPerLocality!=0">{{items.usersPerLocality}}</div>
+			</ion-avatar>
+			<h2>{{items.name}}</h2>
+      <small>{{items.description}}</small>
+		</button>
+	</ion-list>
+
+  <ion-list *ngIf="servicesArray == null || servicesArray =='' " padding>
+      <h4 text-center> Cargando servicios en tu comunidad..</h4>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,71 @@
+<ion-content padding >
+	
+          <div padding>
+        <ion-refresher (ionRefresh)="doRefresh($event)">
+          <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
+       </div>
+
+	<ion-list *ngIf="hiringsArray != null">
+		<button ion-item *ngFor="let items of hiringsArray ; let i =index" (click)="viewDetails(items,i)">
+			<ion-card no-margin margin-bottom class="full-width">
+				<ion-item tappable  class="border-bottom">
+					<!-- if(index==hiringsArray.length) -->
+					<ion-avatar item-end>
+						<img [src]="items.service_logo" *ngIf="items.service_logo">
+					</ion-avatar>
+					<div class="mbsc-card-subtitle">{{items.applicant.name }}</div>
+					<ion-avatar item-start>
+						<img [src]="items.applicant.image" *ngIf="items.applicant.image">
+					</ion-avatar>
+				</ion-item>
+
+				<ion-item class="border-bottom" *ngIf="items.description != null" >
+						<span>{{items.description}}</span>
+				</ion-item>
+
+				<ion-item>
+					<ion-row >
+            <ion-col width-50 >
+              <div>
+                <div class="mbsc-card-subtitle-date">{{items.time_last_history}}<br>{{items.date_last_history}} </div>
+              </div>
+            </ion-col>
+            <ion-col width-50  >
+              <div class="mbsc-card-subtitle">
+				<ion-badge color="primary" *ngIf="items.status_id ==1 && rol_id ==2"   [ngClass]="{'statusPodesHacerlo': items.status=='En espera de ok'}"> ¿Podés hacerlo? </ion-badge>
+              	<ion-badge color="primary" *ngIf="items.status_id ==2 && rol_id ==2"  [ngClass]="{'statusTrabajadorDisponible': items.status=='Trabajador disponible'}">Estoy disponible</ion-badge>
+              	<ion-badge color="primary" *ngIf="items.status_id ==3 && rol_id ==2" [ngClass]="{'statusContratado': items.status=='Contratado'}">Contratado</ion-badge> 
+
+
+              </div>
+            </ion-col>
+          </ion-row>
+				</ion-item>
+			</ion-card>
+		</button>
+		
+	
+	</ion-list>
+	
+	
+	<ion-fab bottom right style="bottom:70px;">
+		<button ion-fab  title="Historial" (click)="showHistory()">
+			<ion-icon ios="ios-clock" md="md-clock"></ion-icon>
+		</button>
+	</ion-fab>
+
+	<ion-fab bottom right>
+		<button ion-fab  title="Actualizar" (click)="getHiringsActive()">
+			<ion-icon ios="ios-refresh" md="md-refresh"></ion-icon>
+		</button>
+	</ion-fab>
+
+	<ion-list *ngIf="hiringsArray == null || hiringsArray =='' " padding>
+		<h4 text-center padding>No hay solicitudes activas</h4>
+
+		<div padding>
+			<h5 text-center>¡Revisa tu historial! </h5>			
+		</div>
+	</ion-list>
+</ion-content>

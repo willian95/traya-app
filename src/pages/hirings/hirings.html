@@ -1,0 +1,91 @@
+<ion-content padding>
+	<div padding>
+ 	<ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+ </div>
+	<ion-list *ngIf="hiringsArray != null">
+		<ion-item id="filters">
+			<ion-label id="pr">Filtrar por:</ion-label>
+			<ion-select id="select" [(ngModel)]="filters" multiple="true" (ionChange)="getHiringsFilters()" >
+				<!-- <ion-option value="6" >Todos</ion-option> -->
+					<ion-option value="1">En espera de ok</ion-option>
+					<ion-option value="2">Trabajador Disponible</ion-option>
+					<ion-option value="3">Contratado</ion-option>
+					<ion-option value="4">Calificado</ion-option> 
+					<ion-option value="5">Cancelado</ion-option> 
+			</ion-select>
+		</ion-item>
+
+		<button id="pr2" ion-item *ngFor="let items of hiringsArray ; let i =index" (click)="viewDetails(items,i)">
+			<ion-card no-margin margin-bottom class="full-width">
+				<ion-item tappable (click)="choosePlace('from')" class="border-bottom">
+					<ion-avatar item-start>
+						<!--<img [src]="items.service_logo" *ngIf="items.service_logo">-->
+						<img [src]="items.bidder.image" *ngIf="items.bidder.image">
+					</ion-avatar>
+					<!--<span>{{items.bidder.name }}</span>-->
+					<span>{{items.bidder.name }}</span>
+					<ionic3-star-rating
+					activeIcon = "ios-star"
+					defaultIcon = "ios-star-outline"
+					activeColor = "#b0428f"
+					defaultColor = "#d0c5cc"
+					readonly="true"
+					fontSize = "16px"
+					[rating]="items.bidder.averageRatingInt">
+				</ionic3-star-rating>
+
+					<ion-avatar item-end>
+						<!--<img [src]="items.bidder.image" *ngIf="items.bidder.image">-->
+						<img [src]="items.service_logo" *ngIf="items.service_logo">
+					</ion-avatar>
+				</ion-item>
+				<ion-item class="border-bottom" *ngIf="items.description != null" >
+						<span>{{items.description}}</span>
+				</ion-item>
+				<ion-item>
+					<ion-row >
+            <ion-col width-50 >
+              <div>
+				<div class="mbsc-card-subtitle-date">{{items.time_last_history}}<br>{{items.date_last_history}} </div>
+              </div>
+            </ion-col>
+            <ion-col width-50  >
+              <div class="mbsc-card-subtitle">
+				<!--<ion-badge color="primary" *ngIf="items.status_id ==1 && rol_id ==1"   [ngClass]="{'statusPodesHacerlo': items.status=='¿Podés hacerlo?'}"> En espera de ok </ion-badge>-->
+				<ion-badge color="primary" *ngIf="items.status_id ==1 && rol_id ==1"   class="statusPodesHacerlo"> En espera de ok </ion-badge>  
+				<!--<ion-badge *ngIf="items.status_id ==2 && rol_id ==1"  [ngClass]="{'statusTrabajadorDisponible'}">Trabajador Disponible</ion-badge>-->
+				<ion-badge *ngIf="items.status_id ==2 && rol_id ==1"  class="statusTrabajadorDisponible">Trabajador Disponible</ion-badge>
+              	<ion-badge color="primary" *ngIf="items.status_id ==3 && rol_id ==1" [ngClass]="{'statusContratado': items.status=='Contratado'}">Contratado</ion-badge> 
+              	<ion-badge color="primary" *ngIf="items.status_id ==4 && rol_id ==1" [ngClass]="{'statusCalificado': items.status=='Calificado'}">Calificado</ion-badge> 
+              	<ion-badge color="primary" *ngIf="items.status_id ==5 && rol_id ==1" [ngClass]="{'statusCancelado': items.status=='Cancelado'}">Cancelado</ion-badge> 
+              </div>
+            </ion-col>
+          </ion-row>
+				</ion-item>
+			</ion-card>
+		</button>
+	</ion-list>
+
+	<ion-fab bottom right style="bottom:70px;">
+		<button ion-fab  title="Historial" (click)="showHistory()">
+			<ion-icon ios="ios-clock" md="md-clock"></ion-icon>
+		</button>
+	</ion-fab>
+
+	<ion-fab bottom right>
+		<button ion-fab  title="Actualizar" (click)="getHirings()">
+			<ion-icon ios="ios-refresh" md="md-refresh"></ion-icon>
+		</button>
+	</ion-fab>
+
+	<ion-list *ngIf="hiringsArray == null || hiringsArray =='' " padding>
+		<h4 text-center padding>No hay solicitudes activas</h4>
+			<!--h4 text-center padding>Cargando solicitudes activas..</h4-->
+
+		<div padding>
+			<h5 text-center>¡Revisa tu HISTORIAL! </h5>			
+		</div>
+	</ion-list>
+</ion-content>

@@ -1,0 +1,231 @@
+page-register {
+ .myview {
+    background: linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78));
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  //background-color: #b61dce;
+}
+.bg{
+  height: 100%;
+  width: 100% !important;
+}
+
+.input-icon{
+  color: #fff;
+  position: absolute;
+  margin-top: 20px;
+}
+
+  h1{
+    color:white;
+  }
+  .button-ios {
+      border-radius: 7px !important;
+      height: 2.8em;
+      font-size: 1.6rem;
+      color: #fff;
+      background-color: #b0428f;
+      margin: 0.4rem 0.2rem;
+      padding: 0 1em;
+  }
+  .button-md {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.25rem;
+    color: #fff;
+    background-color: #b0428f;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+  ion-select {
+    display: flex;
+    max-width: 100% !important;
+    overflow: hidden;
+    width: 100%;
+  padding: .375rem .75rem;
+  font-size: 2rem;
+  line-height: 1.5;
+  background: rgba(14, 13, 13, 0.7);
+   background-clip: padding-box;
+  border: 1px solid black;
+  color: #fff;
+  border-radius: .25rem;
+  -webkit-box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+  #login input  {
+  width: 100%;
+  padding: .375rem .75rem;
+  font-size: 2rem;
+  line-height: 1.5;
+  background: rgba(14, 13, 13, 0.7);
+   background-clip: padding-box;
+  border: 1px solid black;
+  color: #fff;
+  border-radius: .25rem;
+  -webkit-box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+
+  #description input{
+    text-transform: capitalize;
+  }
+  #name input{
+    text-transform: capitalize;
+  }
+
+  .item-ios {
+    /*width: 100%;*/
+    background-color: rgba(14, 13, 13, 0);
+    border: 0px solid black;
+}
+
+  .item-ios.item-block .item-inner {
+    padding-right: 8px;
+    padding-right: 8px;
+    border-bottom: none;
+}
+
+ .item-md{
+    /*width: 100%;*/
+    background-color: rgba(14, 13, 13, 0);
+    border: 0px solid black;
+ }
+
+ .item-md.item-block .item-inner {
+    padding-right: 8px;
+    padding-right: 8px;
+    border-bottom: none;
+}
+
+.select-ios {
+     padding: 5px 8px 5px 16px !important;
+}
+.select-md {
+     padding: 5px 8px 5px 16px !important;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: black;
+    display: inline-block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 2rem;
+    line-height: 1.5;
+    background: rgba(14, 13, 13, 0.7);
+    background-clip: padding-box;
+    border: 1px solid black;
+    color: #fff;
+    border-radius: .25rem;
+    -webkit-box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.5);
+    -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #000;
+}
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+	pointer-events: none;
+}
+
+.profile-image{
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+
+//     button#showPassword {
+//     position: relative;
+//     right: 5px;
+//     background: none;
+//     border: 1px solid #b0428f;
+//     top: 0;
+//     padding: 0;
+//     margin: 0;
+//     bottom: 0;
+// }
+
+ button#showPassword {
+    position: relative;
+    left: 4px;
+    bottom: 1px !important;
+    border: 1px solid #b0428f;
+    border-radius: 2px !important;
+}
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+    color: white !important;
+    background-color: black;
+    display: inline-block;
+    width: 15%;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    background: rgba(14, 13, 13, 0);
+    background-clip: padding-box;
+    color: #000;
+    border-radius: .25rem;
+ 
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #fff;
+}
+.inputfile + label {
+  cursor: pointer; /* "hand" cursor */
+}
+.inputfile:focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+  pointer-events: none;
+}
+
+#plus {
+    position: relative;
+    right: 16%;
+    bottom: 9vh;
+    border-radius: 1rem;
+    background: rgba(0, 0, 0, 0.66)!important;
+    border: 1px solid white;
+
+}
+}

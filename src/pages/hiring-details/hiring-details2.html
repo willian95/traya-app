@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-navbar >
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Contratación {{contratactionNumber}}</strong>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <div *ngIf="rol_id ==1">
+      <ion-grid *ngIf="hide ==0" >
+        <!--DATOS DEL APLICANTE  -->
+        <ion-row >
+          <ion-col width-50>
+            <button ion-button full (click)="presentActionSheet()">
+              Llamar
+            </button>
+          </ion-col>
+          <ion-col width-50>
+            <div>
+              <h5 class="mbsc-card-title mbsc-bold">{{bidderName}}</h5>
+              <div class="mbsc-card-subtitle">{{servicesName}}</div>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <div *ngIf="detailsHirings.history?.length>1">
+          <ion-row   *ngFor="let items of detailsHirings.history ; let i =index">
+            <ion-col width-50 >
+              <div padding>
+                <!-- if(index==hiringsArray.length) -->
+                <div class="mbsc-card-subtitle" [ngClass]="{'my-class': i==(detailsHirings.history.length)-1 && detailsHirings.history?.length >1}" > {{i+1}} .- {{items.status}}</div>
+              </div>
+            </ion-col>
+            <ion-col width-50 *ngIf="rol_id ==1" padding>
+              <div class="mbsc-card-subtitle">{{items.created_at}}</div>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <div *ngIf="detailsHirings.history?.length<2">
+          <ion-row   *ngFor="let items of detailsHirings.history ; let i =index">
+            <ion-col width-50 >
+              <div padding>
+                <div class="mbsc-card-subtitle" [ngClass]="{'my-class': i==(detailsHirings.history.length)-1 && detailsHirings.history?.length >1}" >{{items.status}}</div>
+              </div>
+            </ion-col>
+            <ion-col width-50 *ngIf="rol_id ==1">
+              <button ion-button full (click)="cancelHiring()">
+                Cancelar
+              </button>
+            </ion-col>
+
+          </ion-row>
+
+        </div>
+        <button ion-button full (click)="changeHide()" *ngIf="status !='Cancelado' && status !='En espera de ok' && status!='Trabajador disponible' && status !='Completado' " >
+          Calificar
+        </button>
+
+        <button ion-button full (click)="acceptHiring()" *ngIf="status=='Trabajador disponible'">
+          Contratar
+        </button>
+      </ion-grid>
+
+    <div *ngIf="hide ==1">
+      <!-- CALIFICAR -->
+      <!-- <ion-row   radio-group [(ngModel)]="qualificationValue">
+        <ion-col width-50>
+          <ion-label>Positivo</ion-label>
+          <ion-radio   value="1" ></ion-radio>
+        </ion-col>
+        <ion-col width-50>
+          <ion-label>Negativo</ion-label>
+          <ion-radio   value="0" ></ion-radio>
+        </ion-col>
+      </ion-row> -->
+      <ion-item>
+        <ionic3-star-rating  activeIcon = "ios-star" defaultIcon = "ios-star-outline"
+          activeColor = "#b0428f" defaultColor = "#d0c5cc" readonly="false" [rating]="3">
+      </ionic3-star-rating>
+      </ion-item>
+
+      <ion-row >
+        <ion-item padding>
+          <ion-label floating>Opinion</ion-label>
+          <ion-input type="text" [(ngModel)]="comment" name="comment" required></ion-input>
+        </ion-item>
+
+        <button  ion-button full (click)="qualify()">
+          Enviar
+        </button>
+      </ion-row>
+      <!-- FIN CALIFICAR -->
+    </div>
+
+    </div>
+
+
+    <!--FIN DATOS DEL APLICANTE  -->
+
+
+
+    <!--DATOS DEL TRABAJADOR  -->
+    <ion-grid *ngIf="rol_id ==2">
+      <ion-row >
+        <ion-col width-50>
+          <div>
+            <h5 class="mbsc-card-title mbsc-bold" text-center>{{applicantName}}</h5>
+            <!-- <div class="mbsc-card-subtitle">{{servicesName}}</div> -->
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <div *ngIf="detailsHirings.history?.length>1">
+        <ion-row   *ngFor="let items of detailsHirings.history ; let i =index">
+          <ion-col width-50 >
+            <div padding>
+              <div class="mbsc-card-subtitle" [ngClass]="{'my-class': i==(detailsHirings.history.length)-1 && detailsHirings.history?.length >1}" > {{i+1}} .- {{items.status}}</div>
+            </div>
+          </ion-col>
+          <ion-col width-50 *ngIf="rol_id ==2" padding>
+            <div class="mbsc-card-subtitle">{{items.created_at}}</div>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div *ngIf="detailsHirings.history?.length<2">
+        <ion-row   *ngFor="let items of detailsHirings.history ; let i =index">
+          <ion-col width-50 >
+            <div padding>
+              <div class="mbsc-card-subtitle" [ngClass]="{'my-class': i==(detailsHirings.history.length)-1 && detailsHirings.history?.length >1}" > {{i+1}} .- {{items.status}}</div>
+            </div>
+          </ion-col>
+          <ion-col width-50 *ngIf="rol_id ==2">
+            <button ion-button full (click)="createHiring()">
+              Aceptar
+            </button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
+    <!--FIN DATOS DEL TRABAJADOR  -->
+  </ion-list>
+</ion-content>

@@ -1,0 +1,117 @@
+page-active-hirings {
+  .label-md {
+    margin:0;
+  }
+
+  .ionic3-star-rating[_ngcontent-c0] .button[_ngcontent-c0] ion-icon[_ngcontent-c0] {
+    font-size: 20px;
+    text-align: right;
+
+}
+.statusContratado{
+    background: #7f0093;
+    color: white;
+  }
+
+  .statusCancelado{
+    background: #343a40;
+    color: white;
+  }
+  .item-md {
+    padding-left: 10px;
+    padding-right: 0;
+    position: relative;
+    font-size: 1.6rem;
+    font-weight: normal;
+    text-transform: none;
+    color: #000;
+    background-color: #fff;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  ion-label {
+    margin: 0;
+    display: block;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .mbsc-card-subtitle-date{
+    font-size: 1.3rem !important;
+  }
+  .mbsc-card-subtitle {
+    font-size: 1.7rem !important;
+}
+  .card {
+    background: #FFF;
+    border-radius: 1rem;
+    -webkit-box-shadow: 0 0 1px rgba(105, 46, 195, 0.48), 0 2px 4px rgba(89,22, 191, 0.48);
+    box-shadow: 0 0 1px rgba(105, 46, 195, 0.48), 0 2px 4px rgba(105, 46, 195, 0.48);
+}
+
+
+.col {
+    padding: 5!important;
+    position: relative;
+    width: 100%;
+    margin: 0;
+    min-height: 1px;
+    -webkit-flex-basis: 0;
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    max-width: 100%;
+}
+h5.mbsc-card-title.mbsc-bold {
+    text-align: center !important;
+}
+ion-label#pr {
+    text-align: left;
+    padding-bottom: 10px;
+}
+button#pr2 {
+    padding-top: 27px;
+}
+
+ion-select#select {
+    padding: 0px;
+}
+ ion-label {
+    margin: 0;
+    display: block;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: inherit;
+    text-overflow: ellipsis;
+    white-space: inherit !important;
+    text-align: center;
+}
+ .statusPodesHacerlo{
+    background: #a499a3;
+    color: white;
+  }
+
+  .statusTrabajadorDisponible{
+    background: #28a745;
+    color: white;
+  }
+
+  .statusContratado{
+    background: #7f0093;
+    color: white;
+  }
+}

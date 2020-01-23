@@ -1,0 +1,89 @@
+page-modal-information {
+.bg{
+  height: 120vh;
+  width: 100% !important;
+}
+    img.logo {
+    height: 25vh;
+}
+
+p {
+
+    color: white;
+    text-align: center;
+    font-size: 1.5rem !important;
+
+}
+.grid {
+
+    position: relative;
+    top: 5vh;
+
+}
+
+.item-md {
+
+padding-left: 16px;
+padding-right: 0;
+position: relative;
+font-size: 1.6rem;
+font-weight: normal;
+text-transform: none;
+color: white;
+background-color: transparent;
+-webkit-box-shadow: none;
+box-shadow: none;
+-webkit-transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+ion-label {
+margin: 0;
+display: block;
+overflow: hidden;
+-webkit-box-flex: 1;
+-webkit-flex: 1;
+-ms-flex: 1;
+flex: 1;
+font-size: inherit;
+text-overflow: ellipsis;
+text-align:justify;
+white-space: inherit;
+}
+.myview {
+background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('/../../assets/imgs/bg.png') fixed center center no-repeat;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+}
+
+div#header {
+    color: white;
+    text-align: center;
+
+}
+div#footer {
+    color: white;
+    text-align: center;
+
+}
+small{
+    color:white;
+}
+p{
+    font-size:2vh;
+}
+.button-full-md {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+    border-right-width: 0;
+    border-left-width: 0;
+    border-radius: 20px;
+}
+#buttons {
+    position: relative;
+    top: 12vh;
+}
+}

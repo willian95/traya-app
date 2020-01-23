@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-navbar >
+    <ion-buttons start>
+      <button ion-button full menuToggle>
+    <ion-icon name="menu"></ion-icon>
+  </button>
+    </ion-buttons>
+    <ion-title>{{name}}</ion-title>
+
+
+    <ion-buttons end  *ngIf="usersServices?.length>1" >
+      <button id="mt" (click)="showCheckbox()" ion-button [class.hide]="validateMT">
+       <ion-icon name="ios-people"></ion-icon>
+      </button>
+
+       <button id="mt" (click)="presentPrompt()" ion-button  [class.hide]="!validateMT">
+        Enviar
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+
+  <ion-content padding justify-content-end>
+  <ion-list  *ngIf="usersServices != null">
+  <button ion-item *ngFor="let items of usersServices ; let i =index" (click)="viewProfile(items,i)">
+      <ion-avatar item-start>
+        <img [src]="items.image" *ngIf="items.image">
+      </ion-avatar>
+      <ion-grid item-content>
+      <ion-row >
+        <ion-col col col-10 >
+          <h2>{{items.name}}</h2>
+        </ion-col>
+        <ion-col col col-2  [class.hide]="!validateMT">
+        <ion-checkbox color="primary" (ionChange)="addCheckbox($event,items.id)"></ion-checkbox>
+
+        </ion-col>
+      </ion-row>
+
+        <ion-row>
+          <ion-col col-8 style="margin-top: -10px;">
+            <ionic3-star-rating
+          activeIcon = "ios-star"
+          defaultIcon = "ios-star-outline"
+          activeColor = "#b0428f"
+          defaultColor = "#d0c5cc"
+          readonly="true"
+          [rating]="items.averageRatingInt">
+      </ionic3-star-rating>
+          </ion-col>
+          <ion-col col-4>
+            ({{items.completed_services}})
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </button>
+  </ion-list>
+
+<ion-list *ngIf="usersServices == null || usersServices =='' " >
+      <h4 text-center padding>¡Disculpanos!</h4>
+
+      <div padding>
+        <h5 text-center padding>Este servicio aún no tiene trabajadores asociados</h5>
+        
+      </div>
+  </ion-list>
+
+
+
+  </ion-content>

@@ -1,0 +1,46 @@
+page-terms {
+ion-label {
+margin: 0;
+display: block;
+overflow: hidden;
+-webkit-box-flex: 1;
+-webkit-flex: 1;
+-ms-flex: 1;
+flex: 1;
+font-size: inherit;
+text-overflow: ellipsis;
+text-align:justify;
+white-space: inherit;
+color:white;
+}
+.myview {
+ background-color: #FFFFF;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+}
+.bg{
+  height: 120vh;
+  width: 100% !important;
+}
+.button-ios {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.6rem;
+    color: #fff;
+    background-color: #b0428f;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+
+.button-md {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #b0428f;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+}

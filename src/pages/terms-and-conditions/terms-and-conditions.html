@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar color="header">
+	<button ion-button full menuToggle (click)="closeModal()">
+		<ion-icon ios="ios-arrow-round-back" md="md-arrow-round-back"></ion-icon>
+	</button>
+
+
+    <ion-title>
+      <h3>Términos y Condiciones</h3>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<img src="assets/imgs/bg.png" class="bg">
+
+<ion-content padding class="myview">
+	<div padding>
+			<ion-label>
+				<h2 text-center>Debés aceptar los Términos y Condiciones para continuar</h2>
+			</ion-label>
+
+			<button ion-button full (click)="acceptTerms()">Continuar</button>
+			
+				<ion-grid>
+					<ion-row>
+						<ion-col col-3>
+							<ion-checkbox color="primary" [(ngModel)]="terms" text-right style="float: right;"></ion-checkbox>
+						</ion-col>
+						<ion-col col-9>
+							<button (click)="openTerms()" >Acepto Términos y  Condiciones</button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			
+	</div>
+</ion-content>

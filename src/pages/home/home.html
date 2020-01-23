@@ -1,0 +1,29 @@
+<img src="assets/imgs/bg.png" class="bg">
+
+<ion-content padding id="welcome" class="myview">
+  <ion-grid>
+    <ion-row justify-content-center>
+      <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+         <div text-center class="animated fadeInDown">
+          <img src="assets/imgs/logo_traya.png" class="logo"/>
+          <h1 id="description">TRAYA</h1>
+          <h3 id="pruebaFonts">app de servicios</h3>
+        </div>
+
+        <div id="buttons" class="row" padding >
+          <div col col-50>
+            <button ion-button full  (click)="goToLogin()">Conectarse</button>
+          </div>
+
+          <div col col-50>
+            <button ion-button full color="pallmat" (click)="goToRegister()">Registrarse</button>
+          </div>
+
+
+
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

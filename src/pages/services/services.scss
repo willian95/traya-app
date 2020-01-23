@@ -1,0 +1,91 @@
+page-services {
+   #countBidders {
+    background-color: #b0418e;
+    color: white;
+    border: 1px solid white;
+    border-radius: 18px;
+    position: relative;
+    left: 73%;
+    bottom: 2vh;
+    width: 20px;
+    text-align: center;
+
+}
+.input-wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    // text-align: right;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    -webkit-box-orient: inherit;
+    -webkit-box-direction: inherit;
+    -webkit-flex-direction: inherit;
+    -ms-flex-direction: inherit;
+    flex-direction: inherit;
+    -webkit-box-align: inherit;
+    -webkit-align-items: inherit;
+    -ms-flex-align: inherit;
+    align-items: inherit;
+    -webkit-align-self: stretch;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+    text-overflow: ellipsis;
+}
+
+.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: 0.55px solid #c8c7cc;
+}
+
+.list-md > .item-block:last-child, .list-md > .item-wrapper:last-child .item-block {
+    border-bottom: 0.55px solid #c8c7cc;
+}
+.list-ios {
+    margin: 41px 0px 36px;
+}
+
+.list-md {
+    margin: 41px 0px 36px;
+}
+
+.item-ios ion-avatar ion-img, .item-ios ion-avatar img {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 49px;
+    height: 49px;
+}
+
+.item-md ion-avatar ion-img, .item-md ion-avatar img {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 49px;
+    height: 49px;
+}
+
+ion-label {
+    margin: 0;
+    display: block;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: inherit;
+    text-overflow: ellipsis;
+    white-space: inherit;
+}
+
+
+}
+.toast-container{
+
+    background:black;
+}
+
+.toast-md .toast-message{
+    color: white;
+}

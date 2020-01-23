@@ -1,0 +1,406 @@
+<ion-header>
+  <ion-navbar  >
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <button   (click)="showDescription()" style="background:none">
+    <ion-title>
+        <small>{{hiringDescription | slice:0:30}}</small>
+           <button  ion-button *ngIf="hiringDescription?.length> 40 ">
+              <ion-icon ios="ios-add-circle" md="md-add-circle"></ion-icon>
+            </button>
+
+    </ion-title>
+  </button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+
+
+    <div *ngIf="rol_id ==1">
+      <ion-grid *ngIf="hide ==0" >
+        <!--DATOS DEL APLICANTE  -->
+        <ion-row >
+          <ion-col col col-6 >
+            <!-- <button ion-button full (click)="presentActionSheet()">
+              Llamar
+            </button> -->
+            <ion-row>
+              <ion-col width-50>
+                <button ion-button full (click)="callNow()">
+                  <ion-icon ios="ios-call" md="md-call"></ion-icon>
+                </button>
+
+              </ion-col>
+              <ion-col width-50>
+                <button id="secondary" ion-button full color="secondary" (click)="sendWhatsapp()">
+                  <ion-icon ios="logo-whatsapp" md="logo-whatsapp"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+
+          <ion-col col col-6>
+            <ion-item id="pr1">
+              <ion-icon name="person" slot="start"></ion-icon>
+              <ion-label color="dark" style="margin-top: 6px;">
+                  <h2>
+                    {{bidderName}}
+                  </h2>
+                  <div id="pr2">
+                    <span>{{servicesName}}</span>
+                    <button ion-button style="margin-top: -10px;"  small (click)="servicesActionSheet()">
+                      <ion-icon ios="ios-add" md="md-add"></ion-icon>
+                    </button>
+                  </div>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+
+
+        </ion-row>
+
+        <div *ngIf="detailsHirings.history?.length>1">
+          <ion-grid [ngClass]="{'my-class': items.id==detailsHirings.status_id}"  *ngFor="let items of detailsHirings.statusesHirings ; let i =index">
+            <ion-row  *ngIf="items.id == 2 ">
+              <ion-col col col-8  >
+                <div padding>
+                  <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                    <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                    {{items.name}}
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col col-4 *ngIf="rol_id ==1" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+                <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+                  <div  id="create" *ngIf="items.id == items2.status_id && items.id!=detailsHirings.status_id   " [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                    <span class="dateTime">{{items2.created_at_time}}</span>
+                    <span class="date">{{items2.created_at}}</span>
+                  </div>
+
+                  <button  ion-button full (click)="acceptHiring()"  *ngIf="items.id == items2.status_id && items.id==detailsHirings.status_id && items2.status_id==2" [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                    Contratar
+                  </button>
+
+
+                  <!-- <button id="cancelar2" ion-button full (click)="confirmAlert()"  *ngIf="items.id == items2.status_id && items.id==detailsHirings.status_id && items2.status_id==2" [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                  <ion-icon ios="ios-close" md="md-close"></ion-icon>
+                </button> -->
+              </div>
+            </ion-col>
+            <ion-fab bottom right >
+            <button ion-fab  title="Cancelar" (click)="confirmAlert()">
+              <ion-icon ios="ios-close" md="md-close"></ion-icon>
+            </button>
+          </ion-fab>
+            <!-- FIN CONTENEDOR -->
+          </ion-row>
+
+          <ion-row  *ngIf="items.id == 3 ">
+            <ion-col col col-8  >
+              <div padding>
+                <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                  <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                  {{items.name}}
+                </div>
+              </div>
+            </ion-col>
+            <ion-col col col-4 *ngIf="rol_id ==1" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+              <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+                <div  id="create" *ngIf="items.id == items2.status_id && items.id!=detailsHirings.status_id   " [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                   <span class="dateTime">{{items2.created_at_time}}</span>
+                    <span class="date">{{items2.created_at}}</span>
+                </div>
+
+                <button  ion-button full (click)="changeHide()" *ngIf="items.id == items2.status_id && items.id==detailsHirings.status_id && items2.status_id==3" [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                  Calificar
+                </button>
+              </div>
+            </ion-col>
+            <!-- FIN CONTENEDOR -->
+          </ion-row>
+
+          <ion-row *ngIf="items.id == 4 || items.id ==1">
+            <ion-col col col-8 >
+              <div padding>
+                <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                  <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                  {{items.name}}
+                </div>
+
+              </div>
+            </ion-col>
+            <ion-col col col-4 *ngIf="rol_id ==1" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+              <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+                <div  id="create" *ngIf="items.id == items2.status_id   " [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                   <span class="dateTime">{{items2.created_at_time}}</span>
+                    <span class="date">{{items2.created_at}}</span>
+                </div>
+              </div>
+
+              <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+                <span   id="delete" *ngIf="items2.status_id ==5 && items.id ==5 ">Eliminado por {{items2.user}}</span>
+              </div>
+            </ion-col>
+          </ion-row>
+
+
+          <!-- NUEVO -->
+            <ion-row *ngIf="items.id ==5 && detailsHirings.status_id ==5">
+                    <ion-col col col-8  >
+                      <div padding>
+                        <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                          <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                          {{items.name}}
+                        </div>
+
+                      </div>
+                    </ion-col>
+                    <ion-col col col-4 *ngIf="rol_id ==1" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+                      <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+                        <div  id="create" *ngIf="items.id == items2.status_id   " [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                           <span class="dateTime">{{items2.created_at_time}}</span>
+                              <span class="date">{{items2.created_at}}</span>
+                        </div>
+                      </div>
+
+                      <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+                        <span   id="delete" *ngIf="items2.status_id ==5 && items.id ==5 ">Eliminado por {{items2.user}}</span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+          <!-- NUEVO -->
+
+
+
+
+
+        </ion-grid>
+
+      </div>
+
+      <div *ngIf="detailsHirings.history?.length<2">
+        <ion-row  [ngClass]="{'my-class': items.id==detailsHirings.status_id}"  *ngFor="let items of detailsHirings.statusesHirings ; let i =index">
+          <ion-col col col-8 *ngIf="items.id !=5"  >
+            <div padding>
+              <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                {{items.name}}
+              </div>
+
+            </div>
+          </ion-col>
+
+          <ion-col col col-8 *ngIf="items.id ==5 && detailsHirings.status_id ==5" >
+            <div padding>
+              <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                {{items.name}}
+              </div>
+
+            </div>
+          </ion-col>
+
+
+      <ion-fab bottom right>
+      <button ion-fab  title="Cancelar" (click)="confirmAlert()">
+        <ion-icon ios="ios-close" md="md-close"></ion-icon>
+      </button>
+    </ion-fab>
+    </ion-row>
+  </div>
+</ion-grid>
+
+<div *ngIf="hide ==1">
+  <ion-item>
+    <ionic3-star-rating  activeIcon = "ios-star" defaultIcon = "ios-star-outline"
+    activeColor = "#b0428f" defaultColor = "#d0c5cc" readonly="false" [rating]="0">
+  </ionic3-star-rating>
+</ion-item>
+
+<ion-row >
+  <ion-item padding>
+    <ion-label >Opinión</ion-label>
+    <ion-textarea id="comment"  [(ngModel)]="comment"  rows="3" cols="20" placeholder=" Dejá un comentario acerca del trabajo realizado, ¿Te gustó?" maxlength="160"  (ionChange)="countCharacter($event)"></ion-textarea>
+  </ion-item>
+          <small id="count">Caracteres: {{opinionCount}} </small>
+
+  <button  ion-button full (click)="qualify()">
+    Enviar
+  </button>
+</ion-row>
+<!-- FIN CALIFICAR -->
+</div>
+
+</div>
+
+
+<!--FIN DATOS DEL APLICANTE  -->
+
+
+
+<!--DATOS DEL TRABAJADOR  -->
+<ion-grid *ngIf="rol_id ==2">
+   <ion-row >
+          <ion-col col col-6 >
+            <!-- <button ion-button full (click)="presentActionSheet()">
+              Llamar
+            </button> -->
+            <ion-row>
+              <ion-col width-50>
+                <button ion-button full (click)="callNowApplicant()">
+                  <ion-icon ios="ios-call" md="md-call"></ion-icon>
+                </button>
+
+              </ion-col>
+              <ion-col width-50>
+                <button id="secondary" ion-button full color="secondary" (click)="sendWhatsappApplicant()">
+                  <ion-icon ios="logo-whatsapp" md="logo-whatsapp"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col col col-6>
+            <div>
+              <h5 class="mbsc-card-title mbsc-bold">{{applicantName}}</h5>
+            </div>
+          </ion-col>
+        </ion-row>
+
+
+
+<!-- NUEVO VISTA -->
+<div *ngIf="detailsHirings.history?.length>1">
+        <ion-grid [ngClass]="{'my-class': items.id==detailsHirings.status_id}"  *ngFor="let items of detailsHirings.statusesHirings ; let i =index">
+          <ion-row  *ngIf="items.id == 2 ">
+            <ion-col col col-8  >
+              <div padding>
+                <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                  <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                  <!--{{items.name}}-->
+                  Estoy disponible
+                </div>
+              </div>
+            </ion-col>
+            <ion-col col col-4 *ngIf="rol_id ==2" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+              <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+                <div  id="create" *ngIf="items.id == items2.status_id" [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                   <span class="dateTime">{{items2.created_at_time}}</span>
+                    <span class="date">{{items2.created_at}}</span>
+                  </div>
+            </div>
+          </ion-col>
+          <ion-fab bottom right >
+          <button ion-fab  title="Cancelar" (click)="confirmAlert()">
+            <ion-icon ios="ios-close" md="md-close"></ion-icon>
+          </button>
+        </ion-fab>
+          <!-- FIN CONTENEDOR -->
+        </ion-row>
+
+        <ion-row  *ngIf="items.id == 3 ">
+          <ion-col col col-8  >
+            <div padding>
+              <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                {{items.name}}
+              </div>
+            </div>
+          </ion-col>
+          <ion-col col col-4 *ngIf="rol_id ==2" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+            <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+
+
+              <div  id="create" *ngIf="items.id == items2.status_id" [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                 <span class="dateTime">{{items2.created_at_time}}</span>
+                    <span class="date">{{items2.created_at}}</span>
+                </div>
+            </div>
+          </ion-col>
+          <!-- FIN CONTENEDOR -->
+        </ion-row>
+
+        <ion-row *ngIf="items.id == 4 || items.id ==1 ">
+          <ion-col col col-8 >
+            <div padding>
+              <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                {{items.name}}
+              </div>
+
+            </div>
+          </ion-col>
+          <ion-col col col-4 *ngIf="rol_id ==2" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+            <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+              <div  id="create" *ngIf="items.id == items2.status_id   " [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                 <span class="dateTime">{{items2.created_at_time}}</span>
+                    <span class="date">{{items2.created_at}}</span>
+              </div>
+            </div>
+
+            <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+              <span   id="delete" *ngIf="items2.status_id ==5 && items.id ==5 ">Eliminado por {{items2.user}}</span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="items.id ==5 && detailsHirings.status_id ==5">
+          <ion-col col col-8  >
+            <div padding>
+              <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                {{items.name}}
+              </div>
+
+            </div>
+          </ion-col>
+          <ion-col col col-4 *ngIf="rol_id ==2" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+            <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+              <div  id="create" *ngIf="items.id == items2.status_id   " [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                 <span class="dateTime">{{items2.created_at_time}}</span>
+                    <span class="date">{{items2.created_at}}</span>
+              </div>
+            </div>
+
+            <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+              <span   id="delete" *ngIf="items2.status_id ==5 && items.id ==5 ">Eliminado por {{items2.user}}</span>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  <!-- EN ESPERA DE OK -->
+
+  <div *ngIf="detailsHirings.history?.length<2">
+    <ion-row  [ngClass]="{'my-class': items.id==detailsHirings.status_id}"  *ngFor="let items of detailsHirings.statusesHirings ; let i =index">
+      <ion-col col col-8 *ngIf="items.id !=5" >
+        <div padding>
+          <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+            <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+           
+          <label *ngIf="i == 0 && rol_id == 2">¿Podés Hacerlo?</label>
+          <label *ngIf="i ==1 && rol_id == 2">Estoy disponible</label>
+          <label *ngIf="i !=0 && i!=1 && rol_id==2"> {{items.name}} </label>
+          </div>
+        </div>
+      </ion-col>
+      <ion-col col col-4 *ngIf="rol_id ==2" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+        <button ion-button full (click)="createHiring()" *ngIf="items.name =='En espera de ok'">
+          Aceptar
+        </button>
+      </ion-col>
+
+      <ion-fab bottom right>
+      <button ion-fab  title="Cancelar" (click)="confirmAlert()">
+        <ion-icon ios="ios-close" md="md-close"></ion-icon>
+      </button>
+      </ion-fab>
+    </ion-row>
+  </div>
+</ion-grid>
+<!--FIN DATOS DEL TRABAJADOR  -->
+</ion-list>
+</ion-content>

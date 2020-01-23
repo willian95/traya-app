@@ -1,0 +1,30 @@
+page-services-job {
+  .profile-image{
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+      }
+      #count {
+    position: relative;
+    left: 2vh;
+}
+.button-ios {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.6rem;
+    color: #fff;
+    background-color: #b0428f;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+
+.button-md {
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #b0428f;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+}
+}

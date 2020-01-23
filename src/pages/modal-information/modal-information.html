@@ -1,0 +1,51 @@
+<!-- -->
+<img src="assets/imgs/bg.png" class="bg">
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle menuClose (click)="closeModal()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-title>
+      <h3>Acerca de TRAYA</h3>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="myview" >
+  <ion-grid>
+    <ion-row  >
+     <div id="header" style="text-align: center">
+          <span padding> <strong>TRAYA</strong> app de servicios </span>
+          <img padding src="assets/imgs/logo_traya.png" class="logo"/>
+        </div>
+
+        
+    </ion-row>
+      <div>
+        <p>
+        El trabajador está disponible, antes de contratarlo resuelve tus dudas
+          <ion-icon ios="logo-whatsapp" md="logo-whatsapp" style="font-size: 3.5rem"></ion-icon> o
+          <ion-icon ios="ios-call" md="md-call" style="font-size: 3.5rem"></ion-icon>
+      </p>
+      </div>
+
+
+
+       <div id="buttons" class="row" padding >
+          <div col col-50>
+          <button ion-button full (click)="dontSee()">No ver más</button>
+
+          </div>
+
+          <div col col-50>
+            <button ion-button full (click)="closeModal()">Cerrar</button>
+          </div>
+
+
+
+        </div>
+
+  </ion-grid>
+
+</ion-content>

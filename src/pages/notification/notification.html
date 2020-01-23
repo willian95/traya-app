@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Notificaciones</strong>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content  justify-content-end padding>
+	<ion-list *ngIf="notificationArray != null || notificationArray !=''" padding>
+		<ion-item *ngFor="let items of notificationArray ; let i =index" padding >
+
+      <ion-row >
+        <ion-col col-10>
+          <button (click)="viewDetails(items)">
+            <small>{{items.created_at_date}} - {{items.created_at_time}} </small>
+            <span>{{items.text}}</span>
+          </button>
+        </ion-col>
+        <ion-col col-2>
+          <button ion-button small (click)="changeStatus(items,i)">
+              <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+
+		</ion-item>
+	</ion-list>
+
+  <ion-list *ngIf="notificationArray ==null || notificationArray ==''" padding>
+      <h4 text-center>No tienes notificaciones pendientes por leer</h4>
+  </ion-list>
+</ion-content>

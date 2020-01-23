@@ -1,0 +1,40 @@
+page-update-locality {
+.card-title-md {
+    display: block;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: #7f0093;
+    margin: 2px 0;
+    padding: 8px 0;
+    text-align: center;
+}
+.card-header-md {
+    font-size: 1rem;
+    color: #222;
+    text-align: center;
+}
+.card-content-md {
+
+    padding: 13px 16px;
+        padding-top: 13px;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    text-align: justify;
+    white-space: inherit;
+
+}
+ion-label {
+
+    margin: 0;
+    display: block;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: inherit;
+    text-overflow: ellipsis;
+    white-space: inherit;
+
+}
+}

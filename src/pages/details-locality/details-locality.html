@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Detalle de la localidad</strong>
+    </ion-title>
+    
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+      <ion-item>
+        <ion-label floating>Nombre</ion-label>
+        <ion-input type="text" [(ngModel)]="name" name="name" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Descripción</ion-label>
+        <ion-textarea [(ngModel)]="description" rows="3" cols="20" placeholder="Descripción" maxlength="170" (ionChange)="countCharacter($event)"></ion-textarea>
+      </ion-item>
+        <small id="count">Caracteres: {{descriptionCount}} </small>
+
+      <div id="buttons" class="row" padding >
+          <div col col-50>
+            <button ion-button full  (click)="updateLocality()">Editar</button>
+          </div>
+
+          <div col col-50>
+            <button ion-button full color="danger" (click)="deleteLocality()">Eliminar</button>
+          </div>
+        </div>
+</ion-content>

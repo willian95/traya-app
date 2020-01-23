@@ -1,0 +1,19 @@
+page-user-opinions {
+  .expand-wrapper {
+    height: 0;
+    transition: 0.2s linear;
+  }
+
+  .collapsed {
+    height: 0 !important;
+  }
+  .item.wrap, .item-content.wrap {
+white-space: normal;
+}
+
+.label-md {
+    padding: 13px;
+    text-align: justify;
+    white-space: unset !important;
+}
+}

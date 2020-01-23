@@ -1,0 +1,95 @@
+    <ion-header>
+      <ion-navbar color="header">
+       <button ion-button menuToggle >
+     <ion-icon name="menu"></ion-icon>
+  </button>
+        <ion-title>
+          <strong>Perfil</strong>
+        </ion-title>
+        <ion-buttons end>
+          <button ion-button tappable (click)="presentNotifications()">
+            <ion-icon name="notifications"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-navbar>
+    </ion-header>
+
+
+
+    <ion-content padding>
+
+
+      <div align="center" >
+        <img class="profile-image" [src]="userimage2" *ngIf="userimage2">
+      </div>
+
+      <div padding>
+        <ion-refresher (ionRefresh)="doRefresh($event)">
+          <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
+      </div>
+
+      <div align="right">
+       <input type="file" name="file" id="file" class="inputfile" accept="image/*" (change)="convertBase64($event)"/>
+       <label id="plus"  for="file"><ion-icon ios="ios-camera" md="md-camera"></ion-icon></label>
+     </div>
+     <ion-item >
+      <ion-text color="dark">
+        <h2>MIS DATOS</h2>
+        <small>Información</small>
+      </ion-text>
+
+    </ion-item>
+     <ion-item >
+      <ion-label  floating> <ion-icon name="person"></ion-icon>
+        Tipo de Usuario</ion-label>
+      <ion-select [(ngModel)]="rol_id"  placeholder="Usted es:">
+        <ion-option  value="1">Usuario</ion-option>
+        <ion-option  value="2" >Trabajador</ion-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label floating><ion-icon name="text"></ion-icon> Nombre</ion-label>
+      <ion-input type="text" [(ngModel)]="name" name="name" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating><ion-icon name="mail"></ion-icon> Email</ion-label>
+      <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked><ion-icon name="lock"></ion-icon> Contraseña</ion-label> <br>
+      <ion-input type="password" [(ngModel)]="password" name="password" required placeholder="************"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating><ion-icon name="call"></ion-icon> Celular</ion-label>
+      <ion-input type="phone" [(ngModel)]="phone" name="phone" required></ion-input>
+    </ion-item>
+
+
+
+    <ion-item>
+      <ion-label floating><ion-icon name="pin"></ion-icon> Domicilio</ion-label>
+      <ion-input type="text" [(ngModel)]="domicile" name="domicile" required ></ion-input>
+    </ion-item>
+
+    <ion-item >
+     <ion-label floating><ion-icon name="compass"></ion-icon> Localidad</ion-label>
+     <ion-select [(ngModel)]="location_id"  placeholder="Localidad:">
+      <ion-option *ngFor="let items of localityArray" [value]="items.id">{{items.name}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  
+
+
+  <div padding>
+    <button ion-button full (click)="updateProfile()">Guardar</button>
+  </div>
+
+
+
+</ion-content>
