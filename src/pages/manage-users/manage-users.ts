@@ -21,21 +21,54 @@ export class ManageUsersPage {
   url:any;
 	usersArray:any;
   user_rol:any;
+  locations:any;
+  userLocation:any
+  rol_id:any;
+  usersCount:any
+
   constructor(public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
-  this.loading = this.loadingController.create({
-             content: 'Por favor espere...'
-         });
-             this.url=serviceUrl.getUrl();
+    this.url=serviceUrl.getUrl();
   }
 
   ionViewDidLoad() {
-    this.getUsers();
+
+    this.rol_id = localStorage.getItem("user_rol")
+    if(this.rol_id == 3){
+      this.getLocations()
+    }else{
+      this.getUsers();
+    }
+    //this.getUsers();
+    
+  }
+
+  getLocations(){
+
+    this.loading = this.loadingController.create({
+      content: 'Por favor espere...'
+  });
+    
+    this.loading.present();
+
+    this.httpClient.get(this.url+'/api/locations')
+    .pipe()
+      .subscribe((res:any)=> {
+        this.loading.dismiss();
+        this.locations = res.data
+    });
+
   }
 
    getUsers() {
+
     var headers = new HttpHeaders({
         Authorization: localStorage.getItem('token'),
       })
+
+      this.loading = this.loadingController.create({
+        content: 'Por favor espere...'
+    });
+
     this.loading.present();
 
     if(localStorage.getItem("user_rol") == "4")
@@ -44,12 +77,11 @@ export class ManageUsersPage {
     if(localStorage.getItem("user_rol") == "4"){
 
       this.httpClient.post(this.url+'/api/users/activeUsersLocation', {location_id: user_locality, user_id: localStorage.getItem('user_id')}, { headers })
-      //this.httpClient.get(this.url+"/api/users?"+'filters={"trashed":"1"}',{headers})
       .pipe()
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.usersArray=res.data;
-          console.log(this.usersArray)
+          this.usersCount = this.usersArray.length
 
           for (var i = 0; i < this.usersArray.length; i++) {
             if(this.usersArray[i].roles[0].id == 1){
@@ -62,12 +94,13 @@ export class ManageUsersPage {
 
     }else if(localStorage.getItem("user_rol") == "3"){
 
-      this.httpClient.get(this.url+'/api/users', { headers })
+      this.httpClient.post(this.url+'/api/users/activeUsersLocation', {location_id: this.userLocation, user_id: localStorage.getItem('user_id')}, { headers })
       //this.httpClient.get(this.url+"/api/users?"+'filters={"trashed":"1"}',{headers})
       .pipe()
         .subscribe((res:any)=> {
         this.loading.dismiss();
         this.usersArray=res.data;
+        this.usersCount = this.usersArray.length
           console.log(this.usersArray)
         for (var i = 0; i < this.usersArray.length; i++) {
           if(this.usersArray[i].roles[0].id == 1){

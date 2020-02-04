@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController,ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController,ToastController, Events } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 
@@ -20,7 +20,7 @@ export class MaintenanceModePage {
   token:any;
   loading:any;
   tokenCode:any;
-  constructor(private serviceUrl:ServiceUrlProvider,public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,) {
+  constructor(public events: Events, private serviceUrl:ServiceUrlProvider,public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,) {
     this.loading = this.loadingController.create({
       content: 'Por favor espere...'
     });
@@ -55,6 +55,7 @@ export class MaintenanceModePage {
           .subscribe((res:any)=> {
             this.loading.dismiss();
             this.presentAlert();
+            this.events.publish('maintenance', res);
            },err => {
             this.loading.dismiss();
         }); //subscribe

@@ -116,14 +116,17 @@ export class ActiveHiringsPage {
 
 
   async toastTweet() {
-    const toast = await this.toastController.create({
-      message: localStorage.getItem('location_description'),
-      //duration: 10000,
-      showCloseButton: true,
-      closeButtonText: 'Cerrar',
-      cssClass: 'your-toast-css-class'
-    });
-    toast.present();
+    var notification = localStorage.getItem('location_description')
+
+    if(notification != "null"){
+      const toast = await this.toastController.create({
+        message: notification,
+        showCloseButton: true,
+        closeButtonText: 'Cerrar',
+        cssClass: 'your-toast-css-class'
+      });
+      toast.present();
+    }
   }
 
 

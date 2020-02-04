@@ -29,12 +29,14 @@ import { ManageUsersPage } from '../pages/manage-users/manage-users';
 import { DisabledUsersPage } from '../pages/disabled-users/disabled-users';
 import { MaintenanceModePage } from '../pages/maintenance-mode/maintenance-mode';
 import { StatisticsPage } from '../pages/statistics/statistics';
+import { DetailsLocalityPage } from '../pages/details-locality/details-locality';
 
 import { LocalNotifications } from '@ionic-native/local-notifications';
 
 import Pusher from 'pusher-js';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Observable } from 'rxjs';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
 @Component({
   templateUrl: 'app.html'
@@ -50,6 +52,7 @@ export class MyApp {
   myRand:any;
   storage:any;
   rol_id:any;
+  config:any
   // hiring_id:any;
   text = '¡Descárgate Traya! es una App de Servicios…';
   textBody = 'te permite de manera rápida y sencilla conectarte con un profesional. \n'+
@@ -60,12 +63,16 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
   appMenuItems:any;
-  constructor(private localNotifications: LocalNotifications,private alertCtrl: AlertController,private socialSharing: SocialSharing,public actionSheetController: ActionSheetController,public backgroundMode: BackgroundMode,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public httpClient: HttpClient,public events: Events,private serviceUrl:ServiceUrlProvider,private pusher:PusherProvider) {
+  constructor(private localNotifications: LocalNotifications,private alertCtrl: AlertController,private socialSharing: SocialSharing,public actionSheetController: ActionSheetController,public backgroundMode: BackgroundMode,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public httpClient: HttpClient,public events: Events,private serviceUrl:ServiceUrlProvider,private pusher:PusherProvider, private push: Push) {
     this.appMenuItems = [];
     this.initializeApp();
     this.url=serviceUrl.getUrl();
     this.storage = localStorage;
     this.validateHeaderMain=false;
+    this.backgroundMode.enable();
+    this.getConfig()
+
+    this.pushSetup();
 
       /***LLAMA LA FUNCION EN UN INTERVALO DE TIEMPO***/
     //   Observable.interval(5000).subscribe(()=>{
@@ -107,21 +114,30 @@ export class MyApp {
 
 
   validarMenu(){
+    
     this.appMenuItems=[];
     if(this.rol_id == 1){
       this.appMenuItems.push({title: 'Servicios', component: TrayaPage, icon: 'people'}/**,{title: 'Acerca de TRAYA', component: AboutTrayaPage, icon: 'information-circle'}*/);
     }else if(this.rol_id ==2){
       this.appMenuItems.push({title: 'Solicitudes de Trabajo', component: TrayaBidderPage, icon: 'list'},{title: 'Mis Servicios', component: ServicesJobPage, icon: 'add-circle'}/*,{title: 'Acerca de TRAYA', component: AboutTrayaBidderPage, icon: 'information-circle'}*/);
     }else if(this.rol_id ==3){
-      this.appMenuItems.push({title: 'Registrar Servicios', component: RegisterServicesPage, icon: 'add-circle'},{title: 'Actualizar Servicios', component: UpdateServicesPage, icon: 'refresh-circle'},{title: 'Crear Localidades', component: CreateLocalityPage, icon: 'locate'},{title: 'Actualizar Localidades', component: UpdateLocalityPage, icon: 'refresh'},
-      {title: 'Usuarios Activos', component: ManageUsersPage, icon: 'add-circle'},{title: 'Usuarios Inactivos', component: DisabledUsersPage, icon: 'add-circle'},
-      {title: 'Modo mantenimiento', component: MaintenanceModePage, icon: 'add-circle'},
-      {title: 'Administradores de localidades', component: ManageAdministratorsPage, icon: 'add-circle'},
-      {title: 'Estadísticas de usuarios', component: StatisticsPage, icon: 'trending-up'});
+      this.appMenuItems.push(
+        {title: 'Registrar Servicios', component: RegisterServicesPage, icon: 'add-circle'},
+        {title: 'Actualizar Servicios', component: UpdateServicesPage, icon: 'refresh-circle'},
+        {title: 'Crear Localidades', component: CreateLocalityPage, icon: 'locate'},
+        {title: 'Gestionar Localidades', component: UpdateLocalityPage, icon: 'refresh'},
+        {title: 'Usuarios Activos', component: ManageUsersPage, icon: 'contacts'},
+        {title: 'Usuarios Inactivos', component: DisabledUsersPage, icon: 'close'},
+        {title: 'Modo mantenimiento', component: MaintenanceModePage, icon: 'build', badge: this.config},
+        {title: 'Administradores de localidades', component: ManageAdministratorsPage, icon: 'pin'},
+        {title: 'Estadísticas de usuarios', component: StatisticsPage, icon: 'trending-up'});
     }else if(this.rol_id == 4){
       this.appMenuItems.push(
-      {title: 'Usuarios Activos', component: ManageUsersPage, icon: 'add-circle'},{title: 'Usuarios Inactivos', component: DisabledUsersPage, icon: 'add-circle'},
-      {title: 'Estadísticas de usuarios', component: StatisticsPage, icon: 'trending-up'});
+        {title: 'Gestionar Notificaciones', component: DetailsLocalityPage, icon: 'add-circle'},
+        {title: 'Usuarios Activos', component: ManageUsersPage, icon: 'add-circle'},
+        {title: 'Usuarios Inactivos', component: DisabledUsersPage, icon: 'add-circle'},
+        {title: 'Estadísticas de usuarios', component: StatisticsPage, icon: 'trending-up'}
+      );
     }
   }
 
@@ -246,14 +262,15 @@ initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      //this.backgroundMode.enable();
     });
   
 
     this.events.subscribe('userRol',(res)=>{
         this.rol_id=res;
-        this.validarMenu();
+        this.getConfig()
+        //this.validarMenu();
     })
+    
 
     this.events.subscribe('userLogged',(res)=>{
       this.name = res.user.name;
@@ -263,7 +280,8 @@ initializeApp() {
       this.token = res.token;
       this.tokenCode = res.tokenCode;
       this.rol_id = res.roles[0].id;
-      this.validarMenu();
+      //this.validarMenu();
+      this.getConfig()
       this.validateHeaderMain=true;
     });
 
@@ -275,6 +293,11 @@ initializeApp() {
       this.image = res.image+"?"+rand;
       window.localStorage.setItem('userimage', this.image)
     })
+
+    this.events.subscribe('maintenance', (res)=>{
+      this.getConfig()
+      this.validarMenu()
+   })
 
     this.events.subscribe('userName',(res)=>{
       console.log(res)
@@ -376,4 +399,50 @@ initializeApp() {
     },err => {
     } ); //subscribe
   }
+
+  pushSetup(){
+    const options: PushOptions = {
+       android: {
+           // Añadimos el sender ID para Android.
+           senderID: '294800992208'
+       },
+       ios: {
+           alert: 'true',
+           badge: true,
+           sound: 'false'
+       }
+    };
+ 
+    const pushObject: PushObject = this.push.init(options);
+    
+
+    pushObject.on('registration').subscribe((registration: any) => localStorage.setItem("fcmToken", registration.registrationId));
+    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+  }
+
+  async getConfig(){
+    
+    if(localStorage.getItem('token') != null){
+
+      var headers = new HttpHeaders({
+        Authorization: localStorage.getItem('token'),
+        Accept: "application/json",
+      });
+  
+      return  this.httpClient.get(this.url+"/api/config", {headers})
+      .pipe()
+      .subscribe((res:any)=> {
+        //console.log("config: ",res)
+        this.config = res.data.active
+        this.validarMenu()
+      },err => {
+      } ); //subscribe
+
+    }
+    
+
+  }
+
+
 }

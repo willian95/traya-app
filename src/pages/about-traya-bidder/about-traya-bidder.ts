@@ -36,6 +36,7 @@ export class AboutTrayaBidderPage {
   }
  dontSee() {
     localStorage.setItem('about_band_bidder','true');
+    localStorage.setItem('about_band','true');
     this.viewCtrl.dismiss();
   }
  

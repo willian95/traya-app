@@ -27,6 +27,7 @@ export class AboutModalPage {
   }
  dontSee() {
     localStorage.setItem('about_band','true');
+    localStorage.setItem('about_band_bidder','true');
     this.viewCtrl.dismiss();
   }
  

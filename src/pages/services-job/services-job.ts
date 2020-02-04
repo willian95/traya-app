@@ -5,6 +5,7 @@ import { NotificationPage } from '../notification/notification';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
+import { ActiveHiringsPage } from '../active-hirings/active-hirings';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
    import { TrayaPage } from '../traya/traya';
     import { TrayaBidderPage } from '../traya-bidder/traya-bidder';
@@ -215,6 +216,8 @@ async presentAlert() {
       .subscribe((res:any)=> {
          this.loading.dismiss();
         this.presentAlert();
+        this.navCtrl.setRoot(TrayaBidderPage);
+
       },err => {
         this.loading.dismiss();
         if (err.error.errors == undefined) {
@@ -279,6 +282,7 @@ async presentAlert() {
               //this.description="Describa sus trabajos";
             }else{
                 this.description=response.profile.description;
+                this.descriptionCount = this.description.length
 
             }
             this.userimage = response.image;

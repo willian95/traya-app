@@ -21,6 +21,11 @@ export class DisabledUsersPage {
   url:any;
 	usersArray:any;
   user_rol:any;
+  rol_id:any
+  locations:any
+  userLocation:any
+  usersCount:any
+
   constructor(public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
     this.loading = this.loadingController.create({
                content: 'Por favor espere...'
@@ -29,7 +34,32 @@ export class DisabledUsersPage {
   }
 
   ionViewDidLoad() {
-    this.getUsers();
+
+    this.rol_id = localStorage.getItem("user_rol")
+
+    if(this.rol_id == 3){
+      this.getLocations()
+    }else{
+      this.getUsers();
+    }
+
+  }
+
+  getLocations(){
+
+    this.loading = this.loadingController.create({
+      content: 'Por favor espere...'
+  });
+    
+    this.loading.present();
+
+    this.httpClient.get(this.url+'/api/locations')
+    .pipe()
+      .subscribe((res:any)=> {
+        this.loading.dismiss();
+        this.locations = res.data
+    });
+
   }
 
   getUsers() {
@@ -48,17 +78,17 @@ export class DisabledUsersPage {
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.usersArray=res.data;
-          console.log(res);
+          this.usersCount = this.usersArray.length
         
       });
 
     }else if(localStorage.getItem('user_rol') == "3"){
-      this.httpClient.get(this.url+"/api/users?"+'filters={"trashed":"1"}',{headers})
+      this.httpClient.post(this.url+"/api/users/activeUsersLocation?"+'filters={"trashed":"1"}',{user_id: localStorage.getItem('user_id'), location_id: this.userLocation},{headers})
       .pipe()
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.usersArray=res.data;
-          console.log(this.usersArray);
+          this.usersCount = this.usersArray.length
         for (var i = 0; i < this.usersArray.length; i++) {
           if(this.usersArray[i].roles[0].id == 1){
             this.user_rol='Usuario';

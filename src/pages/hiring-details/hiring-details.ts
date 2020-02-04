@@ -166,6 +166,7 @@ export class HiringDetailsPage {
       let alert = this.alertCtrl.create({
         title: ' <img src="assets/imgs/info.png" class="logo2" />',
         message: '¿Está seguro que desea cancelar la solicitud?',
+        enableBackdropDismiss: false,
         buttons: [
           {
             text: 'Si',

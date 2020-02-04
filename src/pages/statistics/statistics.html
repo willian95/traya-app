@@ -33,11 +33,14 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
+      <ion-col *ngIf="user_rol == '3'">
         <button ion-button (click)="getStatistics()">Generar</button>
-    </ion-col>
+      </ion-col>
+      <ion-col>
+        <button ion-button (click)="promptAlert()">Exportar</button>
+      </ion-col>
     </ion-row>
-    <ion-row >
+    <ion-row style="margin-top: 20px;">
       <ion-col>
         <b>Usuarios</b>
       </ion-col>
@@ -53,12 +56,12 @@
        <b>{{ workers }}</b>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="user_rol == '3'">
+    <ion-row *ngIf="user_rol >= '3'" style="margin-top: 20px;">
       <ion-col>
         <h2 class="text-center">Nuevos Usuarios</h2>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="user_rol == '3'">
+    <ion-row *ngIf="user_rol >= '3'">
       <ion-col>
         <b>Mes</b>
       </ion-col>
@@ -67,19 +70,32 @@
       </ion-col>
     </ion-row>
     <ion-row *ngFor="let user of newUsers;">
-      <ion-col *ngIf="user_rol == '3'">
-        {{ user.month }}
+      <ion-col *ngIf="user_rol >= '3'">
+        
+        <div *ngIf="user.month == 'Jan'">Ene</div>
+        <div *ngIf="user.month == 'Feb'">Feb</div>
+        <div *ngIf="user.month == 'Mar'">Mar</div>
+        <div *ngIf="user.month == 'Apr'">Abr</div>
+        <div *ngIf="user.month == 'May'">May</div>
+        <div *ngIf="user.month == 'Jun'">Jun</div>
+        <div *ngIf="user.month == 'Jul'">Jul</div>
+        <div *ngIf="user.month == 'Aug'">Ago</div>
+        <div *ngIf="user.month == 'Sep'">Sep</div>
+        <div *ngIf="user.month == 'Oct'">Oct</div>
+        <div *ngIf="user.month == 'Nov'">Nov</div>
+        <div *ngIf="user.month == 'Dec'">Dic</div>
+
       </ion-col>
-      <ion-col *ngIf="user_rol == '3'">
+      <ion-col *ngIf="user_rol >= '3'">
         {{ user.count }}
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="user_rol == '3'">
+    <ion-row *ngIf="user_rol >= '3'" style="margin-top: 20px;">
       <ion-col>
         <h2 class="text-center">Contrataciones</h2>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="user_rol == '3'">
+    <ion-row *ngIf="user_rol >= '3'">
       <ion-col>
         <b>Mes</b>
       </ion-col>
@@ -88,14 +104,26 @@
       </ion-col>
     </ion-row>
     <ion-row *ngFor="let contract of contracts;">
-      <ion-col *ngIf="user_rol == '3'">
-        {{ contract.month }}
+      <ion-col *ngIf="user_rol >= '3'">
+          <div *ngIf="contract.month == 'Jan'">Ene</div>
+          <div *ngIf="contract.month == 'Feb'">Feb</div>
+          <div *ngIf="contract.month == 'Mar'">Mar</div>
+          <div *ngIf="contract.month == 'Apr'">Abr</div>
+          <div *ngIf="contract.month == 'May'">May</div>
+          <div *ngIf="contract.month == 'Jun'">Jun</div>
+          <div *ngIf="contract.month == 'Jul'">Jul</div>
+          <div *ngIf="contract.month == 'Aug'">Ago</div>
+          <div *ngIf="contract.month == 'Sep'">Sep</div>
+          <div *ngIf="contract.month == 'Oct'">Oct</div>
+          <div *ngIf="contract.month == 'Nov'">Nov</div>
+          <div *ngIf="contract.month == 'Dec'">Dic</div>
+  
       </ion-col>
-      <ion-col *ngIf="user_rol == '3'">
+      <ion-col *ngIf="user_rol >= '3'">
         {{ contract.count }}
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="user_rol == '3'">
+    <ion-row *ngIf="user_rol >= '3'" style="margin-top: 20px;">
       <ion-col>
         <b>Total</b>
       </ion-col>
@@ -104,12 +132,12 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="user_rol == '3'">
+    <ion-row *ngIf="user_rol >= '3'" style="margin-top: 20px;">
       <ion-col>
         <h2 class="text-center">Contactos</h2>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="user_rol == '3'">
+    <ion-row *ngIf="user_rol >= '3'">
       <ion-col>
         <b>Mes</b>
       </ion-col>
@@ -118,14 +146,26 @@
       </ion-col>
     </ion-row>
     <ion-row *ngFor="let contact of contacts;">
-      <ion-col *ngIf="user_rol == '3'">
-        {{ contact.month }}
+      <ion-col *ngIf="user_rol >= '3'">
+          <div *ngIf="contact.month == 'Jan'">Ene</div>
+          <div *ngIf="contact.month == 'Feb'">Feb</div>
+          <div *ngIf="contact.month == 'Mar'">Mar</div>
+          <div *ngIf="contact.month == 'Apr'">Abr</div>
+          <div *ngIf="contact.month == 'May'">May</div>
+          <div *ngIf="contact.month == 'Jun'">Jun</div>
+          <div *ngIf="contact.month == 'Jul'">Jul</div>
+          <div *ngIf="contact.month == 'Aug'">Ago</div>
+          <div *ngIf="contact.month == 'Sep'">Sep</div>
+          <div *ngIf="contact.month == 'Oct'">Oct</div>
+          <div *ngIf="contact.month == 'Nov'">Nov</div>
+          <div *ngIf="contact.month == 'Dec'">Dic</div>
+  
       </ion-col>
-      <ion-col *ngIf="user_rol == '3'">
+      <ion-col *ngIf="user_rol >= '3'">
         {{ contact.count }}
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="user_rol == '3'">
+    <ion-row *ngIf="user_rol >= '3'" style="margin-top: 20px;">
       <ion-col>
         <b>Total</b>
       </ion-col>

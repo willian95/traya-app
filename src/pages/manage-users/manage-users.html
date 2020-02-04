@@ -12,8 +12,24 @@
 
 
 <ion-content padding justify-content-end>
+
+	<ion-list *ngIf="rol_id == 3">
+		<ion-item>
+			<ion-label>Localidades</ion-label>
+			<ion-select [(ngModel)]="userLocation">
+				<ion-option *ngFor="let location of locations ; let i =index" [value]="location.id">{{ location.name }}</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<button ion-button (click)="getUsers()">Buscar</button>
+		</ion-item>
+	</ion-list>
+
 	<ion-list>
-	<button ion-item *ngFor="let items of usersArray ; let i =index" (click)="viewDetailsUsers(items,i)">
+		<ion-item *ngIf="usersCount != null">
+			Total: {{ usersCount }}
+		</ion-item>
+	<button ion-item *ngFor="let items of usersArray ; let i =index">
 		<ion-card   >
 			  <ion-card-header text-center >
           <ion-avatar id="imgwrap" item-start>

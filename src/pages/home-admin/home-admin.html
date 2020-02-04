@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      <strong>TRAYA <i>Administrador</i></strong>
+      <strong>TRAYA</strong> <small><i>{{ userRol }}</i></small>
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -20,7 +20,7 @@
          <div text-center class="animated fadeInDown">
           <img src="assets/imgs/logo_traya.png" class="logo"/>
           <h1 id="description">Bienvenido Administrador!</h1>
-          <small>Aquí puedes gestionar los servicios y localidades del sistema</small>
+          <small>{{ phrase }}</small>
         </div>
 
       </ion-col>

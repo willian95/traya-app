@@ -17,18 +17,19 @@
       </ion-item>
 
       <ion-item>
-        <ion-label floating>Descripción</ion-label>
-        <ion-textarea [(ngModel)]="description" rows="3" cols="20" placeholder="Descripción" maxlength="170" (ionChange)="countCharacter($event)"></ion-textarea>
+        <ion-label floating>Notificación</ion-label>
+        <ion-textarea [(ngModel)]="description" rows="3" cols="20" maxlength="170" (ionChange)="countCharacter($event)"></ion-textarea>
       </ion-item>
-        <small id="count">Caracteres: {{descriptionCount}} </small>
+        <small id="count">Caracteres: {{170 - descriptionCount}} </small>
 
       <div id="buttons" class="row" padding >
+
           <div col col-50>
-            <button ion-button full  (click)="updateLocality()">Editar</button>
+            <button ion-button full color="danger" (click)="deleteNotification()">Borrar</button>
           </div>
 
           <div col col-50>
-            <button ion-button full color="danger" (click)="deleteLocality()">Eliminar</button>
+            <button ion-button full  (click)="updateLocality()">Guardar</button>
           </div>
         </div>
 </ion-content>

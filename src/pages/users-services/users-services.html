@@ -34,7 +34,7 @@
           <h2>{{items.name}}</h2>
         </ion-col>
         <ion-col col col-2  [class.hide]="!validateMT">
-        <ion-checkbox color="primary" (ionChange)="addCheckbox($event,items.id)"></ion-checkbox>
+        <ion-checkbox color="primary" (ionChange)="addCheckbox($event,items.id)" *ngIf="items.id != user_id"></ion-checkbox>
 
         </ion-col>
       </ion-row>

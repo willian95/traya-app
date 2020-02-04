@@ -14,12 +14,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'home-admin.html',
 })
 export class HomeAdminPage {
+  userRol:any
+  phrase:any
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomeAdminPage');
+    if(localStorage.getItem('user_rol') == '3'){
+      this.userRol = "Administrador"
+      this.phrase = "Aquí puedes gestionar los servicios y localidades del sistema"
+    }else if(localStorage.getItem('user_rol') == '4'){
+      this.userRol = "Admin. municipio"
+      this.phrase = "Aquí puedes gestionar tu municipio en la app"
+    }
   }
 
 }

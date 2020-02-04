@@ -70,6 +70,7 @@ import { LoginProvider } from '../providers/login/login';
 import { HelperProvider } from '../providers/helper/helper';
 //import { LongPressModule } from 'ionic-long-press';
 
+import { Push } from '@ionic-native/push';
 import { AppVersion } from '@ionic-native/app-version';
 
 @NgModule({
@@ -124,7 +125,7 @@ import { AppVersion } from '@ionic-native/app-version';
     StarRatingModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    SuperTabsModule.forRoot()
+    SuperTabsModule.forRoot(),
     //LongPressModule,
   ],
   bootstrap: [IonicApp],
@@ -187,7 +188,8 @@ import { AppVersion } from '@ionic-native/app-version';
     DeviceAccounts,
     LoginProvider,
     HelperProvider,
-    AppVersion
+    AppVersion,
+    Push
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

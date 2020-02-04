@@ -22,19 +22,37 @@ export class ManageAdministratorsPage {
   url:any;
   loading:any;
   usersArray:any;
+  locations:any;
+  userLocation:any
+  administratorsArray:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
 
-    this.loading = this.loadingController.create({
-      content: 'Por favor espere...'
-    });
+    
     this.url=serviceUrl.getUrl();
 
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ManageAdministratorsPage');
-    this.getUsers()
+    this.getLocations()
+  }
+
+  getLocations(){
+
+    this.loading = this.loadingController.create({
+      content: 'Por favor espere...'
+  });
+    
+    this.loading.present();
+
+    this.httpClient.get(this.url+'/api/locations')
+    .pipe()
+      .subscribe((res:any)=> {
+        this.loading.dismiss();
+        this.locations = res.data
+    });
+
   }
 
   getUsers(){
@@ -42,15 +60,22 @@ export class ManageAdministratorsPage {
     var headers = new HttpHeaders({
       Authorization: localStorage.getItem('token'),
     })
-    this.loading.present();
 
-    this.httpClient.get(this.url+'/api/users', { headers })
+    this.loading = this.loadingController.create({
+      content: 'Por favor espere...'
+    });
+
+    this.loading.present()
+
+    this.httpClient.post(this.url+'/api/administratorsLocation', {location_id: this.userLocation, user_id: localStorage.getItem('user_id')}, { headers })
       //this.httpClient.get(this.url+"/api/users?"+'filters={"trashed":"1"}',{headers})
       .pipe()
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.usersArray=res.data;
-      });
+          this.administratorsArray = res.administrators
+      })
+      
 
   }
 

@@ -18,8 +18,43 @@
 
 
 <ion-content padding>
-  
+    <ion-list>
+        <ion-item>
+          <ion-label>Localidades</ion-label>
+          <ion-select [(ngModel)]="userLocation">
+            <ion-option *ngFor="let location of locations ; let i =index" [value]="location.id">{{ location.name }}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <button ion-button (click)="getUsers()">Buscar</button>
+        </ion-item>
+      </ion-list>
   <ion-list>
+    <ion-item *ngIf="administratorsArray != null">
+      <h1 text-center>Administradores Locales</h1>
+    </ion-item>
+    <ion-item *ngIf="administratorsArray != null && administratorsArray.length == 0">
+        <h3 text-center>No hay administradores locales</h3>
+      </ion-item>
+    <button ion-item *ngFor="let administrator of administratorsArray ; let i =index" (click)="viewDetailsUsers(administrator,i)">
+      <ion-card   >
+          <ion-card-header text-center >
+            <ion-avatar id="imgwrap" item-start>
+              <img [src]="administrator.image+'?v='+administrator.user.updated_at" *ngIf="administrator.image" >
+            </ion-avatar>
+            <ion-card-title> {{administrator.user.name}} </ion-card-title>
+            <ion-card-subtitle> <small>{{administrator.user.last_login}}</small> </ion-card-subtitle> <br>
+            <ion-card-subtitle> <small>Tipo de usuario: {{administrator.role_name}}</small> </ion-card-subtitle>
+          </ion-card-header>
+  
+  
+        </ion-card>
+    </button>
+  </ion-list>
+  <ion-list>
+    <ion-item *ngIf="usersArray != null && usersArray.length > 0">
+      <h1 text-center>Usuarios</h1>
+    </ion-item>
     <button ion-item *ngFor="let items of usersArray ; let i =index" (click)="viewDetailsUsers(items,i)">
       <ion-card   >
           <ion-card-header text-center >
@@ -33,7 +68,7 @@
   
   
         </ion-card>
-        </button>
-    </ion-list>
+    </button>
+  </ion-list>
 
 </ion-content>

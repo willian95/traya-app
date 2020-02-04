@@ -67,10 +67,20 @@
        </a>
       </ion-col>
     </ion-row>
-
-    <ion-item padding id="pr3"  *ngIf="usersServices.email != authEmail" style="margin-top: -1px;">
-        <ion-textarea  (click)="createDescription()" readonly  id="comments"  [(ngModel)]="comments"  rows="1" cols="20" placeholder="Explica brevemente tus necesidades" maxlength="300"></ion-textarea>
-    </ion-item>
+    
+    
+      <ion-grid>
+        <ion-row>
+          <ion-col col-1>
+            <ion-icon style="margin-top: 12px;" md="ios-create-outline"></ion-icon>
+          </ion-col>
+          <ion-col col-11>
+              <ion-item padding id="pr3"  *ngIf="usersServices.email != authEmail" style="margin-top: -1px; padding: 0px;">
+                <ion-textarea  (click)="createDescription()" readonly  id="comments"  [(ngModel)]="comments"  rows="1" cols="20" placeholder="Explica brevemente tus necesidades" maxlength="300" style="padding: 0px !important; margin-left: -11px; "></ion-textarea>
+              </ion-item>
+            </ion-col>
+        </ion-row>
+      </ion-grid>  
     
     <div *ngIf="usersServices.email == authEmail" style="margin-top: 15px;">
     <h4 text-center style="font-size: 1.5rem; margin-bottom: -2px;">Mis estrellas</h4>

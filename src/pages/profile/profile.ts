@@ -352,10 +352,10 @@ alertChange(){
             //  this.navCtrl.setRoot(LoginPage);
             //}
               if (this.rol_id == 2) {
-       this.navCtrl.setRoot(TrayaBidderPage); // nav
-     }else if(this.rol_id ==1){
-       this.navCtrl.setRoot(TrayaPage); // nav
-     }
+                this.navCtrl.setRoot(TrayaBidderPage); // nav
+              }else if(this.rol_id ==1){
+                this.navCtrl.setRoot(TrayaPage); // nav
+              }
           },err => {
              this.loading.dismiss();
             console.log(err.error);

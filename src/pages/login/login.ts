@@ -34,7 +34,7 @@ export class LoginPage {
       content: 'Por favor espere...'
     });
     this.url=serviceUrl.getUrl();
-
+    this.deviceToken = localStorage.getItem('fcmToken')
     // let status bar overlay webview
     //this.statusBar.overlaysWebView(true);
 
@@ -52,6 +52,7 @@ export class LoginPage {
   aboutBandera:any;
   locationP:any;
   config:any;
+  deviceToken:any;
 
 
   ionViewDidLoad() {
@@ -99,6 +100,7 @@ export class LoginPage {
       this.pruebaAlert(user);
     }, err =>{
       console.log(err)
+
       this.pruebaAlert(err)
       this.loading.dismiss();
 
@@ -208,7 +210,8 @@ export class LoginPage {
         var headers = new Headers();
       headers.append("Accept", 'application/json');
       headers.append('Content-Type', 'application/json' );
-      return  this.httpClient.post(this.url+"/api/login", {"email":this.email, "password":this.password})
+     
+      return  this.httpClient.post(this.url+"/api/login", {"email":this.email, "password":this.password, "deviceToken": this.deviceToken})
       .pipe(
         )
       .subscribe((res:any)=> {
@@ -244,9 +247,11 @@ export class LoginPage {
         localStorage.setItem('averageRatingInt',averageRatingInt);
         localStorage.setItem('user_domicile',user_domicile);
         localStorage.setItem('user_locality_id',user_locality_id);
+       
          if(res.roles[0].id ==3 || res.roles[0].id ==4){
           this.navCtrl.setRoot(HomeAdminPage);
           this.events.publish('userLogged',res);
+          
         }
         this.getMode(res,valueServices,valueServicesBidder);
 

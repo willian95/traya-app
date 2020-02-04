@@ -33,27 +33,32 @@
   </ion-item>
 
   <ion-item padding>
-    <ion-label>Servicios</ion-label>
+    <ion-label>Asociar servicios</ion-label>
     <ion-select [(ngModel)]="services_id" multiple="true">
       <ion-option  *ngFor="let items of servicesArray"  value="{{items.id}}">{{items.name}}</ion-option>
     </ion-select>
   </ion-item>
 
 
-  <ion-item *ngFor="let items of servicesNameArray">
-    <ion-label>{{items.name}}</ion-label>
+ 
+  <ion-item>
+    <span *ngFor="let items of servicesNameArray; let i = index">
+        {{items.name}}
+      <span *ngIf="i < servicesNameArray.length - 1">/</span>
+    </span>
   </ion-item>
+  
 
 
    <ion-item>
     <ion-label stacked>Descripción</ion-label>
-    <ion-textarea id="description"  [(ngModel)]="description"  rows="3" cols="20"  maxlength="300"  (ionChange)="countCharacter($event)" placeholder="Aquí deberá describir brevemente los servicios en los que usted se ha asociado "></ion-textarea>
+    <ion-textarea id="description"  [(ngModel)]="description"  rows="3" cols="20"  maxlength="200"  (ionChange)="countCharacter($event)" placeholder="Aquí deberá describir brevemente los servicios en los que usted se ha asociado "></ion-textarea>
   </ion-item>
-  <small id="count" [class.hide]="rol_id ==1">Caracteres: {{descriptionCount}} </small>
+  <small id="count" [class.hide]="rol_id ==1">Caracteres: {{200 - descriptionCount}} </small>
 
 
   <div padding>
-    <button ion-button full (click)="associateUsers()">Asociar</button>
+    <button ion-button full (click)="associateUsers()">Guardar</button>
   </div>
 
 

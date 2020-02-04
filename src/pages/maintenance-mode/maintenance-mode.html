@@ -14,19 +14,17 @@
 
 <ion-content padding id="welcome" class="myview">
   <ion-label>
-    Al habilitar el modo mantenimiento, se le mostrará una pantalla a todos los usuarios de la aplicación, indicando que la aplicación aun esta en desarrollo
+      Al habilitar el <strong>modo mantenimiento</strong>, una pantalla notificará a los
+      usuarios que se está trabajando en la app; los usuarios no podrán utilizarla hasta tanto no se deshabilite
+      el modo
   </ion-label>
 
   <div id="buttons" class="row" padding >
     <div col col-50>
+        <button ion-button full color="danger" (click)="changeStatus(false)">Deshabilitar</button>
+      </div>
+    <div col col-50>
       <button ion-button full  (click)="changeStatus(true)">Habilitar</button>
     </div>
-
-    <div col col-50>
-      <button ion-button full color="danger" (click)="changeStatus(false)">Deshabilitar</button>
-    </div>
-
-
-
   </div>
 </ion-content>
