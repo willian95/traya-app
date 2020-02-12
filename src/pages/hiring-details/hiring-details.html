@@ -182,6 +182,21 @@
 
       </div>
 
+      <ion-grid *ngIf="showMap == true">
+        <ion-row>
+          <ion-col>  
+              <button ion-button>
+                  Mostrar mi ubicación
+              </button>
+            </ion-col>
+          <ion-col>    
+            <button ion-button>
+                <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
       <div *ngIf="detailsHirings.history?.length<2">
         <ion-row  [ngClass]="{'my-class': items.id==detailsHirings.status_id}"  *ngFor="let items of detailsHirings.statusesHirings ; let i =index">
           <ion-col col col-8 *ngIf="items.id !=5"  >

@@ -18,8 +18,27 @@ import { PusherProvider } from '../../providers/pusher/pusher';
 export class UsersServicesPage {
 	url:any;
 	warningToastDismissed:boolean
+	ads:any
+	oddAds:any
+	evenAds:any
+	showUpperAds:any
+	showLowerAds:any
+	upperAdArray:any
+	lowerAdArray:any
+	upperAdWeight:any
+	lowerAdWeight:any
+	seenAds:any
 
 	constructor(public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private alertCtrl: AlertController,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
+		
+		this.showUpperAds = true
+		this.showLowerAds = true
+		this.upperAdWeight = 0;
+		this.lowerAdWeight = 0;
+		this.upperAdArray = []
+		this.lowerAdArray = [];
+		this.seenAds = []
+
 		this.warningToastDismissed = true
 		this.usersServices = navParams.get('data');
 		this.loading = this.loadingController.create({
@@ -62,6 +81,8 @@ export class UsersServicesPage {
 	hiringDescription:any;
 	usersArray:any;
 	validateMT:any;
+	currentTime:any
+	noAdDueTime:any
 
 	scheduleNotification(message,hiring_id) {
 		this.localNotifications.schedule({
@@ -92,9 +113,52 @@ export class UsersServicesPage {
 		this.user_id = localStorage.getItem('user_id');
 		this.getNotifications();
 
-		// for(let data of this.usersServices) {
-			// this.averageRatingInt = data.averageRatingInt;
-			// }
+		this.getLowerAds()
+		this.getUpperAds()
+
+		if(localStorage.getItem('noUpperAdDueTime') != null){
+			let dueTime = localStorage.getItem('noUpperAdDueTime')
+			let currentDate = new Date()
+			let dueDate = new Date()
+			
+			this.currentTime = currentDate.getTime()
+			this.noAdDueTime = dueDate.setTime(parseInt(dueTime))
+
+			if(currentDate.getTime() > dueDate.setTime(parseInt(dueTime))){
+				this.showUpperAds = true
+			}
+				
+			else
+				{
+					this.showUpperAds = false
+				}
+
+		}else{
+			this.showUpperAds = true
+		}
+
+		if(localStorage.getItem('noLowerAdDueTime') != null){
+			let dueTime = localStorage.getItem('noLowerAdDueTime')
+			let currentDate = new Date()
+			let dueDate = new Date()
+			
+			this.currentTime = currentDate.getTime()
+			this.noAdDueTime = dueDate.setTime(parseInt(dueTime))
+
+			if(currentDate.getTime() > dueDate.setTime(parseInt(dueTime))){
+				this.showLowerAds = true
+				
+			}
+				
+			else
+				{
+					this.showLowerAds = false
+				}
+
+		}else{
+			this.showLowerAds = true
+		}
+		
 
 		}
 
@@ -201,13 +265,6 @@ export class UsersServicesPage {
 			alert.present();
 		}
 
-
-
-		prueba(){
-			console.log("lalal");
-			console.log(this.usersArray);
-		}
-
 		addCheckbox(event, checkbox : String) {
 			
 			console.log(this.usersArray.length)
@@ -268,5 +325,238 @@ export class UsersServicesPage {
 
 			toast.present();
 		}
+
+		getUpperAds(){
+
+			/*return  this.httpClient.post(this.url+"/api/ads", {location_id: localStorage.getItem('user_locality_id'), seenAds: JSON.parse(localStorage.getItem('seenAds'))})
+			.pipe()
+			.subscribe((res:any)=> {
+
+				if(res.destroyStorage == true){
+					localStorage.removeItem('seenAds')
+					this.getAds()
+				}
+
+				this.adsAssign(res.ads)
+			},err => {
+				
+			}); //subscribe
+			*/
+
+			return  this.httpClient.post(this.url+"/api/ads", {location_id: localStorage.getItem('user_locality_id'), upperAdWeight: this.upperAdWeight, seenAds: this.seenAds})
+			.pipe()
+			.subscribe((res:any)=> {
+
+				console.log("upperAds", res)
+
+				if(res.noAds == true){
+					this.showUpperAds = false
+				}else{
+
+					if(res.ads.length > 0 && res.exists > 0){
+
+						if(res.ads[0]){
+							if((res.ads[0].ad_type_id + this.upperAdWeight) <= 3 && this.upperAdWeight <= 3){
+							
+								this.upperAdWeight = this.upperAdWeight + res.ads[0].ad_type_id
+								this.upperAdArray.push(res.ads[0])
+								this.seenAds.push(res.ads[0].id)
+			
+								this.getUpperAds()
+			
+							}else if((res.ads[0].ad_type_id + this.upperAdWeight) > 3 && this.upperAdWeight < 3){
+		
+								this.getUpperAds()
+		
+							}
+						}
+	
+					}
+
+				}
+				
+
+			},err => {
+				
+			});
+
+		}
+
+		getLowerAds(){
+
+			/*return  this.httpClient.post(this.url+"/api/ads", {location_id: localStorage.getItem('user_locality_id'), seenAds: JSON.parse(localStorage.getItem('seenAds'))})
+			.pipe()
+			.subscribe((res:any)=> {
+
+				if(res.destroyStorage == true){
+					localStorage.removeItem('seenAds')
+					this.getAds()
+				}
+
+				this.adsAssign(res.ads)
+			},err => {
+				
+			}); //subscribe
+			*/
+
+			return  this.httpClient.post(this.url+"/api/ads", {location_id: localStorage.getItem('user_locality_id'), lowerAdWeight: this.lowerAdWeight, seenAds: this.seenAds})
+			.pipe()
+			.subscribe((res:any)=> {
+
+				console.log("lowerAds", res)
+				
+				if(res.noAds == true){
+					this.showLowerAds = false
+				}else{
+
+					if(res.ads.length > 0 && res.exists > 0){
+
+						if(res.ads[0]){
+	
+							if((res.ads[0].ad_type_id + this.lowerAdWeight) <= 3 && this.lowerAdWeight <= 3){
+							
+								this.lowerAdWeight = this.lowerAdWeight + res.ads[0].ad_type_id
+								this.lowerAdArray.push(res.ads[0])
+								this.seenAds.push(res.ads[0].id)
+		
+								this.getLowerAds()
+			
+							}else if((res.ads[0].ad_type_id + this.lowerAdWeight) > 3 && this.lowerAdWeight < 3){
+		
+								this.getLowerAds()
+		
+							}
+	
+						}
+	
+					}
+
+				}
+				
+
+			},err => {
+				
+			});
+
+		}
+
+
+		adsAssign(ads){
+			
+			var evenAds = []
+			var oddAds = []
+			var evenAdsCount = 0
+			var oddAdsCount = 0
+			var totalWeight = 0
+
+			for(let i = 0; i < ads.length; i++){
+				
+				if((i+1) % 2 == 0){
+
+					if(evenAdsCount < 3 && evenAdsCount + parseInt(ads[i].ad_type_id) <= 3){
+						evenAdsCount += parseInt(ads[i].ad_type_id)
+						evenAds.push(ads[i])
+						this.storeSeenAds(ads[i].id)
+						totalWeight += parseInt(ads[i].ad_type_id)
+					}
+					
+				}else{
+					if(oddAdsCount < 3 && oddAdsCount + parseInt(ads[i].ad_type_id) <= 3){
+						oddAdsCount += parseInt(ads[i].ad_type_id)
+						oddAds.push(ads[i])
+						this.storeSeenAds(ads[i].id)
+						totalWeight += parseInt(ads[i].ad_type_id)
+					}
+				}
+
+			}
+
+			
+			this.removeAdsFromStorage()
+			
+
+			this.evenAds = evenAds
+			this.oddAds = oddAds
+
+		}
+
+		removeAdsFromStorage(){
+
+
+			let items = JSON.parse(localStorage.getItem('seenAds'))
+
+			if(items.length > 5){
+				//items.shift()
+				items.splice(Math.floor(Math.random() * items.length) + 1, 1)
+			}
+
+			if(items.length > 8){
+				//items.shift()
+				items.splice(Math.floor(Math.random() * items.length) + 1, 1)
+			}
+
+			items.shift()
+			localStorage.setItem('seenAds', JSON.stringify(items))
+
+		}
+
+		storeSeenAds(id){
+
+			if(localStorage.getItem('seenAds') == null){
+				localStorage.setItem('seenAds', JSON.stringify([id]))
+			}else{
+
+				let items = JSON.parse(localStorage.getItem('seenAds'))
+				items.push(id)
+				localStorage.setItem('seenAds', JSON.stringify(items))
+			}
+
+		}
+
+		askForDeleteAds(type){
+			
+			const confirm = this.alertCtrl.create({
+				title: '¿Deseas no ver más anuncios en esta sección?',
+				message: 'Pasarán 15 minutos hasta que puedas volver a verlos',
+				buttons: [
+					{
+						text: 'No',
+						handler: () => {
+							console.log('Disagree clicked');
+						}
+					},
+					{
+						text: 'Sí',
+						handler: () => {
+							
+							this.noAds(type)
+
+						}
+					}
+				]
+			});
+			confirm.present();
+
+		}
+
+		noAds(type){
+			var d = new Date();
+			let minutes = 15
+
+			this.currentTime = d.getTime()
+
+			var dueTime = d.getTime() + minutes *60000
+			localStorage.setItem('no'+type+'AdDueTime', dueTime+"")
+
+			this.noAdDueTime = d.getTime() + minutes *60000
+
+			if(type == 'Upper'){
+				this.showUpperAds = false
+			}else if(type == 'Lower'){
+				this.showLowerAds = false
+			}
+
+		}
+
 
 	}

@@ -23,6 +23,21 @@
 
 
   <ion-content padding justify-content-end>
+
+    <ion-list (click)="askForDeleteAds('Upper')" *ngIf="showUpperAds == true">
+      <p text-center>
+          <ion-icon name="close"></ion-icon>
+      </p>
+    </ion-list>
+    <ion-list *ngIf="showUpperAds == true">
+      <button ion-item *ngFor="let ad of upperAdArray ; let i =index">
+          
+            <img [src]="url+'/ads/'+ad.name" style="width: 100%;">
+    
+      </button>
+    </ion-list>
+
+
   <ion-list  *ngIf="usersServices != null">
   <button ion-item *ngFor="let items of usersServices ; let i =index" (click)="viewProfile(items,i)">
       <ion-avatar item-start>
@@ -67,6 +82,20 @@
         
       </div>
   </ion-list>
+
+  <ion-list (click)="askForDeleteAds('Lower')" *ngIf="showLowerAds == true">
+    <p text-center>
+        <ion-icon name="close"></ion-icon>
+    </p>
+  </ion-list>
+
+  <ion-list *ngIf="showLowerAds == true">
+      <button ion-item *ngFor="let ad of lowerAdArray ; let i =index">
+          
+            <img [src]="url+'/ads/'+ad.name" style="width: 100%;">
+    
+      </button>
+    </ion-list>
 
 
 

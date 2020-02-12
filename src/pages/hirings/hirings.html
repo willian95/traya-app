@@ -46,26 +46,29 @@
 				</ion-item>
 				<ion-item>
 					<ion-row >
-            <ion-col width-50 >
-              <div>
-				<div class="mbsc-card-subtitle-date">{{items.time_last_history}}<br>{{items.date_last_history}} </div>
-              </div>
-            </ion-col>
-            <ion-col width-50  >
-              <div class="mbsc-card-subtitle">
-				<!--<ion-badge color="primary" *ngIf="items.status_id ==1 && rol_id ==1"   [ngClass]="{'statusPodesHacerlo': items.status=='¿Podés hacerlo?'}"> En espera de ok </ion-badge>-->
-				<ion-badge color="primary" *ngIf="items.status_id ==1 && rol_id ==1"   class="statusPodesHacerlo"> En espera de ok </ion-badge>  
-				<!--<ion-badge *ngIf="items.status_id ==2 && rol_id ==1"  [ngClass]="{'statusTrabajadorDisponible'}">Trabajador Disponible</ion-badge>-->
-				<ion-badge *ngIf="items.status_id ==2 && rol_id ==1"  class="statusTrabajadorDisponible">Trabajador Disponible</ion-badge>
-              	<ion-badge color="primary" *ngIf="items.status_id ==3 && rol_id ==1" [ngClass]="{'statusContratado': items.status=='Contratado'}">Contratado</ion-badge> 
-              	<ion-badge color="primary" *ngIf="items.status_id ==4 && rol_id ==1" [ngClass]="{'statusCalificado': items.status=='Calificado'}">Calificado</ion-badge> 
-              	<ion-badge color="primary" *ngIf="items.status_id ==5 && rol_id ==1" [ngClass]="{'statusCancelado': items.status=='Cancelado'}">Cancelado</ion-badge> 
-              </div>
-            </ion-col>
-          </ion-row>
+						<ion-col width-50 >
+						<div>
+							<div class="mbsc-card-subtitle-date">{{items.time_last_history}}<br>{{items.date_last_history}} </div>
+						</div>
+						</ion-col>
+						<ion-col width-50  >
+						<div class="mbsc-card-subtitle">
+							<!--<ion-badge color="primary" *ngIf="items.status_id ==1 && rol_id ==1"   [ngClass]="{'statusPodesHacerlo': items.status=='¿Podés hacerlo?'}"> En espera de ok </ion-badge>-->
+							<ion-badge color="primary" *ngIf="items.status_id ==1 && rol_id ==1"   class="statusPodesHacerlo"> En espera de ok </ion-badge>  
+							<!--<ion-badge *ngIf="items.status_id ==2 && rol_id ==1"  [ngClass]="{'statusTrabajadorDisponible'}">Trabajador Disponible</ion-badge>-->
+							<ion-badge *ngIf="items.status_id ==2 && rol_id ==1"  class="statusTrabajadorDisponible">Trabajador Disponible</ion-badge>
+							<ion-badge color="primary" *ngIf="items.status_id ==3 && rol_id ==1" [ngClass]="{'statusContratado': items.status=='Contratado'}">Contratado</ion-badge> 
+							<ion-badge color="primary" *ngIf="items.status_id ==4 && rol_id ==1" [ngClass]="{'statusCalificado': items.status=='Calificado'}">Calificado</ion-badge> 
+							<ion-badge color="primary" *ngIf="items.status_id ==5 && rol_id ==1" [ngClass]="{'statusCancelado': items.status=='Cancelado'}">Cancelado</ion-badge> 
+						</div>
+						</ion-col>
+					</ion-row>
 				</ion-item>
 			</ion-card>
 		</button>
+
+		
+
 	</ion-list>
 
 	<ion-fab bottom right style="bottom:70px;">

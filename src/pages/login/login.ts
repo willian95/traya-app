@@ -20,7 +20,7 @@ import { RecoveryPasswordPage } from '../recovery-password/recovery-password';
 import { TermsAndConditionsPage } from '../terms-and-conditions/terms-and-conditions';
 import { MaintenancePage } from '../maintenance/maintenance';
 import { StatusBar } from '@ionic-native/status-bar';
-
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 @IonicPage()
 @Component({
@@ -29,7 +29,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 })
 export class LoginPage {
   url:any;
-  constructor(private statusBar: StatusBar, public toastController: ToastController,public modalCtrl: ModalController,private helper: HelperProvider,private googlePlus: GooglePlus,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private menu: MenuController,public loadingController: LoadingController,private alertCtrl: AlertController,public events: Events,private serviceUrl:ServiceUrlProvider,private loginProvider:LoginProvider) {
+  constructor(private statusBar: StatusBar, public toastController: ToastController,public modalCtrl: ModalController,private helper: HelperProvider,private googlePlus: GooglePlus,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private menu: MenuController,public loadingController: LoadingController,private alertCtrl: AlertController,public events: Events,private serviceUrl:ServiceUrlProvider,private loginProvider:LoginProvider, private fb: Facebook) {
     this.loading = this.loadingController.create({
       content: 'Por favor espere...'
     });
@@ -87,27 +87,141 @@ export class LoginPage {
 
   }
 
+  sendGoogleData(res){
+    return  this.httpClient.post(this.url+"/api/social/socialAuth", {"email": res.email, "userId": res.userId, "name": res.displayName, "deviceToken": this.deviceToken, googleLogin: true})
+      .pipe(
+        )
+      .subscribe((res:any)=> {
+        var token = res.token;
+        var tokenCode = res.tokenCode;
+        var username = res.user.name;
+        var userid = res.user.id;
+        var valueServices = 'posee';
+        var valueServicesBidder = 'posee';
+        var useremail = res.user.email;
+        var userimage = res.image;
+        var userphone = res.profile.phone;
+        var userdescription = res.profile.description;
+        var user_rol = res.roles[0].id;
+        var user_domicile = res.profile.domicile;
+        var user_locality_id = res.profile.location_id;
+        var averageRatingInt = res.roles[0].id;
+        this.locationP = res.location;
+        if(this.locationP !=null){
+          var location_description = res.location.description;
+          localStorage.setItem('location_description',location_description);
+        }
+        localStorage.setItem('token',token);
+        localStorage.setItem('tokenCode',tokenCode);
+        localStorage.setItem('user',username);
+        localStorage.setItem('user_id',userid);
+        localStorage.setItem('useremail',useremail);
+        localStorage.setItem('userimage',userimage);
+        localStorage.setItem('userphone',userphone);
+        localStorage.setItem('userdescription',userdescription);
+        localStorage.setItem('user_rol',user_rol);
+        localStorage.setItem('averageRatingInt',averageRatingInt);
+        localStorage.setItem('user_domicile',user_domicile);
+        localStorage.setItem('user_locality_id',user_locality_id);
+       
+         if(res.roles[0].id ==3 || res.roles[0].id ==4){
+          this.navCtrl.setRoot(HomeAdminPage);
+          this.events.publish('userLogged',res);
+          
+        }
+        this.getMode(res,valueServices,valueServicesBidder);
+      });
+  }
 
-  async doGoogleLogin(){
-    this.loading.present();
-    this.googlePlus.login({
-      'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
-      'webClientId': '890974507509-qcg692hu8tgi851sqpo3mne7u5sn6647.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
-      'offline': true // Optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
-    })
-    .then(user =>{
-      this.loading.dismiss();
-      this.pruebaAlert(user);
-    }, err =>{
-      console.log(err)
+  loginGoogle(){
 
-      this.pruebaAlert(err)
-      this.loading.dismiss();
-
+    
+    this.loading = this.loadingController.create({
+      content: 'Por favor espere...'
     });
+    this.loading.present();
+    this.googlePlus.login({})
+    .then(res => {
+      
+      this.loading.dismiss();
+      this.sendGoogleData(res)
+
+    })
+    .catch(err => console.error(err));
 
   }
 
+  loginFacebook(){
+
+    this.fb.login(['public_profile', 'user_friends', 'email'])
+      .then(
+        (res: FacebookLoginResponse) => {
+          //console.log(res.authResponse.accessToken)
+          this.fetchData(res.authResponse.accessToken)
+        })
+      .catch(e => console.log('Error logging into Facebook', e));
+
+  }
+
+  fetchData(fbToken){
+
+    this.httpClient.get("https://graph.facebook.com/me?fields=id,name,first_name,last_name,email&access_token="+fbToken)
+      .pipe()
+      .subscribe((res:any)=> {
+        console.log(res)
+        this.sendFacebookData(res.name, res.email, res.id)
+      })
+  }
+
+  sendFacebookData(name, email, userId){
+
+    return  this.httpClient.post(this.url+"/api/social/socialAuth", {"email": email, "userId": userId, "name": name, "deviceToken": this.deviceToken, facebookLogin: true})
+      .pipe(
+        )
+      .subscribe((res:any)=> {
+        var token = res.token;
+        var tokenCode = res.tokenCode;
+        var username = res.user.name;
+        var userid = res.user.id;
+        var valueServices = 'posee';
+        var valueServicesBidder = 'posee';
+        var useremail = res.user.email;
+        var userimage = res.image;
+        var userphone = res.profile.phone;
+        var userdescription = res.profile.description;
+        var user_rol = res.roles[0].id;
+        var user_domicile = res.profile.domicile;
+        var user_locality_id = res.profile.location_id;
+        var averageRatingInt = res.roles[0].id;
+        this.locationP = res.location;
+        if(this.locationP !=null){
+          var location_description = res.location.description;
+          localStorage.setItem('location_description',location_description);
+        }
+        localStorage.setItem('token',token);
+        localStorage.setItem('tokenCode',tokenCode);
+        localStorage.setItem('user',username);
+        localStorage.setItem('user_id',userid);
+        localStorage.setItem('useremail',useremail);
+        localStorage.setItem('userimage',userimage);
+        localStorage.setItem('userphone',userphone);
+        localStorage.setItem('userdescription',userdescription);
+        localStorage.setItem('user_rol',user_rol);
+        localStorage.setItem('averageRatingInt',averageRatingInt);
+        localStorage.setItem('user_domicile',user_domicile);
+        localStorage.setItem('user_locality_id',user_locality_id);
+       
+         if(res.roles[0].id ==3 || res.roles[0].id ==4){
+          this.navCtrl.setRoot(HomeAdminPage);
+          this.events.publish('userLogged',res);
+          
+        }
+
+        //this.getAds()
+        this.getMode(res,valueServices,valueServicesBidder);
+      });
+
+  }
 
   recoveryPassword(){
     this.navCtrl.setRoot(RecoveryPasswordPage);

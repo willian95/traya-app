@@ -20,8 +20,23 @@ import { SuperTabsController } from 'ionic2-super-tabs';
 export class HiringDetailsPage {
   url:any;
   qualifyValue:any;
+  showMap:any
+  
   constructor(private superTabsCtrl: SuperTabsController,public modalCtrl: ModalController,public toastController: ToastController,public events: Events,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public actionSheetController: ActionSheetController,public callNumber: CallNumber,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications) {
     this.detailsHirings = navParams.get('data');
+    this.showMap = false
+
+    let histories = this.detailsHirings.history
+
+    for(let i = 0; i < histories.length; i++){
+
+      console.log(histories[i])
+
+      if(histories[i].status_id == 3){
+        this.showMap = true
+      }
+    }
+
     this.loading = this.loadingController.create({
              content: 'Por favor espere...'
          });

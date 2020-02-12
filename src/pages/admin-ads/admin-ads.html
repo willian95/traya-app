@@ -1,0 +1,79 @@
+<!--
+  Generated template for the AdminAdsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Publicidad </strong>
+    </ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+			<ion-label>Tipo de publicidad:</ion-label>
+			<ion-select [(ngModel)]="adType">
+				<ion-option value="{{ item.id }}" *ngFor="let item of adTypes">{{ item.name }}</ion-option>
+			</ion-select>
+		</ion-item>
+
+    <ion-item *ngIf="adType == 1">
+      Tamaño de imagen debe ser 379 * 90
+    </ion-item>
+    <ion-item *ngIf="adType == 2">
+      Tamaño de imagen debe ser 379 * 180
+    </ion-item>
+    <ion-item *ngIf="adType == 3">
+      Tamaño de imagen debe ser 379 * 270
+    </ion-item>
+
+    <ion-item>
+      <input type="file" name="file" id="file" class="inputfile" accept="image/*" (change)="convertBase64($event)"/>
+    </ion-item>
+
+    <ion-item *ngIf="adsCount < 20">
+      <button ion-button (click)="uploadAd()">Publicar</button>
+    </ion-item>
+
+    <ion-item *ngIf="adsCount == 20">
+      Limite de anuncios por localidad alcanzado
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list>
+
+    <ion-card ion-item *ngFor="let ad of ads ; let i =index">
+          
+      <ion-card-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              {{ i + 1 }} - {{ ad.ad_type.name }}
+            </ion-col>
+            <ion-col>
+              <ion-icon name="trash" style="float: right;" (click)="showAlert(ad.id)"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+
+      <ion-card-content>
+        <img [src]="url+'/ads/'+ad.name" style="width: 100%;">
+      </ion-card-content>
+
+    </ion-card>
+
+  </ion-list>
+
+</ion-content>

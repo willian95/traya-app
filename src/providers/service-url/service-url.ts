@@ -17,8 +17,8 @@ export class ServiceUrlProvider {
   getUrl(){
 
     //return this.url = 'https://traya.com.ar/traya-backend/public' //produccion
-    //return this.url = 'http://localhost:8000' //local
-    return this.url = "https://williantest.sytes.net" //prueba
+    return this.url = 'http://localhost:8000' //local
+    //return this.url = "https://williantest.sytes.net" //prueba
   }
 
 }

@@ -68,10 +68,13 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { DeviceAccounts } from '@ionic-native/device-accounts';
 import { LoginProvider } from '../providers/login/login';
 import { HelperProvider } from '../providers/helper/helper';
+import { AdminAdsPage } from '../pages/admin-ads/admin-ads';
+import { GoogleLocationPage } from '../pages/google-location/google-location';
 //import { LongPressModule } from 'ionic-long-press';
 
 import { Push } from '@ionic-native/push';
 import { AppVersion } from '@ionic-native/app-version';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 @NgModule({
   declarations: [
@@ -116,7 +119,9 @@ import { AppVersion } from '@ionic-native/app-version';
     TermsPage,
     StatisticsPage,
     ManageAdministratorsPage,
-    AddAdministratorPage
+    AddAdministratorPage,
+    AdminAdsPage,
+    GoogleLocationPage
   ],
   imports: [
     BrowserModule,
@@ -171,7 +176,8 @@ import { AppVersion } from '@ionic-native/app-version';
     StatisticsPage,
     TermsPage,
     ManageAdministratorsPage,
-    AddAdministratorPage
+    AddAdministratorPage,
+    AdminAdsPage
   ],
   providers: [
     StatusBar,
@@ -186,6 +192,7 @@ import { AppVersion } from '@ionic-native/app-version';
     LocalNotifications,
     SocialSharing,
     DeviceAccounts,
+    Facebook,
     LoginProvider,
     HelperProvider,
     AppVersion,

@@ -25,6 +25,7 @@
     "@ionic-native/call-number": "^4.20.0",
     "@ionic-native/core": "3.6.1",
     "@ionic-native/device-accounts": "^4.20.0",
+    "@ionic-native/facebook": "^4.20.0",
     "@ionic-native/google-plus": "^4.20.0",
     "@ionic-native/local-notifications": "^3.6.1",
     "@ionic-native/native-storage": "^5.0.0",
@@ -43,8 +44,9 @@
     "cordova-plugin-background-mode": "0.7.2",
     "cordova-plugin-badge": "0.8.8",
     "cordova-plugin-device": "^1.1.4",
+    "cordova-plugin-facebook4": "6.2.0",
     "cordova-plugin-filechooser": "^1.2.0",
-    "cordova-plugin-googleplus": "7.0.1",
+    "cordova-plugin-googleplus": "8.2.1",
     "cordova-plugin-ionic-webview": "^1.2.1",
     "cordova-plugin-local-notification": "0.9.0-beta.2",
     "cordova-plugin-nativestorage": "2.3.2",
@@ -89,10 +91,6 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-filechooser": {},
       "mx.ferreyra.callnumber": {},
-      "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "890974507509-qcg692hu8tgi851sqpo3mne7u5sn6647.apps.googleusercontent.com",
-        "PLAY_SERVICES_VERSION": "11.8.0"
-      },
       "cordova-plugin-background-mode": {},
       "cordova-plugin-local-notification": {},
       "call-number": {},
@@ -109,6 +107,16 @@
         "SENDER_ID": "294800992208",
         "ANDROID_SUPPORT_V13_VERSION": "27.+",
         "FCM_VERSION": "17.0.+"
+      },
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "116218866446-or8c9nfj4dqik597t9s2bs8smmdbv1uq.apps.googleusercontent.com",
+        "PLAY_SERVICES_VERSION": "15.0.1"
+      },
+      "cordova-plugin-facebook4": {
+        "APP_ID": "323051691981911",
+        "APP_NAME": "traya",
+        "FACEBOOK_HYBRID_APP_EVENTS": "false",
+        "FACEBOOK_ANDROID_SDK_VERSION": "5.5.2"
       }
     },
     "platforms": [

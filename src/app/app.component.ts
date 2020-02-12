@@ -30,6 +30,7 @@ import { DisabledUsersPage } from '../pages/disabled-users/disabled-users';
 import { MaintenanceModePage } from '../pages/maintenance-mode/maintenance-mode';
 import { StatisticsPage } from '../pages/statistics/statistics';
 import { DetailsLocalityPage } from '../pages/details-locality/details-locality';
+import { AdminAdsPage } from '../pages/admin-ads/admin-ads';
 
 import { LocalNotifications } from '@ionic-native/local-notifications';
 
@@ -37,6 +38,7 @@ import Pusher from 'pusher-js';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Observable } from 'rxjs';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -136,7 +138,8 @@ export class MyApp {
         {title: 'Gestionar Notificaciones', component: DetailsLocalityPage, icon: 'add-circle'},
         {title: 'Usuarios Activos', component: ManageUsersPage, icon: 'add-circle'},
         {title: 'Usuarios Inactivos', component: DisabledUsersPage, icon: 'add-circle'},
-        {title: 'Estadísticas de usuarios', component: StatisticsPage, icon: 'trending-up'}
+        {title: 'Estadísticas de usuarios', component: StatisticsPage, icon: 'trending-up'},
+        {title: 'Publicidad', component: AdminAdsPage, icon: 'pricetag'}
       );
     }
   }
