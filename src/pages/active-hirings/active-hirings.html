@@ -47,6 +47,28 @@
 		
 	
 	</ion-list>
+
+	<ion-grid *ngIf="showMap == true">
+        <ion-row>
+          <ion-col>  
+              <button ion-button (click)="updateShowMap()">
+                  Mostrar mi ubicación
+              </button>
+            </ion-col>
+          <ion-col>    
+            <div *ngIf="rol_id == 1">
+              <button ion-button *ngIf="showMapApplicant == 1">
+                <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
+              </button>
+            </div>
+            <div *ngIf="rol_id == 2">
+              <button ion-button *ngIf="showMapBidder == 1">
+                <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
+              </button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 	
 	
 	<ion-fab bottom right style="bottom:70px;">

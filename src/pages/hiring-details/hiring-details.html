@@ -185,14 +185,22 @@
       <ion-grid *ngIf="showMap == true">
         <ion-row>
           <ion-col>  
-              <button ion-button>
+              <button ion-button (click)="updateShowMap()">
                   Mostrar mi ubicación
               </button>
             </ion-col>
           <ion-col>    
-            <button ion-button>
+            
+            <!--<div *ngIf="rol_id == 2">
+              <button ion-button *ngIf="showMapApplicant == 1">
                 <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
-            </button>
+              </button>
+            </div>-->
+            <div *ngIf="rol_id == 1">
+              <button ion-button *ngIf="showMapBidder == 1">
+                <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
+              </button>
+            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -387,6 +395,8 @@
         </ion-row>
       </ion-grid>
     </div>
+    
+
   <!-- EN ESPERA DE OK -->
 
   <div *ngIf="detailsHirings.history?.length<2">
@@ -415,6 +425,29 @@
       </ion-fab>
     </ion-row>
   </div>
+
+  <ion-grid *ngIf="showMap == true">
+    <ion-row>
+      <ion-col>  
+          <button ion-button (click)="updateShowMap()" *ngIf="showMapBidder">
+              Mostrar mi ubicación
+          </button>
+        </ion-col>
+      <ion-col>    
+        <div *ngIf="rol_id == 2">
+          <button ion-button *ngIf="showMapApplicant == 1">
+            <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
+          </button>
+        </div>
+        <!--<div *ngIf="rol_id == 1">
+          <button ion-button *ngIf="showMapBidder == 1">
+            <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
+          </button>
+        </div>-->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-grid>
 <!--FIN DATOS DEL TRABAJADOR  -->
 </ion-list>

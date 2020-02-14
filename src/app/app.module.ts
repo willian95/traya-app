@@ -55,6 +55,7 @@ import { CallNumber } from '@ionic-native/call-number';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { StarRatingModule } from 'ionic3-star-rating';
 
+import { Geolocation } from '@ionic-native/geolocation';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -196,6 +197,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
     LoginProvider,
     HelperProvider,
     AppVersion,
+    Geolocation,
     Push
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

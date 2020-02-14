@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,LoadingController,ActionSheetController,Events,Platform,ToastController,ModalController } from 'ionic-angular';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertController } from 'ionic-angular';
 import { HiringsPage } from '../hirings/hirings';
 import { CallNumber } from '@ionic-native/call-number';
@@ -12,6 +12,7 @@ import { PusherProvider } from '../../providers/pusher/pusher';
 import { ModalInformationPage } from '../modal-information/modal-information';
 import { ServicesPage } from '../services/services';
 import { SuperTabsController } from 'ionic2-super-tabs';
+import { Geolocation } from '@ionic-native/geolocation';
 @IonicPage()
 @Component({
   selector: 'page-hiring-details',
@@ -21,16 +22,17 @@ export class HiringDetailsPage {
   url:any;
   qualifyValue:any;
   showMap:any
+  showMapApplicant:any
+  showMapBidder:any
   
-  constructor(private superTabsCtrl: SuperTabsController,public modalCtrl: ModalController,public toastController: ToastController,public events: Events,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public actionSheetController: ActionSheetController,public callNumber: CallNumber,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications) {
+  constructor(private superTabsCtrl: SuperTabsController,public modalCtrl: ModalController,public toastController: ToastController,public events: Events,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public actionSheetController: ActionSheetController,public callNumber: CallNumber,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications, private geolocation: Geolocation) {
     this.detailsHirings = navParams.get('data');
     this.showMap = false
 
     let histories = this.detailsHirings.history
+    
 
     for(let i = 0; i < histories.length; i++){
-
-      console.log(histories[i])
 
       if(histories[i].status_id == 3){
         this.showMap = true
@@ -58,6 +60,9 @@ export class HiringDetailsPage {
       });
       alert.present();
     })
+
+    this.getMaps()
+    
   });
 
 
@@ -535,10 +540,55 @@ async presentActionSheet() {
       }); //subscribe
     }
 
-    
+    getMaps(){
+
+      let headers = new HttpHeaders({
+        Authorization: localStorage.getItem('token'),
+      });
+
+      this.hiring_id=this.detailsHirings.id;
+
+      return  this.httpClient.get(this.url+"/api/hiring/get/map/"+this.hiring_id, {headers})
+        .pipe()
+        .subscribe((res:any)=> {
+          console.log(res)
+          this.showMapBidder = res.show_bidder_map
+          this.showMapApplicant = res.show_applicant_map
+
+        },err => {
+         
+      });
+
+    }
+
+    updateShowMap(){
+
+      let headers = new Headers();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json' );
+      let tokenCode = localStorage.getItem('tokenCode');
+      let method='POST';
 
 
+      this.geolocation.getCurrentPosition().then((resp) => {
+        //alert(resp.coords.latitude+" "+resp.coords.longitude)
 
+        return  this.httpClient.post(this.url+"/api/hiring/update/map/"+this.hiring_id, {"rol_id": this.rol_id, "user_id": this.user_id, "_method":method, "token":tokenCode, "latitude": resp.coords.latitude, "longitude": resp.coords.longitude})
+        .pipe()
+        .subscribe((res:any)=> {
+          
+          this.presentAlert(res.msg)
+
+        },err => {
+         
+      });
+        // 
+       }).catch((error) => {
+         console.log('Error getting location', error);
+       });
+
+
+    }
 
 
 }
