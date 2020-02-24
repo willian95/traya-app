@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { NotificationPage } from '../notification/notification';
 import { UpdateServicesPage } from '../update-services/update-services';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
+import { HomeAdminPage } from '../home-admin/home-admin';
 
 /**
  * Generated class for the DetailsServicesPage page.
@@ -98,7 +99,7 @@ export class DetailsServicesPage {
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.toastAlert(res.msg);
-          this.navCtrl.push(UpdateServicesPage);
+          this.navCtrl.setRoot(UpdateServicesPage);
         },err => {
               this.loading.dismiss();
           console.log(err.error.errors);
@@ -120,7 +121,7 @@ export class DetailsServicesPage {
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.toastAlert(res.msg);
-          this.navCtrl.push(UpdateServicesPage);
+          this.navCtrl.setRoot(UpdateServicesPage);
         },err => {
               this.loading.dismiss();
         }); //subscribe

@@ -27,8 +27,11 @@
     "@ionic-native/device-accounts": "^4.20.0",
     "@ionic-native/facebook": "^4.20.0",
     "@ionic-native/geolocation": "^4.20.0",
+    "@ionic-native/google-maps": "^4.21.0",
     "@ionic-native/google-plus": "^4.20.0",
+    "@ionic-native/launch-navigator": "^4.20.0",
     "@ionic-native/local-notifications": "^3.6.1",
+    "@ionic-native/native-geocoder": "^4.20.0",
     "@ionic-native/native-storage": "^5.0.0",
     "@ionic-native/push": "^4.20.0",
     "@ionic-native/social-sharing": "^4.5.3",
@@ -42,15 +45,19 @@
     "cordova-device-accounts-v2": "2.0.8",
     "cordova-disable-http-cache": "^1.0.0",
     "cordova-ios": "4.5.5",
+    "cordova-plugin-actionsheet": "2.3.3",
     "cordova-plugin-background-mode": "0.7.2",
     "cordova-plugin-badge": "0.8.8",
     "cordova-plugin-device": "^1.1.4",
+    "cordova-plugin-dialogs": "2.0.2",
     "cordova-plugin-facebook4": "6.2.0",
     "cordova-plugin-filechooser": "^1.2.0",
     "cordova-plugin-geolocation": "4.0.2",
+    "cordova-plugin-googlemaps": "2.6.2",
     "cordova-plugin-googleplus": "8.2.1",
     "cordova-plugin-ionic-webview": "^1.2.1",
     "cordova-plugin-local-notification": "0.9.0-beta.2",
+    "cordova-plugin-nativegeocoder": "3.2.2",
     "cordova-plugin-nativestorage": "2.3.2",
     "cordova-plugin-splashscreen": "git+https://github.com/goinnn/cordova-plugin-splashscreen.git#4.0.0#colors",
     "cordova-plugin-statusbar": "2.4.3",
@@ -76,6 +83,7 @@
     "rxjs": "^5.5.2",
     "sentiment": "^5.0.1",
     "sw-toolbox": "3.6.0",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "5.0.4",
     "uuid": "^3.3.2",
     "zone.js": "0.8.18"
   },
@@ -122,7 +130,16 @@
       },
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "traya"
-      }
+      },
+      "cordova-plugin-googlemaps": {
+        "PLAY_SERVICES_VERSION": "15.0.1",
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
+      "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+        "GOOGLE_API_KEY_FOR_ANDROID": "AIzaSyDdim7Aa5RsnNb-gkzOQCqXh1RehWIZqa4",
+        "OKHTTP_VERSION": "3.12.0"
+      },
+      "cordova-plugin-nativegeocoder": {}
     },
     "platforms": [
       "android",

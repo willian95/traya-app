@@ -3,15 +3,22 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <button   (click)="showDescription()" style="background:none">
-    <ion-title>
-        <small>{{hiringDescription | slice:0:30}}</small>
-           <button  ion-button *ngIf="hiringDescription?.length> 40 ">
-              <ion-icon ios="ios-add-circle" md="md-add-circle"></ion-icon>
-            </button>
-
+   
+    <ion-title style="margin-bottom: -28px;" *ngIf="hiringDescription?.length > 30 ">
+        
+      <small>{{hiringDescription | slice:0:30}}</small>
+    
     </ion-title>
-  </button>
+
+    <ion-title *ngIf="hiringDescription?.length <= 30 ">
+        
+        <small>{{hiringDescription | slice:0:30}}</small>
+      
+      </ion-title>
+
+    <button ion-button (click)="showDescription()"  *ngIf="hiringDescription?.length > 30 " style="float: right; margin-top: -1px;">
+      <ion-icon ios="ios-add-circle" md="md-add"></ion-icon>
+    </button>
   </ion-navbar>
 </ion-header>
 
@@ -22,6 +29,16 @@
     <div *ngIf="rol_id ==1">
       <ion-grid *ngIf="hide ==0" >
         <!--DATOS DEL APLICANTE  -->
+        <ion-row style="border-bottom: none; border-radius: 50%;">
+          <ion-col>
+            
+          </ion-col>
+          <ion-col>
+              <button ion-button (click)="confirmAlert()" style="float: right; margin-right: -20px; background-color: #bdc3c7">
+                  <ion-icon ios="ios-close" md="md-close"></ion-icon>
+                </button>
+          </ion-col>
+        </ion-row>
         <ion-row >
           <ion-col col col-6 >
             <!-- <button ion-button full (click)="presentActionSheet()">
@@ -90,11 +107,11 @@
                 </button> -->
               </div>
             </ion-col>
-            <ion-fab bottom right >
-            <button ion-fab  title="Cancelar" (click)="confirmAlert()">
+            <!--<ion-fab bottom right >
+            <button ion-fab class="fixed-button"  title="Cancelar" (click)="confirmAlert()">
               <ion-icon ios="ios-close" md="md-close"></ion-icon>
             </button>
-          </ion-fab>
+          </ion-fab>-->
             <!-- FIN CONTENEDOR -->
           </ion-row>
 
@@ -184,11 +201,19 @@
 
       <ion-grid *ngIf="showMap == true">
         <ion-row>
+          <ion-col>
+              <div class="map" id="mapApplicant"> </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
           <ion-col>  
               <button ion-button (click)="updateShowMap()">
-                  Mostrar mi ubicación
+                  Compartir mi ubicación
               </button>
             </ion-col>
+          
+        </ion-row>
+        <ion-row>
           <ion-col>    
             
             <!--<div *ngIf="rol_id == 2">
@@ -197,9 +222,11 @@
               </button>
             </div>-->
             <div *ngIf="rol_id == 1">
-              <button ion-button *ngIf="showMapBidder == 1">
-                <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
-              </button>
+              <!--<button ion-button *ngIf="showMapBidder == 1">
+                <ion-icon name="pin" style="font-size: 20px;" (click)="navigateTo(bidderAddress)"></ion-icon>
+              </button>-->
+              <p *ngIf="showMapBidder == 1">Ubicación del trabajador:</p>
+              <div class="map" id="map1" *ngIf="showMapBidder == 1" (click)="navigateTo(bidderAddress)"> </div>
             </div>
           </ion-col>
         </ion-row>
@@ -228,11 +255,11 @@
           </ion-col>
 
 
-      <ion-fab bottom right>
-      <button ion-fab  title="Cancelar" (click)="confirmAlert()">
+      <!--<ion-fab bottom right>
+      <button ion-fab  title="Cancelar" (click)="confirmAlert()" class="fixed-button">
         <ion-icon ios="ios-close" md="md-close"></ion-icon>
       </button>
-    </ion-fab>
+    </ion-fab>-->
     </ion-row>
   </div>
 </ion-grid>
@@ -267,6 +294,16 @@
 
 <!--DATOS DEL TRABAJADOR  -->
 <ion-grid *ngIf="rol_id ==2">
+    <ion-row style="border-bottom: none; border-radius: 50%;">
+        <ion-col>
+          
+        </ion-col>
+        <ion-col>
+            <button ion-button (click)="confirmAlert()" style="float: right; margin-right: -20px; background-color: #bdc3c7">
+                <ion-icon ios="ios-close" md="md-close"></ion-icon>
+              </button>
+        </ion-col>
+      </ion-row>
    <ion-row >
           <ion-col col col-6 >
             <!-- <button ion-button full (click)="presentActionSheet()">
@@ -286,8 +323,8 @@
               </ion-col>
             </ion-row>
           </ion-col>
-          <ion-col col col-6>
-            <div>
+          <ion-col col col-6 style="padding-top: 18px;">
+            <div >
               <h5 class="mbsc-card-title mbsc-bold">{{applicantName}}</h5>
             </div>
           </ion-col>
@@ -316,11 +353,11 @@
                   </div>
             </div>
           </ion-col>
-          <ion-fab bottom right >
-          <button ion-fab  title="Cancelar" (click)="confirmAlert()">
+          <!--<ion-fab bottom right >
+          <button ion-fab  title="Cancelar" (click)="confirmAlert()" class="fixed-button">
             <ion-icon ios="ios-close" md="md-close"></ion-icon>
           </button>
-        </ion-fab>
+        </ion-fab>-->
           <!-- FIN CONTENEDOR -->
         </ion-row>
 
@@ -418,32 +455,42 @@
         </button>
       </ion-col>
 
-      <ion-fab bottom right>
-      <button ion-fab  title="Cancelar" (click)="confirmAlert()">
+      <!--<ion-fab bottom right>
+      <button ion-fab  title="Cancelar" (click)="confirmAlert()" class="fixed-button">
         <ion-icon ios="ios-close" md="md-close"></ion-icon>
       </button>
-      </ion-fab>
+      </ion-fab>-->
     </ion-row>
   </div>
 
   <ion-grid *ngIf="showMap == true">
     <ion-row>
       <ion-col>  
-          <button ion-button (click)="updateShowMap()" *ngIf="showMapBidder">
-              Mostrar mi ubicación
+          <button ion-button (click)="updateShowMap()">
+              Compartir mi ubicación
           </button>
-        </ion-col>
+        </ion-col>  
+    </ion-row>
+    <ion-row>
       <ion-col>    
         <div *ngIf="rol_id == 2">
-          <button ion-button *ngIf="showMapApplicant == 1">
+          <p *ngIf="showMapApplicant == 1">Ubicación del usuario:</p>
+          <!--<button ion-button *ngIf="showMapApplicant == 1" (click)="navigateTo(applicantAddress)">
             <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
-          </button>
+          </button>-->
         </div>
         <!--<div *ngIf="rol_id == 1">
           <button ion-button *ngIf="showMapBidder == 1">
             <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
           </button>
         </div>-->
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="map" id="map2" *ngIf="showMapApplicant == 1" (click)="navigateTo(applicantAddress)">
+
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

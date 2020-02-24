@@ -24,10 +24,13 @@ export class AdminAdsPage {
   ads:any
   adsCount:any
   loading:any
+  showImage:any
+  imagePreview:any
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient, private serviceUrl:ServiceUrlProvider, private toastController:ToastController, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
     this.url=serviceUrl.getUrl();
     this.adType = ""
+    this.showImage = false
   }
 
   ionViewDidLoad() {
@@ -49,8 +52,8 @@ export class AdminAdsPage {
       if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = (e:any) => {
-
           this.file = e.target.result;
+          this.showImage = true;
         }
         reader.readAsDataURL(input.files[0]);
       }

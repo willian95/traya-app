@@ -3,7 +3,7 @@
 <ion-header>
   <ion-navbar color="header">
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon name="arrow-back"></ion-icon>
     </button>
     <ion-title>
       <strong>Crear Localidad</strong>
@@ -17,7 +17,7 @@
     <ion-row justify-content-center >
       <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
          <div text-center>
-          <h1>Registrar Localidad</h1>
+          <h3 style="color: #fff">Registrar Localidad</h3>
         </div>
 
         <!-- LOGIN WITH APP -->
@@ -33,10 +33,16 @@
         
         </div>
 
-        <div padding>
-            <button ion-button full (click)="addLocality()">Registrar</button>
+        <ion-grid>
+          <ion-row>
+            <ion-col></ion-col>
+            <ion-col>
+                <button ion-button full (click)="addLocality()">Registrar</button>
+            </ion-col>
+            <ion-col></ion-col>
+          </ion-row>
 
-        </div>
+        </ion-grid>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams,ToastController,LoadingController, 
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { UpdateLocalityPage } from '../update-locality/update-locality';
+import { HomeAdminPage } from '../home-admin/home-admin'
 import { ServicesPage } from '../services/services';
 
 /**
@@ -119,8 +120,9 @@ export class DetailsLocalityPage {
           this.loading.dismiss();
           this.toastAlert(res.msg);
           this.events.publish('localityEvent',this.description);
-          if(this.userRol == 3)
-            this.navCtrl.push(UpdateLocalityPage);
+          //if(this.userRol == 3)
+            //this.navCtrl.push(UpdateLocalityPage);
+          this.navCtrl.setRoot(HomeAdminPage);
         },err => {
               this.loading.dismiss();
               this.toastAlert(err.error.errors);
@@ -152,8 +154,9 @@ export class DetailsLocalityPage {
         this.loading.dismiss();
         this.toastAlert(res.msg);
         this.events.publish('localityEvent',this.description);
-        if(this.userRol == 3)
-        this.navCtrl.push(UpdateLocalityPage);
+        this.navCtrl.setRoot(HomeAdminPage);
+        //if(this.userRol == 3)
+        //this.navCtrl.push(UpdateLocalityPage);
       },err => {
             this.loading.dismiss();
             this.toastAlert(err.error.errors);

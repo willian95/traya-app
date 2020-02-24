@@ -6,6 +6,7 @@ import { TrayaPage } from '../traya/traya';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
+import { HomeAdminPage } from '../home-admin/home-admin';
 
 @IonicPage()
 @Component({
@@ -117,11 +118,13 @@ ionViewDidLoad() {
         headers.append('Content-Type', 'application/json' );
         this.tokenCode = localStorage.getItem('tokenCode');
         return  this.httpClient.post(this.url+"/api/services", {"name":this.name, "description":this.description,"logo":this.image,"token":this.tokenCode})
-          .pipe(
-          )
+          .pipe()
           .subscribe((res:any)=> {
             this.loading.dismiss();
             this.presentAlert();
+
+            this.navCtrl.setRoot(HomeAdminPage)
+
            },err => {
             this.loading.dismiss();
              var errors=JSON.parse(err.error.errors);

@@ -1,4 +1,15 @@
 page-hiring-details {
+
+  .map{
+    width: 100%;
+    height: 200px;
+  }
+
+  .fixed-button{
+    position: fixed;
+    right: 10px;
+  }
+
   ion-row.row {
       border-bottom: 0.55px solid #c8c7cc;
   }

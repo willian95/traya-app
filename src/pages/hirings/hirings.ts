@@ -167,8 +167,7 @@ storeAction(){
   console.log(user_id)
   
   this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
-  .pipe(
-    )
+  .pipe()
   .subscribe((res:any)=> {
     console.log(res)
     

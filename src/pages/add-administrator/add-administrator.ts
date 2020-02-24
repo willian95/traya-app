@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams,ToastController,LoadingController }
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { ManageAdministratorsPage } from '../manage-administrators/manage-administrators';
+import { HomeAdminPage } from '../home-admin/home-admin'
 
 /**
  * Generated class for the AddAdministratorPage page.
@@ -84,7 +85,7 @@ export class AddAdministratorPage {
       this.loading.dismiss();
       //console.log(res)
       this.toastAlert('Usuario actualizado correctamente');
-      this.navCtrl.push(ManageAdministratorsPage);
+      this.navCtrl.setRoot(HomeAdminPage);
 
     },err => {
         this.loading.dismiss();
@@ -115,7 +116,8 @@ export class AddAdministratorPage {
       this.loading.dismiss();
       //console.log(res)
       this.toastAlert('Usuario actualizado correctamente');
-      this.navCtrl.push(ManageAdministratorsPage);
+      this.navCtrl.push(ManageAdministratorsPage); 
+      this.navCtrl.setRoot(HomeAdminPage);
 
     },err => {
         this.loading.dismiss();

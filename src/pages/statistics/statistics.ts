@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { HomeAdminPage } from '../home-admin/home-admin';
 
 /**
  * Generated class for the StatisticsPage page.
@@ -122,6 +123,7 @@ export class StatisticsPage {
       .subscribe((res:any)=> {
         
       this.toastTweet(res.msg)
+      this.navCtrl.setRoot(HomeAdminPage);
 
       });
     }else{

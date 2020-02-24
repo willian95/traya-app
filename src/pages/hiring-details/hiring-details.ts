@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController,ActionSheetController,Events,Platform,ToastController,ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController,ActionSheetController,Events,Platform,ToastController,ModalController, App, ViewController } from 'ionic-angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertController } from 'ionic-angular';
 import { HiringsPage } from '../hirings/hirings';
@@ -13,6 +13,20 @@ import { ModalInformationPage } from '../modal-information/modal-information';
 import { ServicesPage } from '../services/services';
 import { SuperTabsController } from 'ionic2-super-tabs';
 import { Geolocation } from '@ionic-native/geolocation';
+import { GoogleLocationPage } from '../google-location/google-location'
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
+
+interface Marker {
+  position: {
+    lat: number,
+    lng: number,
+  };
+  title: string;
+}
+
+declare var google
+
 @IonicPage()
 @Component({
   selector: 'page-hiring-details',
@@ -24,18 +38,31 @@ export class HiringDetailsPage {
   showMap:any
   showMapApplicant:any
   showMapBidder:any
+  applicantAddress:any
+  bidderAddress:any
   
-  constructor(private superTabsCtrl: SuperTabsController,public modalCtrl: ModalController,public toastController: ToastController,public events: Events,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public actionSheetController: ActionSheetController,public callNumber: CallNumber,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications, private geolocation: Geolocation) {
+  constructor(private superTabsCtrl: SuperTabsController,public modalCtrl: ModalController,public toastController: ToastController,public events: Events,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public actionSheetController: ActionSheetController,public callNumber: CallNumber,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications, private geolocation: Geolocation, public viewCtrl: ViewController, public appCtrl: App, private launchNavigator: LaunchNavigator, private nativeGeocoder: NativeGeocoder) {
     this.detailsHirings = navParams.get('data');
     this.showMap = false
+    //console.log("applicant", this.detailsHirings.applicant.address)
+    //console.log("bidder", this.detailsHirings.bidder.address)
+    this.applicantAddress = this.detailsHirings.applicant.address
+    this.bidderAddress = this.detailsHirings.bidder.address
 
     let histories = this.detailsHirings.history
     
-
     for(let i = 0; i < histories.length; i++){
 
       if(histories[i].status_id == 3){
         this.showMap = true
+      }
+
+      if(histories[i].status_id == 4){
+        this.showMap = false
+      }
+
+      if(histories[i].status_id == 5){
+        this.showMap = false
       }
     }
 
@@ -100,6 +127,7 @@ export class HiringDetailsPage {
   fieldName:any;
   hiringDescription:any;
   selectedOption:any;
+  map:any
 
 
    scheduleNotification(message,hiring_id) {
@@ -428,8 +456,7 @@ async presentActionSheet() {
       this.method='PUT';
       this.hiring_id=this.detailsHirings.id;
       return  this.httpClient.post(this.url+"/api/hiring", {"status_id":2, "_method":this.method,"hiring_id":this.hiring_id,"token":this.tokenCode})
-        .pipe(
-        )
+        .pipe()
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.presentAlert(res.msg);
@@ -540,6 +567,12 @@ async presentActionSheet() {
       }); //subscribe
     }
 
+    navigateTo(address){
+
+      this.launchNavigator.navigate(address)
+
+    }
+
     getMaps(){
 
       let headers = new HttpHeaders({
@@ -551,14 +584,126 @@ async presentActionSheet() {
       return  this.httpClient.get(this.url+"/api/hiring/get/map/"+this.hiring_id, {headers})
         .pipe()
         .subscribe((res:any)=> {
-          console.log(res)
+
           this.showMapBidder = res.show_bidder_map
           this.showMapApplicant = res.show_applicant_map
+
+          this.loadMap()
 
         },err => {
          
       });
 
+    }
+
+    loadMap(){
+
+      let options: NativeGeocoderOptions = {
+        useLocale: true,
+        maxResults: 1
+      };
+
+      let address = ""
+      let myAddress = ""
+
+      if(this.rol_id == 1){
+        address = this.bidderAddress
+        myAddress = this.applicantAddress
+      }
+      else{
+        address = this.applicantAddress
+        myAddress = this.bidderAddress
+      }
+
+      this.nativeGeocoder.forwardGeocode(localStorage.getItem('user_locality_name')+", "+myAddress, options)
+      .then((coordinates: NativeGeocoderForwardResult[]) => {
+
+        if(this.rol_id == 1){
+          var mapEle: HTMLElement = document.getElementById('mapApplicant');
+        }
+        else{
+          var mapEle: HTMLElement = document.getElementById('mapBidder');
+        }
+
+        // create LatLng object
+        const myLatLng = {lat: parseFloat(coordinates[0].latitude), lng: parseFloat(coordinates[0].longitude)};
+        // create map
+        this.map = new google.maps.Map(mapEle, {
+          center: myLatLng,
+          zoom: 10
+        });
+
+        //this.directionsDisplay.setMap(this.map);
+
+        google.maps.event.addListenerOnce(this.map, 'idle', () => {
+          //this.renderMarkers();
+          //mapEle.classList.add('show-map');
+          const marker1 = {
+            position:{
+              lat: parseFloat(coordinates[0].latitude),
+              lng: parseFloat(coordinates[0].longitude)
+            },
+            title:"punto uno"
+          }
+          //console.log(res.latitude
+
+          this.addMarker(marker1)
+
+        }).catch((error) => {
+          console.log('Error getting location', error);
+        });
+
+      })
+
+      this.nativeGeocoder.forwardGeocode(localStorage.getItem('user_locality_name')+", "+address, options)
+      .then((coordinates: NativeGeocoderForwardResult[]) => {
+        console.log('The coordinates are latitude=' + coordinates[0].latitude + ' and longitude=' + coordinates[0].longitude)
+
+        if(this.rol_id == 1){
+          var mapEle: HTMLElement = document.getElementById('map1');
+        }
+        else{
+          var mapEle: HTMLElement = document.getElementById('map2');
+        }
+          // create LatLng object
+          const myLatLng = {lat: parseFloat(coordinates[0].latitude), lng: parseFloat(coordinates[0].longitude)};
+          // create map
+          this.map = new google.maps.Map(mapEle, {
+            center: myLatLng,
+            zoom: 10
+          });
+
+          //this.directionsDisplay.setMap(this.map);
+
+          google.maps.event.addListenerOnce(this.map, 'idle', () => {
+            //this.renderMarkers();
+            //mapEle.classList.add('show-map');
+            const marker1 = {
+              position:{
+                lat: parseFloat(coordinates[0].latitude),
+                lng: parseFloat(coordinates[0].longitude)
+              },
+              title:"punto uno"
+            }
+            //console.log(res.latitude
+
+            this.addMarker(marker1)
+
+          }).catch((error) => {
+            console.log('Error getting location', error);
+          });
+
+      })
+      .catch((error: any) => console.log("geocoder error", error));
+        
+    }
+
+    addMarker(marker: Marker) {
+      return new google.maps.Marker({
+        position: marker.position,
+        map: this.map,
+        title: marker.title
+      });
     }
 
     updateShowMap(){
@@ -570,10 +715,10 @@ async presentActionSheet() {
       let method='POST';
 
 
-      this.geolocation.getCurrentPosition().then((resp) => {
+      //this.geolocation.getCurrentPosition().then((resp) => {
         //alert(resp.coords.latitude+" "+resp.coords.longitude)
 
-        return  this.httpClient.post(this.url+"/api/hiring/update/map/"+this.hiring_id, {"rol_id": this.rol_id, "user_id": this.user_id, "_method":method, "token":tokenCode, "latitude": resp.coords.latitude, "longitude": resp.coords.longitude})
+        return  this.httpClient.post(this.url+"/api/hiring/update/map/"+this.hiring_id, {"rol_id": this.rol_id, "user_id": this.user_id, "_method":method, "token":tokenCode})
         .pipe()
         .subscribe((res:any)=> {
           
@@ -581,14 +726,22 @@ async presentActionSheet() {
 
         },err => {
          
-      });
+      //});
         // 
-       }).catch((error) => {
+       /*}).catch((error) => {
          console.log('Error getting location', error);
-       });
+       });*/
 
 
-    }
+    })
 
+  }
+
+    /*showGoogleMap(){
+
+      this.viewCtrl.dismiss();
+      this.appCtrl.getRootNav().push(GoogleLocationPage, {data: this.detailsHirings});
+
+    }*/
 
 }

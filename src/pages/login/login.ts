@@ -106,6 +106,7 @@ export class LoginPage {
         var user_domicile = res.profile.domicile;
         var user_locality_id = res.profile.location_id;
         var averageRatingInt = res.roles[0].id;
+        var user_locality_name = res.location.name
         this.locationP = res.location;
         if(this.locationP !=null){
           var location_description = res.location.description;
@@ -123,6 +124,7 @@ export class LoginPage {
         localStorage.setItem('averageRatingInt',averageRatingInt);
         localStorage.setItem('user_domicile',user_domicile);
         localStorage.setItem('user_locality_id',user_locality_id);
+        localStorage.setItem('user_locality_name',user_locality_name);
        
          if(res.roles[0].id ==3 || res.roles[0].id ==4){
           this.navCtrl.setRoot(HomeAdminPage);
@@ -194,6 +196,7 @@ export class LoginPage {
         var user_locality_id = res.profile.location_id;
         var averageRatingInt = res.roles[0].id;
         this.locationP = res.location;
+        var user_locality_name = res.location.name
         if(this.locationP !=null){
           var location_description = res.location.description;
           localStorage.setItem('location_description',location_description);
@@ -210,6 +213,7 @@ export class LoginPage {
         localStorage.setItem('averageRatingInt',averageRatingInt);
         localStorage.setItem('user_domicile',user_domicile);
         localStorage.setItem('user_locality_id',user_locality_id);
+        localStorage.setItem('user_locality_name',user_locality_name);
        
          if(res.roles[0].id ==3 || res.roles[0].id ==4){
           this.navCtrl.setRoot(HomeAdminPage);
@@ -345,6 +349,7 @@ export class LoginPage {
         var user_locality_id = res.profile.location_id;
         var averageRatingInt = res.roles[0].id;
         this.locationP = res.location;
+        let location_name = res.location.name
         if(this.locationP !=null){
           var location_description = res.location.description;
           localStorage.setItem('location_description',location_description);
@@ -361,6 +366,7 @@ export class LoginPage {
         localStorage.setItem('averageRatingInt',averageRatingInt);
         localStorage.setItem('user_domicile',user_domicile);
         localStorage.setItem('user_locality_id',user_locality_id);
+        localStorage.setItem('user_locality_name',location_name);
        
          if(res.roles[0].id ==3 || res.roles[0].id ==4){
           this.navCtrl.setRoot(HomeAdminPage);

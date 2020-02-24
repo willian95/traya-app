@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,LoadingController,ToastController, Events } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
+import { HomeAdminPage } from '../home-admin/home-admin'
 
 /**
 * Generated class for the MaintenanceModePage page.
@@ -50,12 +51,12 @@ export class MaintenanceModePage {
               this.loading.present();
         this.tokenCode = localStorage.getItem('tokenCode');
         return  this.httpClient.post(this.url+"/api/config", {"active":type,'token':this.tokenCode})
-          .pipe(
-          )
+          .pipe()
           .subscribe((res:any)=> {
             this.loading.dismiss();
             this.presentAlert();
             this.events.publish('maintenance', res);
+            this.navCtrl.setRoot(HomeAdminPage)
            },err => {
             this.loading.dismiss();
         }); //subscribe

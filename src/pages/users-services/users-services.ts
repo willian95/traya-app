@@ -219,9 +219,9 @@ export class UsersServicesPage {
 			headers.append("Accept", 'application/json');
 			headers.append('Content-Type', 'application/json' );
 			this.tokenCode = localStorage.getItem('tokenCode');
+			
 			return  this.httpClient.post(this.url+"/api/hiring_mt4", {"description":this.hiringDescription,"service_id":this.services_id,"token":this.tokenCode,"users":this.usersArray})
-			.pipe(
-				)
+			.pipe()
 			.subscribe((res:any)=> {
 				this.loading.dismiss();
 				this.presentAlert();
@@ -233,8 +233,6 @@ export class UsersServicesPage {
 				this.errorAlert(err.error.errors);
 			}); //subscribe
 		}
-
-
 
 		presentPrompt() {
 			let alert = this.alertCtrl.create({
@@ -343,11 +341,13 @@ export class UsersServicesPage {
 			}); //subscribe
 			*/
 
+			//console.log("upperAdArray", this.upperAdArray)
+
 			return  this.httpClient.post(this.url+"/api/ads", {location_id: localStorage.getItem('user_locality_id'), upperAdWeight: this.upperAdWeight, seenAds: this.seenAds})
 			.pipe()
 			.subscribe((res:any)=> {
 
-				console.log("upperAds", res)
+				console.log("upper", res)
 
 				if(res.noAds == true){
 					this.showUpperAds = false
@@ -361,7 +361,19 @@ export class UsersServicesPage {
 								this.upperAdWeight = this.upperAdWeight + res.ads[0].ad_type_id
 								this.upperAdArray.push(res.ads[0])
 								this.seenAds.push(res.ads[0].id)
-			
+								
+								this.upperAdArray.sort(function(a, b){
+									//return a.ad_type_id - b.ad_type_id
+									console.log("sort-a", a)
+									console.log("sort-b", b)
+									if (a.ad_type_id === b.ad_type_id) {
+										return 0;
+									}
+									else {
+										return (a.ad_type_id > b.ad_type_id) ? -1 : 1;
+									}
+								})
+
 								this.getUpperAds()
 			
 							}else if((res.ads[0].ad_type_id + this.upperAdWeight) > 3 && this.upperAdWeight < 3){
@@ -379,6 +391,7 @@ export class UsersServicesPage {
 			},err => {
 				
 			});
+
 
 		}
 
@@ -399,12 +412,12 @@ export class UsersServicesPage {
 			}); //subscribe
 			*/
 
-			return  this.httpClient.post(this.url+"/api/ads", {location_id: localStorage.getItem('user_locality_id'), lowerAdWeight: this.lowerAdWeight, seenAds: this.seenAds})
+			return  this.httpClient.post(this.url+"/api/ads", {location_id: localStorage.getItem('user_locality_id'), upperAdWeight: this.lowerAdWeight, seenAds: this.seenAds})
 			.pipe()
 			.subscribe((res:any)=> {
-
-				console.log("lowerAds", res)
 				
+				console.log("lower", res)
+
 				if(res.noAds == true){
 					this.showLowerAds = false
 				}else{
@@ -418,6 +431,18 @@ export class UsersServicesPage {
 								this.lowerAdWeight = this.lowerAdWeight + res.ads[0].ad_type_id
 								this.lowerAdArray.push(res.ads[0])
 								this.seenAds.push(res.ads[0].id)
+
+								this.lowerAdArray.sort(function(a, b){
+									//return a.ad_type_id - b.ad_type_id
+									//console.log("sort-a", a)
+									//console.log("sort-b", b)
+									if (a.ad_type_id === b.ad_type_id) {
+										return 0;
+									}
+									else {
+										return (a.ad_type_id > b.ad_type_id) ? -1 : 1;
+									}
+								})
 		
 								this.getLowerAds()
 			

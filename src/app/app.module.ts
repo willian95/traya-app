@@ -50,10 +50,10 @@ import { TermsPage } from '../pages/terms/terms';
 
 import { BackgroundMode } from '@ionic-native/background-mode';
 
-
 import { CallNumber } from '@ionic-native/call-number';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { StarRatingModule } from 'ionic3-star-rating';
+import { GoogleMaps } from '@ionic-native/google-maps';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -71,11 +71,13 @@ import { LoginProvider } from '../providers/login/login';
 import { HelperProvider } from '../providers/helper/helper';
 import { AdminAdsPage } from '../pages/admin-ads/admin-ads';
 import { GoogleLocationPage } from '../pages/google-location/google-location';
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
 //import { LongPressModule } from 'ionic-long-press';
 
 import { Push } from '@ionic-native/push';
 import { AppVersion } from '@ionic-native/app-version';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 @NgModule({
   declarations: [
@@ -178,7 +180,8 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
     TermsPage,
     ManageAdministratorsPage,
     AddAdministratorPage,
-    AdminAdsPage
+    AdminAdsPage,
+    GoogleLocationPage
   ],
   providers: [
     StatusBar,
@@ -198,7 +201,10 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
     HelperProvider,
     AppVersion,
     Geolocation,
-    Push
+    Push,
+    GoogleMaps,
+    LaunchNavigator,
+    NativeGeocoder
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

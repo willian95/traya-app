@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { NotificationPage } from '../notification/notification';
 import { ManageUsersPage } from '../manage-users/manage-users';
+import { HomeAdminPage } from '../home-admin/home-admin';
 
 
 /**
@@ -79,12 +80,11 @@ import { ManageUsersPage } from '../manage-users/manage-users';
        Authorization: localStorage.getItem('token'),
      });
      return  this.httpClient.get(this.url+"/api/users/"+this.id+"/restore", {headers} )
-     .pipe(
-       )
+     .pipe()
      .subscribe((res:any)=> {
        this.loading.dismiss();
        this.toastAlert('Usuario habilitado exitosamente');
-       this.navCtrl.push(ManageUsersPage);
+       this.navCtrl.setRoot(HomeAdminPage);
 
      },err => {
        this.loading.dismiss();
@@ -112,7 +112,7 @@ import { ManageUsersPage } from '../manage-users/manage-users';
      .subscribe((res:any)=> {
        this.loading.dismiss();
        this.toastAlert('Usuario borrado exitosamente');
-       this.navCtrl.push(ManageUsersPage);
+       this.navCtrl.setRoot(HomeAdminPage);
 
      },err => {
        this.loading.dismiss();

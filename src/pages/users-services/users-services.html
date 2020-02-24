@@ -24,17 +24,17 @@
 
   <ion-content padding justify-content-end>
 
-    <ion-list (click)="askForDeleteAds('Upper')" *ngIf="showUpperAds == true">
+    <!--<ion-list (click)="askForDeleteAds('Upper')" *ngIf="showUpperAds == true">
       <p text-center>
           <ion-icon name="close"></ion-icon>
       </p>
-    </ion-list>
-    <ion-list *ngIf="showUpperAds == true">
-      <button ion-item *ngFor="let ad of upperAdArray ; let i =index">
+    </ion-list>-->
+    <ion-list *ngIf="showUpperAds == true" class="custom-list">
+      <div ion-item *ngFor="let ad of upperAdArray ; let i =index" style="padding: 0 !important; margin-bottom: 5px;">
           
             <img [src]="url+'/ads/'+ad.name" style="width: 100%;">
     
-      </button>
+      </div>
     </ion-list>
 
 
@@ -83,14 +83,14 @@
       </div>
   </ion-list>
 
-  <ion-list (click)="askForDeleteAds('Lower')" *ngIf="showLowerAds == true">
+  <!--<ion-list (click)="askForDeleteAds('Lower')" *ngIf="showLowerAds == true">
     <p text-center>
         <ion-icon name="close"></ion-icon>
     </p>
-  </ion-list>
+  </ion-list>-->
 
-  <ion-list *ngIf="showLowerAds == true">
-      <button ion-item *ngFor="let ad of lowerAdArray ; let i =index">
+  <ion-list *ngIf="showLowerAds == true" class="custom-list" style="margin-top: 5px;">
+      <button ion-item *ngFor="let ad of lowerAdArray ; let i =index" style="padding: 0 !important;  margin-bottom: 5px;">
           
             <img [src]="url+'/ads/'+ad.name" style="width: 100%;">
     

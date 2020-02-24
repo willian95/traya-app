@@ -7,7 +7,7 @@
 <ion-header>
   <ion-navbar color="header">
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon name="arrow-back"></ion-icon>
     </button>
     <ion-title>
       <strong>Habilitar Administrador</strong>
@@ -38,12 +38,12 @@
         </ion-item>
         
         <div id="buttons" class="row" padding >
+          <div col col-50 *ngIf="user_rol == 'Administrador de localidad'">
+            <button ion-button full color="danger" (click)="disableAdministrator()">Deshabilitar administrador</button>
+          </div>
           <div col col-50 *ngIf="user_rol == 'Usuario' || user_rol == 'Trabajador'">
             <button ion-button full color="primary" (click)="enableAdministrator()">Habilitar como administrador</button>
           </div>
-            <div col col-50 *ngIf="user_rol == 'Administrador de localidad'">
-              <button ion-button full color="danger" (click)="disableAdministrator()">Deshabilitar administrador</button>
-            </div>
         </div>
         
   

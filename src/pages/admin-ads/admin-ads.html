@@ -7,7 +7,7 @@
 <ion-header>
   <ion-navbar color="header">
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon name="arrow-back"></ion-icon>
     </button>
     <ion-title>
       <strong>Publicidad </strong>
@@ -39,6 +39,12 @@
 
     <ion-item>
       <input type="file" name="file" id="file" class="inputfile" accept="image/*" (change)="convertBase64($event)"/>
+    </ion-item>
+
+    <ion-item *ngIf="showImage">
+      <img [src]="file" style="width: 100%; height: 90px" *ngIf="adType == 1">
+      <img [src]="file" style="width: 100%; height: 180px" *ngIf="adType == 2">
+      <img [src]="file" style="width: 100%; height: 270px" *ngIf="adType == 3">
     </ion-item>
 
     <ion-item *ngIf="adsCount < 20">

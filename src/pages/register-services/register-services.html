@@ -5,7 +5,7 @@
 <ion-header>
   <ion-navbar color="header">
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon name="arrow-back"></ion-icon>
     </button>
     <ion-title>
       <strong>Registrar servicios</strong>
@@ -19,7 +19,7 @@
     <ion-row justify-content-center >
       <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
          <div text-center>
-          <h1>Registrar servicios</h1>
+          <h3 style="color: #fff;">Registrar servicios</h3>
         </div>
 
         <!-- LOGIN WITH APP -->
@@ -40,8 +40,15 @@
         </div>
 
         <div padding>
-            <button ion-button full (click)="addServices()">Registrar</button>
-
+          <ion-grind>
+            <ion-row>
+              <ion-col></ion-col>
+              <ion-col>
+                <button ion-button full (click)="addServices()" style="width: 140px;">Registrar</button>
+              </ion-col>
+              <ion-col></ion-col>
+            </ion-row>
+          </ion-grind>
         </div>
       </ion-col>
     </ion-row>
