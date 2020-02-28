@@ -39,13 +39,44 @@
     </ion-select>
   </ion-item>
 
-
  
-  <ion-item>
+  <!--<ion-item>
     <span *ngFor="let items of servicesNameArray; let i = index">
         {{items.name}}
       <span *ngIf="i < servicesNameArray.length - 1">/</span>
     </span>
+    <span *ngFor="let items of services_id; let i = index">
+        <p>{{items}}</p>
+    </span>
+  </ion-item>-->
+
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <span *ngFor="let service1 of servicesArray;">
+            <span *ngFor="let originalService of originalServices;">
+            <ion-col col-4 *ngIf="originalService == service1.id">
+             
+                <span  style="color: blueviolet;"> / {{ service1.name }}</span>
+             
+            </ion-col>
+          </span>
+
+        </span>
+
+        <span *ngFor="let service2 of servicesArray;">
+          <span *ngFor="let newService of newServices;">
+            <ion-col col-4 *ngIf="service2.id == newService">
+            
+                <span > / {{ service2.name }}</span>
+            
+            </ion-col>
+          </span>
+
+        </span>
+
+      </ion-row>
+    </ion-grid>
   </ion-item>
   
 

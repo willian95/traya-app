@@ -6,6 +6,7 @@ import { HiringsPage } from '../hirings/hirings';
 import { CallNumber } from '@ionic-native/call-number';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { NotificationPage } from '../notification/notification';
+import { ProfilePage } from '../profile/profile';
 import { ActiveHiringsPage } from '../active-hirings/active-hirings';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
@@ -44,6 +45,7 @@ export class HiringDetailsPage {
   constructor(private superTabsCtrl: SuperTabsController,public modalCtrl: ModalController,public toastController: ToastController,public events: Events,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public actionSheetController: ActionSheetController,public callNumber: CallNumber,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications, private geolocation: Geolocation, public viewCtrl: ViewController, public appCtrl: App, private launchNavigator: LaunchNavigator, private nativeGeocoder: NativeGeocoder) {
     this.detailsHirings = navParams.get('data');
     this.showMap = false
+    this.opinionCount = 0
     //console.log("applicant", this.detailsHirings.applicant.address)
     //console.log("bidder", this.detailsHirings.bidder.address)
     this.applicantAddress = this.detailsHirings.applicant.address
@@ -618,6 +620,9 @@ async presentActionSheet() {
       this.nativeGeocoder.forwardGeocode(localStorage.getItem('user_locality_name')+", "+myAddress, options)
       .then((coordinates: NativeGeocoderForwardResult[]) => {
 
+        console.log("myAdress", myAddress)
+        console.log("myAdress", 'The coordinates are latitude=' + coordinates[0].latitude + ' and longitude=' + coordinates[0].longitude)
+
         if(this.rol_id == 1){
           var mapEle: HTMLElement = document.getElementById('mapApplicant');
         }
@@ -704,6 +709,12 @@ async presentActionSheet() {
         map: this.map,
         title: marker.title
       });
+    }
+
+    goToProfile(){
+
+      this.navCtrl.push(ProfilePage);
+
     }
 
     updateShowMap(){

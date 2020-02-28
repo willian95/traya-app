@@ -113,10 +113,6 @@
     <plugin name="cordova-plugin-googleplus" spec="~8.2.1">
         <variable name="REVERSED_CLIENT_ID" value="116218866446-or8c9nfj4dqik597t9s2bs8smmdbv1uq.apps.googleusercontent.com" />
     </plugin>
-    <plugin name="cordova-plugin-facebook4" spec="~6.2.0">
-        <variable name="APP_ID" value="323051691981911" />
-        <variable name="APP_NAME" value="traya" />
-    </plugin>
     <plugin name="cordova-plugin-geolocation" spec="~4.0.2">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="traya" />
     </plugin>

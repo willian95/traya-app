@@ -24,6 +24,7 @@ export class ServicesJobPage {
   url:any;
 
   constructor(public modalCtrl: ModalController,private menu: MenuController,public toastController: ToastController,private plt: Platform,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,private serviceUrl:ServiceUrlProvider, public viewCtrl: ViewController) {
+    this.newServices = []
     this.loading = this.loadingController.create({
              content: 'Cargando por favor espere...'
           });
@@ -58,6 +59,9 @@ export class ServicesJobPage {
   servicesNameArray: any;
   notificationArray:any;
   notificationNumber:any;
+  originalServices:any
+  originalServicesLength:any
+  newServices:any
   private timeoutId: number;
       descriptionCount:any;
 
@@ -194,6 +198,9 @@ async presentAlert() {
     }); //subscribe;
   }
 
+  addServicesToShow(){
+    alert('hey')
+  }
 
   associateUsers(){
 
@@ -258,6 +265,41 @@ async presentAlert() {
              for(var i=0;i<response.services.length;i++){
                 this.services_id.push(response.services[i].service_id)
             }
+
+            this.originalServices = this.services_id
+            this.originalServicesLength = this.originalServices.length
+
+            setInterval(() => {
+
+
+              for(let i = 0; i < this.services_id.length; i++){
+                var take = false;
+                for(let j = 0; j < this.originalServices.length; j++){
+          
+                  if(this.services_id[i] == this.originalServices[j]){
+                    take = true
+                  }
+          
+                }
+          
+                if(take == false){
+                  var exists = false
+                  for(let k = 0; k < this.newServices.length; k++){
+                    if(this.newServices[k] == this.services_id[i]){
+                      exists = true
+                    }
+                  }
+
+                  if(exists == false){
+                    this.newServices.push(this.services_id[i])
+                  }
+
+
+                }
+          
+              }
+          
+            }, 1000)
           },
           err => {
              this.loading.dismiss();

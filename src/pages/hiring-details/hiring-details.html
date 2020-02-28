@@ -16,7 +16,7 @@
       
       </ion-title>
 
-    <button ion-button (click)="showDescription()"  *ngIf="hiringDescription?.length > 30 " style="float: right; margin-top: -1px;">
+    <button ion-button (click)="showDescription()"  *ngIf="hiringDescription?.length > 30 " style="float: right; margin-top: 2px;">
       <ion-icon ios="ios-add-circle" md="md-add"></ion-icon>
     </button>
   </ion-navbar>
@@ -166,34 +166,30 @@
 
           <!-- NUEVO -->
             <ion-row *ngIf="items.id ==5 && detailsHirings.status_id ==5">
-                    <ion-col col col-8  >
-                      <div padding>
-                        <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
-                          <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
-                          {{items.name}}
-                        </div>
+              <ion-col col col-8  >
+                <div padding>
+                  <div class="mbsc-card-subtitle"  [ngClass]="{'mbsc-card-subtitle-active': items.id==detailsHirings.status_id}"  >
+                    <ion-badge color="primary" [ngClass]="{'badge2': items.id==detailsHirings.status_id}">{{i+1}}</ion-badge>
+                    {{items.name}}
+                  </div>
 
-                      </div>
-                    </ion-col>
-                    <ion-col col col-4 *ngIf="rol_id ==1" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
-                      <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
-                        <div  id="create" *ngIf="items.id == items2.status_id   " [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
-                           <span class="dateTime">{{items2.created_at_time}}</span>
-                              <span class="date">{{items2.created_at}}</span>
-                        </div>
-                      </div>
+                </div>
+              </ion-col>
+              <ion-col col col-4 *ngIf="rol_id ==1" padding [ngClass]="{'my-class2': items.id==detailsHirings.status_id}" >
+                <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+                  <div  id="create" *ngIf="items.id == items2.status_id   " [ngClass]="{'dateActive': items.id==detailsHirings.status_id}">
+                      <span class="dateTime">{{items2.created_at_time}}</span>
+                        <span class="date">{{items2.created_at}}</span>
+                  </div>
+                </div>
 
-                      <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
-                        <span   id="delete" *ngIf="items2.status_id ==5 && items.id ==5 ">Eliminado por {{items2.user}}</span>
-                      </div>
-                    </ion-col>
-                  </ion-row>
+                <div class="mbsc-card-subtitle" *ngFor="let items2 of detailsHirings.history ">
+                  <span   id="delete" *ngIf="items2.status_id ==5 && items.id ==5 ">Eliminado por {{items2.user}}</span>
+                </div>
+              </ion-col>
+            </ion-row>
 
           <!-- NUEVO -->
-
-
-
-
 
         </ion-grid>
 
@@ -202,15 +198,25 @@
       <ion-grid *ngIf="showMap == true">
         <ion-row>
           <ion-col>
+              Mi Ubicación
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
               <div class="map" id="mapApplicant"> </div>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>  
-              <button ion-button (click)="updateShowMap()">
-                  Compartir mi ubicación
-              </button>
-            </ion-col>
+            <button ion-button (click)="updateShowMap()">
+                Compartir mi ubicación
+            </button>
+          </ion-col>
+          <ion-col>  
+            <button ion-button (click)="goToProfile()">
+                Cambiar ubicación
+            </button>
+          </ion-col>  
           
         </ion-row>
         <ion-row>
@@ -276,7 +282,7 @@
     <ion-label >Opinión</ion-label>
     <ion-textarea id="comment"  [(ngModel)]="comment"  rows="3" cols="20" placeholder=" Dejá un comentario acerca del trabajo realizado, ¿Te gustó?" maxlength="160"  (ionChange)="countCharacter($event)"></ion-textarea>
   </ion-item>
-          <small id="count">Caracteres: {{opinionCount}} </small>
+          <small id="count">Caracteres: {{160 - opinionCount}} </small>
 
   <button  ion-button full (click)="qualify()">
     Enviar
@@ -465,14 +471,29 @@
 
   <ion-grid *ngIf="showMap == true">
     <ion-row>
-      <ion-col>  
-          <button ion-button (click)="updateShowMap()">
-              Compartir mi ubicación
-          </button>
-        </ion-col>  
+      <ion-col>
+          Mi Ubicación
+      </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>    
+      <ion-col>
+          <div class="map" id="mapBidder"> </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>  
+        <button ion-button (click)="updateShowMap()">
+            Compartir mi ubicación
+        </button>
+      </ion-col>
+      <ion-col>  
+        <button ion-button (click)="goToProfile()">
+            Cambiar ubicación
+        </button>
+      </ion-col>  
+    </ion-row>
+    <ion-row style="border: none;">
+      <ion-col >    
         <div *ngIf="rol_id == 2">
           <p *ngIf="showMapApplicant == 1">Ubicación del usuario:</p>
           <!--<button ion-button *ngIf="showMapApplicant == 1" (click)="navigateTo(applicantAddress)">
@@ -486,7 +507,7 @@
         </div>-->
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row style="border: none;">
       <ion-col>
         <div class="map" id="map2" *ngIf="showMapApplicant == 1" (click)="navigateTo(applicantAddress)">
 
