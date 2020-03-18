@@ -41,15 +41,19 @@ export class HiringDetailsPage {
   showMapBidder:any
   applicantAddress:any
   bidderAddress:any
+  location:any
   
   constructor(private superTabsCtrl: SuperTabsController,public modalCtrl: ModalController,public toastController: ToastController,public events: Events,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public actionSheetController: ActionSheetController,public callNumber: CallNumber,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications, private geolocation: Geolocation, public viewCtrl: ViewController, public appCtrl: App, private launchNavigator: LaunchNavigator, private nativeGeocoder: NativeGeocoder) {
     this.detailsHirings = navParams.get('data');
+    console.log(this.detailsHirings)
     this.showMap = false
     this.opinionCount = 0
     //console.log("applicant", this.detailsHirings.applicant.address)
     //console.log("bidder", this.detailsHirings.bidder.address)
     this.applicantAddress = this.detailsHirings.applicant.address
     this.bidderAddress = this.detailsHirings.bidder.address
+
+    this.location = localStorage.getItem('user_locality_name')
 
     let histories = this.detailsHirings.history
     
@@ -89,8 +93,6 @@ export class HiringDetailsPage {
       });
       alert.present();
     })
-
-    this.getMaps()
     
   });
 
@@ -162,7 +164,7 @@ export class HiringDetailsPage {
     this.status= this.detailsHirings.status;
     this.contratactionNumber=localStorage.getItem('contratactionNumber');
     this.hiringDescription = this.detailsHirings.description;
-    console.log(this.hiringDescription);
+    
     this.showApplicant();
     this.showBidder();
     this.getNotifications();
@@ -177,6 +179,10 @@ export class HiringDetailsPage {
         infoModal.present();
       }
     }
+
+    //if(this.showMapBidder == 1){
+      this.getMaps()
+    
 
   }
   presentNotifications(){
@@ -590,12 +596,51 @@ async presentActionSheet() {
           this.showMapBidder = res.show_bidder_map
           this.showMapApplicant = res.show_applicant_map
 
-          this.loadMap()
+          window.setTimeout(() => {
+            this.loadMap()
+          }, 2000) 
 
         },err => {
          
       });
 
+    }
+
+    createDescription() {
+    
+      let alert = this.alertCtrl.create({
+        title: 'Comentario',
+        inputs: [
+        {
+          name: 'comments',
+          value: this.comment,
+          placeholder: 'Dejá un comentario acerca del trabajo realizado, ¿Te gustó?'
+        },
+  
+        ],
+        buttons: [
+        {
+          text: 'Cerrar',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Agregar',
+          handler: data => {
+            if (data.comments !='') {
+              this.comment = data.comments;
+            } else {
+              console.log("falso");
+              return false;
+            }
+          }
+        }
+        ]
+      });
+  
+      alert.present();
     }
 
     loadMap(){
@@ -606,76 +651,37 @@ async presentActionSheet() {
       };
 
       let address = ""
-      let myAddress = ""
 
       if(this.rol_id == 1){
         address = this.bidderAddress
-        myAddress = this.applicantAddress
       }
       else{
         address = this.applicantAddress
-        myAddress = this.bidderAddress
       }
-
-      this.nativeGeocoder.forwardGeocode(localStorage.getItem('user_locality_name')+", "+myAddress, options)
-      .then((coordinates: NativeGeocoderForwardResult[]) => {
-
-        console.log("myAdress", myAddress)
-        console.log("myAdress", 'The coordinates are latitude=' + coordinates[0].latitude + ' and longitude=' + coordinates[0].longitude)
-
-        if(this.rol_id == 1){
-          var mapEle: HTMLElement = document.getElementById('mapApplicant');
-        }
-        else{
-          var mapEle: HTMLElement = document.getElementById('mapBidder');
-        }
-
-        // create LatLng object
-        const myLatLng = {lat: parseFloat(coordinates[0].latitude), lng: parseFloat(coordinates[0].longitude)};
-        // create map
-        this.map = new google.maps.Map(mapEle, {
-          center: myLatLng,
-          zoom: 10
-        });
-
-        //this.directionsDisplay.setMap(this.map);
-
-        google.maps.event.addListenerOnce(this.map, 'idle', () => {
-          //this.renderMarkers();
-          //mapEle.classList.add('show-map');
-          const marker1 = {
-            position:{
-              lat: parseFloat(coordinates[0].latitude),
-              lng: parseFloat(coordinates[0].longitude)
-            },
-            title:"punto uno"
-          }
-          //console.log(res.latitude
-
-          this.addMarker(marker1)
-
-        }).catch((error) => {
-          console.log('Error getting location', error);
-        });
-
-      })
 
       this.nativeGeocoder.forwardGeocode(localStorage.getItem('user_locality_name')+", "+address, options)
       .then((coordinates: NativeGeocoderForwardResult[]) => {
-        console.log('The coordinates are latitude=' + coordinates[0].latitude + ' and longitude=' + coordinates[0].longitude)
+        //console.log('The coordinates are latitude=' + coordinates[0].latitude + ' and longitude=' + coordinates[0].longitude)
 
         if(this.rol_id == 1){
-          var mapEle: HTMLElement = document.getElementById('map1');
-        }
+          var mapEle = document.getElementById('map1') as HTMLElement;
+          console.log("showMapBidder",this.showMapBidder)
+          console.log("mapEle",mapEle)
+        } 
         else{
-          var mapEle: HTMLElement = document.getElementById('map2');
+          var mapEle = document.getElementById('map2') as HTMLElement;
         }
+
+        
+
           // create LatLng object
           const myLatLng = {lat: parseFloat(coordinates[0].latitude), lng: parseFloat(coordinates[0].longitude)};
+          //const myLatLng = {lat: 11.7064801, lng: -70.2196518}
+
           // create map
           this.map = new google.maps.Map(mapEle, {
             center: myLatLng,
-            zoom: 10
+            zoom: 15
           });
 
           //this.directionsDisplay.setMap(this.map);
@@ -687,6 +693,8 @@ async presentActionSheet() {
               position:{
                 lat: parseFloat(coordinates[0].latitude),
                 lng: parseFloat(coordinates[0].longitude)
+                //lat: 11.7064801,
+                //lng: -70.2196518
               },
               title:"punto uno"
             }
@@ -694,16 +702,16 @@ async presentActionSheet() {
 
             this.addMarker(marker1)
 
-          }).catch((error) => {
-            console.log('Error getting location', error);
-          });
+          })
 
       })
-      .catch((error: any) => console.log("geocoder error", error));
+      //.catch((error: any) => console.log("geocoder error", error));
         
     }
 
     addMarker(marker: Marker) {
+      console.log("marker", marker)
+      console.log("map", this.map)
       return new google.maps.Marker({
         position: marker.position,
         map: this.map,
@@ -711,9 +719,9 @@ async presentActionSheet() {
       });
     }
 
-    goToProfile(){
+    goToGoogleLocation(){
 
-      this.navCtrl.push(ProfilePage);
+      this.navCtrl.push(GoogleLocationPage, {data:this.detailsHirings});
 
     }
 

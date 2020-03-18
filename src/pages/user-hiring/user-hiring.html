@@ -3,9 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>
-    	Perfil
-    </ion-title>
+    <span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px; font-weight: bold;">{{name}}</span>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
@@ -46,13 +44,13 @@
         <p *ngIf="description ==null || description ==''">El trabajador no ha descrito aún su trabajo</p>
       </ion-label>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="usersServices.email != authEmail">
       <ion-label>
         <small>Última conexión: {{last_conection}}</small>
       </ion-label>
     </ion-item>
 
-    <ion-row>
+    <ion-row *ngIf="usersServices.email != authEmail">
       <ion-col width-50 *ngIf="usersServices.email != authEmail">
         <button ion-button full (click)="callNow()">
           <ion-icon ios="ios-call" md="md-call"></ion-icon>
@@ -69,14 +67,14 @@
     </ion-row>
     
     
-      <ion-grid>
+      <ion-grid *ngIf="usersServices.email != authEmail">
         <ion-row>
-          <ion-col col-1>
-            <ion-icon style="margin-top: 12px;" md="ios-create-outline"></ion-icon>
+          <ion-col col-1 style="padding-top: 13px; padding-left: 13px;">
+            <ion-icon md="ios-create-outline" style="font-size: 25px;"></ion-icon>
           </ion-col>
           <ion-col col-11>
-              <ion-item padding id="pr3"  *ngIf="usersServices.email != authEmail" style="margin-top: -1px; padding: 0px;">
-                <ion-textarea  (click)="createDescription()" readonly  id="comments"  [(ngModel)]="comments"  rows="1" cols="20" placeholder="Explica brevemente tus necesidades" maxlength="300" style="padding: 0px !important; margin-left: 12px; "></ion-textarea>
+              <ion-item>
+                <ion-textarea  (click)="createDescription()" readonly  id="comments"  [(ngModel)]="comments"  rows="1" placeholder="Explica tus es" maxlength="300" style="padding: 0px !important; margin-left: -5px; "></ion-textarea>
               </ion-item>
             </ion-col>
         </ion-row>
@@ -165,7 +163,7 @@
     </ion-item>
 
     <ion-item padding>
-        <ion-input id="comments"  [(ngModel)]="comments" placeholder="Explica brevemente tus necesidad"></ion-input>
+        <ion-input id="comments"  [(ngModel)]="comments" placeholder="Explica brevemente tus "></ion-input>
     </ion-item>
 
     <ion-item>

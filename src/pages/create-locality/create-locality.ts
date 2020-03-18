@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,LoadingController,ToastController } from 'ionic-angular';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { HttpClient } from '@angular/common/http';
+import { HomeAdminPage } from '../home-admin/home-admin'
 
 /**
  * Generated class for the CreateLocalityPage page.
@@ -63,6 +64,7 @@ export class CreateLocalityPage {
             this.loading.dismiss();
             this.toastAlert(res.msg);
             this.cleanInput();
+            this.navCtrl.setRoot(HomeAdminPage)
            },err => {
             this.loading.dismiss();
             this.toastAlert(err.error.errors);

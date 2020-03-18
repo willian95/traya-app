@@ -52,6 +52,9 @@ export class RegisterPage {
   descriptionLocation:any;
    aboutBandera:any;
   locationP:any;
+  showEyePass:any
+  showEyeRePass:any
+
    ionViewDidLoad() {
       //this.menu.swipeEnable(false);
       this.passwordType='password';
@@ -79,6 +82,7 @@ validatePasswordLength($event){
 
   }
 showPasswordText(){
+  
   this.showPasswordTextBand=true;
   if(this.passwordType =='password'){
     this.passwordType='text';
@@ -110,6 +114,47 @@ async presentAlert() {
     toast.present();
   }
 
+  showEyeButtonPass(){
+    
+    this.showEyeRePass = false
+    this.showEyePass = true
+
+  }
+
+
+  showEyeButtonRePass(){
+    
+    this.showEyePass = false
+    this.showEyeRePass = true
+
+  }
+
+  hideEyeButton(){
+    this.showEyePass = false
+    this.showEyeRePass = false
+  }
+
+  domicileFocus(){
+    this.hideEyeButton()
+    
+    if(this.domicile == null || this.domicile == ""){
+      this.domicile = "Calle y Número"
+      let domicile = document.getElementById("domicile")
+      domicile.style.color = "#999"
+    }
+  }
+
+  checkDomicileInput(){
+    console.log("entre")
+      if(this.domicile.indexOf("Calle y Número") > -1){
+
+        this.domicile = this.domicile.substring(this.domicile.length - 1, this.domicile.length)
+        let domicile = document.getElementById("domicile")
+        domicile.style.color = "#000"
+  
+      }
+    
+  }
 
 
 async errorAlert(message) {

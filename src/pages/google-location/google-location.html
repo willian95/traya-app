@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>googleLocation</ion-title>
+    <span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px; font-weight: bold;">Mi ubicación</span>
   </ion-navbar>
 
 </ion-header>
@@ -15,8 +15,29 @@
 
 <ion-content padding>
 
-  <div id="map">
-
-  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div id="myLocation" class="map">
+        
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-8>
+        <ion-item (click)="locationPrompt()">
+          <label> {{ myaddress }} </label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: 20px;">
+      <ion-col col-6>
+        <button ion-button (click)="updateShowMap()" style="font-size: 1rem; float: left;">compartir mi ubicación</button>
+      </ion-col>
+      <!--<ion-col col-6>
+        <button ion-button (click)="changeMyAddress()" style="font-size: 1rem; float: right;">cambiar mi ubicación</button>
+      </ion-col>-->
+    </ion-row>
+  </ion-grid> 
 
 </ion-content>

@@ -22,6 +22,8 @@ dist/
 node_modules/
 tmp/
 temp/
+platformsbk/
+pluginsbk/
 hooks/
 platforms/
 plugins/

@@ -5,7 +5,7 @@
     <ion-icon name="menu"></ion-icon>
   </button>
     </ion-buttons>
-    <ion-title>{{name}}</ion-title>
+    <span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px; font-weight: bold;">{{name}}</span>
 
 
     <ion-buttons end  *ngIf="usersServices?.length>1" >
@@ -32,14 +32,25 @@
     <ion-list *ngIf="showUpperAds == true" class="custom-list">
       <div ion-item *ngFor="let ad of upperAdArray ; let i =index" style="padding: 0 !important; margin-bottom: 5px;">
           
-            <img [src]="url+'/ads/'+ad.name" style="width: 100%;">
+        <div *ngIf="ad.ad_type_id == 1">
+          <img [src]="url+'/ads/'+ad.name" style="width: 100%; height: 90px;">
+        </div>
+
+        <div *ngIf="ad.ad_type_id == 2">
+          <img [src]="url+'/ads/'+ad.name" style="width: 100%; height: 180px;">
+        </div>
+
+        <div *ngIf="ad.ad_type_id == 3">
+          <img [src]="url+'/ads/'+ad.name" style="width: 100%; height: 270px;">
+        </div>
+            
     
       </div>
     </ion-list>
 
 
-  <ion-list  *ngIf="usersServices != null">
-  <button ion-item *ngFor="let items of usersServices ; let i =index" (click)="viewProfile(items,i)">
+  <ion-list  *ngIf="usersServices != null" style="border-bottom: 1px solid #535c68; border-top: 1px solid #535c68; margin-top: 5px; margin-bottom: 5px;">
+  <button ion-item *ngFor="let items of usersServices ; let i =index" class="border-service" (click)="viewProfile(items,i)">
       <ion-avatar item-start>
         <img [src]="items.image" *ngIf="items.image">
       </ion-avatar>
@@ -91,8 +102,18 @@
 
   <ion-list *ngIf="showLowerAds == true" class="custom-list" style="margin-top: 5px;">
       <button ion-item *ngFor="let ad of lowerAdArray ; let i =index" style="padding: 0 !important;  margin-bottom: 5px;">
-          
-            <img [src]="url+'/ads/'+ad.name" style="width: 100%;">
+
+            <div *ngIf="ad.ad_type_id == 1">
+              <img [src]="url+'/ads/'+ad.name" style="width: 100%; height: 90px;">
+            </div>
+    
+            <div *ngIf="ad.ad_type_id == 2">
+              <img [src]="url+'/ads/'+ad.name" style="width: 100%; height: 180px;">
+            </div>
+    
+            <div *ngIf="ad.ad_type_id == 3">
+              <img [src]="url+'/ads/'+ad.name" style="width: 100%; height: 270px;">
+            </div>
     
       </button>
     </ion-list>

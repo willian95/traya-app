@@ -54,10 +54,10 @@
     <ion-grid>
       <ion-row>
         <span *ngFor="let service1 of servicesArray;">
-            <span *ngFor="let originalService of originalServices;">
+            <span *ngFor="let originalService of originalServices; let i = index;">
             <ion-col col-4 *ngIf="originalService == service1.id">
              
-                <span  style="color: blueviolet;"> / {{ service1.name }}</span>
+              <span *ngIf="i > 0">/</span>  <span  style="color: blueviolet;"> {{ service1.name }}</span>  
              
             </ion-col>
           </span>
@@ -65,10 +65,10 @@
         </span>
 
         <span *ngFor="let service2 of servicesArray;">
-          <span *ngFor="let newService of newServices;">
+          <span *ngFor="let newService of newServices; let j = index;">
             <ion-col col-4 *ngIf="service2.id == newService">
             
-                <span > / {{ service2.name }}</span>
+              <span *ngIf="originalServices.length > 0 && j == 0">/</span><span *ngIf="j > 0">/</span> <span >{{ service2.name }} </span>
             
             </ion-col>
           </span>

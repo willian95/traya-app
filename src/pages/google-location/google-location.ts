@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { Geolocation } from '@ionic-native/geolocation';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
+import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
+import { ProfilePage } from '../profile/profile';
 /*import {
   GoogleMaps,
   GoogleMap,
@@ -39,93 +41,80 @@ export class GoogleLocationPage {
   map = null
   //directionsService = new google.maps.DirectionsService();
   //directionsDisplay = new google.maps.DirectionsRenderer();
-  // parque simon bolivar
-  origin = { lat: 4.658383846282959, lng: -74.09394073486328 };
-  // Parque la 93
-  destination = { lat: 4.676802158355713, lng: -74.04825592041016 };
-  hiringDetails:any
+  
+  detailsHiring:any
   url:any
+  myaddress:any
+  location:any
+  actualLocation:any
+  hiring_id:any
+  user_id:any
+  rol_id:any
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient, private serviceUrl:ServiceUrlProvider, private geolocation: Geolocation) {
-    this.hiringDetails = navParams.get('data');
+  constructor(public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient, private serviceUrl:ServiceUrlProvider, private geolocation: Geolocation, private nativeGeocoder: NativeGeocoder, public toastController: ToastController, private alertCtrl: AlertController) {
+    
+    this.detailsHiring = navParams.get('data');
+    console.log(this.detailsHiring)
     this.url=serviceUrl.getUrl();
+    this.myaddress = localStorage.getItem("user_domicile")
+    this.location = localStorage.getItem("user_locality_name")
+    this.user_id = localStorage.getItem('user_id')
+    this.rol_id = localStorage.getItem('rol_id')
+    console.log(this.myaddress)
+
   }
 
   ionViewDidLoad() {
-    this.loadMap()
+    window.setTimeout(() => {
+      this.loadMap()
+    }, 2000)
   }
 
 
   loadMap(){
 
-    let rol_id = localStorage.getItem('user_rol')
+    let options: NativeGeocoderOptions = {
+      useLocale: true,
+      maxResults: 1
+    };
 
-    if(rol_id == "1"){
-      console.log(this.hiringDetails.bidder)
-    }else if(rol_id == "2"){
-      console.log(this.hiringDetails.applicant)
+    this.nativeGeocoder.forwardGeocode(this.location+", "+this.myaddress, options)
+    .then((coordinates: NativeGeocoderForwardResult[]) => {
+        //console.log('The coordinates are latitude=' + coordinates[0].latitude + ' and longitude=' + coordinates[0].longitude)
 
-      let headers = new Headers();
-      headers.append("Accept", 'application/json');
-      headers.append('Content-Type', 'application/json' );
-      let tokenCode = localStorage.getItem('tokenCode');
-
-      this.httpClient.post(this.url+"/api/hiring/get/position", {"userId": this.hiringDetails.applicant.id, "token": tokenCode} )
-      .pipe()
-      .subscribe((res:any)=> {
-
-        this.geolocation.getCurrentPosition().then((resp) => {
-          //alert(resp.coords.latitude+" "+resp.coords.longitude)
-
-          const mapEle: HTMLElement = document.getElementById('map');
+          var mapEle = document.getElementById('myLocation') as HTMLElement;
+          
           // create LatLng object
-          const myLatLng = {lat: resp.coords.latitude, lng: resp.coords.longitude};
+          const myLatLng = {lat: parseFloat(coordinates[0].latitude), lng: parseFloat(coordinates[0].longitude)};
+          //const myLatLng = {lat: 11.7064801, lng: -70.2196518};
           // create map
           this.map = new google.maps.Map(mapEle, {
             center: myLatLng,
-            zoom: 10
+            zoom: 15
           });
 
           //this.directionsDisplay.setMap(this.map);
 
           google.maps.event.addListenerOnce(this.map, 'idle', () => {
             //this.renderMarkers();
-            mapEle.classList.add('show-map');
+            //mapEle.classList.add('show-map');
             const marker1 = {
               position:{
-                lat: resp.coords.latitude,
-                lng: resp.coords.longitude
+                lat: parseFloat(coordinates[0].latitude),
+                lng: parseFloat(coordinates[0].longitude)
+                //lat: 11.7064801,
+                //lng: -70.2196518
               },
               title:"punto uno"
             }
-            //console.log(res.latitude)
-            const marker2 = {
-              position:{
-                lat: parseFloat(res.latitude),
-                lng: parseFloat(res.longitude)
-              },
-              title:"punto dos"
-            }
+            //console.log(res.latitude
 
             this.addMarker(marker1)
-            this.addMarker(marker2)
-            //this.calculateRoute()
-
-          });
-
         
-          // 
-         }).catch((error) => {
-           console.log('Error getting location', error);
-         });
+          })
 
-
-      },err => {
-        
-      });
-
-    }
-
+      })
+      .catch((error: any) => console.log("geocoder error", error));
 
   }
 
@@ -137,18 +126,112 @@ export class GoogleLocationPage {
     });
   }
 
-  /*private calculateRoute() {
-    this.directionsService.route({
-      origin: this.origin,
-      destination: this.destination,
-      travelMode: google.maps.TravelMode.DRIVING,
-    }, (response, status)  => {
-      if (status === google.maps.DirectionsStatus.OK) {
-        this.directionsDisplay.setDirections(response);
-      } else {
-        alert('Could not display directions due to: ' + status);
-      }
+  async messageToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 10000,
+      showCloseButton: true,
+      closeButtonText: 'Cerrar',
+      cssClass: 'urgent-notification'
     });
-  }*/
+    toast.present();
+  }
+
+  changeMyAddress(){
+
+    let tokenCode = localStorage.getItem('tokenCode');
+
+    this.httpClient.post(this.url+"/api/changeAddress", {"address":this.myaddress, "token": tokenCode})
+      .pipe()
+      .subscribe((res:any)=> {    
+
+        if(res.success == true){
+          localStorage.setItem("user_domicile", this.myaddress)
+          this.loadMap()
+        }
+
+        this.messageToast(res.msg);
+
+      })
+  }
+
+  locationPrompt(){
+    const prompt = this.alertCtrl.create({
+      title: 'Ubicación',
+      inputs: [
+        {
+          name: 'title',
+          placeholder: 'Title',
+          value: this.myaddress,
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: data => {
+            
+            if (data.title !='') {
+              this.myaddress = data.title;
+              this.changeMyAddress()
+            } else {
+              console.log("falso");
+              return false;
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  async presentAlert(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 10000,
+      showCloseButton: true,
+      closeButtonText: 'Cerrar',
+      cssClass: 'urgent-notification'
+    });
+    toast.present();
+  }
+
+  updateShowMap(){
+
+    let headers = new Headers();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json' );
+    let tokenCode = localStorage.getItem('tokenCode');
+    let method='POST';
+
+    this.hiring_id=this.detailsHiring.id;
+    //this.geolocation.getCurrentPosition().then((resp) => {
+      //alert(resp.coords.latitude+" "+resp.coords.longitude)
+
+      return  this.httpClient.post(this.url+"/api/hiring/update/map/"+this.hiring_id, {"rol_id": this.rol_id, "user_id": this.user_id, "_method":method, "token":tokenCode})
+      .pipe()
+      .subscribe((res:any)=> {
+        
+        this.presentAlert(res.msg)
+
+      },err => {
+       
+    //});
+      // 
+     /*}).catch((error) => {
+       console.log('Error getting location', error);
+     });*/
+
+
+  })
+
+}
+
+
 
 }

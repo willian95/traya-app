@@ -30,6 +30,9 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 export class LoginPage {
   url:any;
   constructor(private statusBar: StatusBar, public toastController: ToastController,public modalCtrl: ModalController,private helper: HelperProvider,private googlePlus: GooglePlus,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private menu: MenuController,public loadingController: LoadingController,private alertCtrl: AlertController,public events: Events,private serviceUrl:ServiceUrlProvider,private loginProvider:LoginProvider, private fb: Facebook) {
+    
+    this.showEye = false
+    
     this.loading = this.loadingController.create({
       content: 'Por favor espere...'
     });
@@ -53,7 +56,7 @@ export class LoginPage {
   locationP:any;
   config:any;
   deviceToken:any;
-
+  showEye:any
 
   ionViewDidLoad() {
     //this.menu.swipeEnable(false);
@@ -135,6 +138,16 @@ export class LoginPage {
       });
   }
 
+  showEyeButton(condition){
+    
+    this.showEye = condition
+
+  }
+
+  hideEyeButton(){
+    this.showEye = false
+  }
+
   loginGoogle(){
 
     
@@ -149,7 +162,10 @@ export class LoginPage {
       this.sendGoogleData(res)
 
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      this.loading.dismiss();
+      console.error(err)
+    });
 
   }
 
@@ -228,7 +244,7 @@ export class LoginPage {
   }
 
   recoveryPassword(){
-    this.navCtrl.setRoot(RecoveryPasswordPage);
+    this.navCtrl.push(RecoveryPasswordPage);
   }
 
   showPasswordText(){

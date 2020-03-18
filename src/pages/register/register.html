@@ -1,27 +1,24 @@
 <ion-header>
   <ion-navbar color="header">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>
       <strong>TRAYA</strong>
     </ion-title>
   </ion-navbar>
 </ion-header>
-<img src="assets/imgs/bg.png" class="bg">
+<!--<img src="assets/imgs/bg.png" class="bg">-->
 
 
-<ion-content padding class="myview">
+<ion-content padding class="myview" style="margin-top: -22px;">
   <ion-grid>
     <ion-row justify-content-center >
       <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
         <div text-center>
-          <h1>¡Bienvenido!</h1>
+          <p style="color: #795C9B; font-size: 24px;">¡BIENVENIDO!</p>
         </div>
 
         <!-- LOGIN WITH APP -->
         <div id="login" padding>
-          <ion-item>
+          <ion-item class="no-background">
             <div align="center">
               <img class="profile-image" [src]="image" *ngIf="image">
             </div>
@@ -32,60 +29,96 @@
           </div>
           </ion-item>
 
-          <ion-icon class="input-icon" name="contact"></ion-icon>
-          <ion-item>
-            <ion-input id="name" [(ngModel)]="name" type="text" placeholder="Nombre"></ion-input>
+          <ion-item class="item-bordered">
+              
+            <ion-icon class="input-icon" name="contact" item-left> </ion-icon>
+            
+            <ion-label floating>Nombre</ion-label>
+            <ion-input [(ngModel)]="name" type="text" (focus)="hideEyeButton()" id="name"></ion-input>
           </ion-item>
 
-          <ion-icon class="input-icon" name="call"></ion-icon>
-          <ion-item>
-            <ion-input [(ngModel)]="phone" type="text" placeholder="Teléfono"  (ionFocus)="addPhoneFormat()"></ion-input>
+          <ion-item class="item-bordered">
+              
+            <ion-icon class="input-icon" name="call" item-left> </ion-icon>
+            
+            <ion-label floating>Teléfono</ion-label>
+            <ion-input [(ngModel)]="phone" type="text" (ionFocus)="addPhoneFormat()" (focus)="hideEyeButton()" id="phone"></ion-input>
           </ion-item>
 
-          <ion-icon class="input-icon" name="mail"></ion-icon>
-          <ion-item>
-            <ion-input [(ngModel)]="email" type="email" placeholder="Correo Electrónico"></ion-input>
+          <ion-item class="item-bordered">
+              
+            <ion-icon class="input-icon" name="mail" item-left> </ion-icon>
+            
+            <ion-label floating>Correo Electrónico</ion-label>
+            <ion-input [(ngModel)]="email" type="email" (focus)="hideEyeButton()" id="email"></ion-input>
           </ion-item>
 
-          <ion-icon class="input-icon" name="lock"></ion-icon>
-          <ion-item>
-            <ion-input [(ngModel)]="password" type="{{passwordType}}" placeholder="Contraseña" (ionBlur)="validatePasswordLength($event)"></ion-input>
-            <!-- <button id="showPassword"  ion-button clear icon-only  type="button" item-right (click)="showPasswordText = !showPasswordText"> -->
-            <button id="showPassword"  ion-button clear icon-only  type="button" item-right (click)="showPasswordText()">
+          <ion-item class="item-bordered">
+              
+            <ion-icon class="input-icon" name="lock" item-left> </ion-icon>
+            
+            <ion-label floating>Contraseña</ion-label>
+            <ion-input [(ngModel)]="password"  type="{{passwordType}}" (focus)="showEyeButtonPass()" id="email"></ion-input>
+            <button id="showPassword"  ion-button clear icon-only  item-right (click)="showPasswordText()" *ngIf="showEyePass == true">
               <ion-icon *ngIf="!showPasswordTextBand" name="eye"> </ion-icon>
               <ion-icon *ngIf="showPasswordTextBand" name="eye-off"> </ion-icon>
             </button>
           </ion-item>
 
-          <ion-icon class="input-icon" name="lock"></ion-icon>
-          <ion-item>
-            <ion-input [(ngModel)]="passwordRepeat" type="{{passwordTypeRepeat}}" placeholder="Repetir Contraseña"   (ionBlur)="validatePassword()"></ion-input>
-            <!-- <button id="showPassword"  ion-button clear icon-only  type="button" item-right (click)="showPasswordText = !showPasswordText"> -->
-            <button id="showPassword"  ion-button clear icon-only  type="button" item-right (click)="showPasswordTextRepeat()">
+          <ion-item class="item-bordered">
+              
+            <ion-icon class="input-icon" name="lock" item-left> </ion-icon>
+            
+            <ion-label floating>Repetir Contraseña</ion-label>
+            <ion-input [(ngModel)]="passwordRepeat" type="{{passwordTypeRepeat}}" (focus)="showEyeButtonRePass()" id="email" (ionBlur)="validatePassword()"></ion-input>
+            <button id="showPassword"  ion-button clear icon-only  type="button" item-right (click)="showPasswordTextRepeat()" *ngIf="showEyeRePass == true">
               <ion-icon *ngIf="!showPasswordTextBandRepeat" name="eye"> </ion-icon>
               <ion-icon *ngIf="showPasswordTextBandRepeat" name="eye-off"> </ion-icon>
             </button>
           </ion-item>
 
-          <!-- <ion-input id="description"[(ngModel)]="description" type="text" placeholder="Descripción"></ion-input> -->
-          <ion-icon class="input-icon" name="people"></ion-icon>
-          <ion-item>
-            <ion-select [(ngModel)]="rol_id"  placeholder="Usted es:" style="margin-left: 8px;">
-              <ion-option  value="1">Usuario</ion-option>
-              <ion-option  value="2" >Trabajador</ion-option>
-            </ion-select>
-          </ion-item>
 
-          <ion-icon class="input-icon" name="pin"></ion-icon>
-          <ion-item padding>
-            <ion-select [(ngModel)]="location_id"  placeholder="Localidad:" style="margin-left: 8px;">
+          <!-- <ion-input id="description"[(ngModel)]="description" type="text" placeholder="Descripción"></ion-input> -->
+          
+
+          <ion-list radio-group class="no-background" [(ngModel)]="rol_id">
+            
+            <ion-grid style="margin-top: 20px;">
+              <ion-icon class="input-icon" name="people" item-left style="margin-left: 14px; position: absolute;"></ion-icon>
+              <ion-row>
+                <span style="color: #999; font-size: 18px; margin-left: 49px;">
+                  Usted es:
+                </span>
+              </ion-row>
+              <ion-row>
+                <ion-col style="margin-left: 30px;">
+                  <ion-item class="no-background">
+                    <ion-label>Usuario</ion-label>
+                    <ion-radio mode="md" value="1" (click)="hideEyeButton()"></ion-radio>
+                  </ion-item>
+                  <ion-item class="no-background">
+                    <ion-label>Trabajador</ion-label>
+                    <ion-radio mode="md" value="2" (click)="hideEyeButton()"></ion-radio>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-list>
+
+          <ion-item padding class="item-bordered" style="margin-top: -40px;">
+            <ion-icon class="input-icon" name="pin" item-left></ion-icon>
+            <ion-select [(ngModel)]="location_id" (click)="hideEyeButton()"  placeholder="Localidad:" style="padding: 0; padding-top: 25px; width: 100%;" interface="action-sheet" cancelText="">
                 <ion-option *ngFor="let items of localityArray" [value]="items.id">{{items.name}}</ion-option>
             </ion-select>
           </ion-item>
 
-          <ion-icon class="input-icon" name="locate"></ion-icon>
-          <ion-item>
-            <ion-input [(ngModel)]="domicile" type="text" placeholder="Ingrese su domicilio"></ion-input>
+
+          <ion-item class="item-bordered" >
+              
+            <ion-icon class="input-icon" name="locate" item-left> </ion-icon>
+            
+            <ion-label floating>Ingrese su domicilio</ion-label>
+            <ion-input [(ngModel)]="domicile" type="text" (ionFocus)="domicileFocus()" (keyup)="checkDomicileInput()"  id="domicile"></ion-input>
           </ion-item>
 
 
@@ -96,9 +129,15 @@
 
         </div>
 
-        <div padding>
-          <button ion-button full (click)="addUsers()">Registrarse</button>
-        </div>
+        <ion-grid>
+          <ion-row>
+            
+            <ion-col>
+                <button ion-button full (click)="addUsers()" style="background-color: #876DA1">Registrarse</button>
+            </ion-col>
+            
+          </ion-row>
+        </ion-grid>
       </ion-col>
     </ion-row>
   </ion-grid>

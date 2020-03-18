@@ -179,9 +179,6 @@ async presentAlert() {
     toast.present();
   }
 
-
-
-
   getServices() {
   this.httpClient.get(this.url+'/api/services')
   .pipe()
@@ -271,6 +268,44 @@ async presentAlert() {
 
             setInterval(() => {
 
+              
+              
+              for(let e = 0; e < this.originalServices.length; e++){
+                
+                var validateOriginal = false;
+
+                for(let f = 0; f < this.services_id.length; f++){
+
+                  if(parseInt(this.services_id[f]) == parseInt(this.originalServices[e])){
+                    validateOriginal = true
+                  }
+
+                }
+
+                if(validateOriginal == false){
+                  this.originalServices.splice(e, 1)
+                }
+
+              }
+
+
+              for(let g = 0; g < this.newServices.length; g++){
+                
+                let validate = false;
+
+                for(let h = 0; h < this.services_id.length; h++){
+
+                  if(this.services_id[g] == this.newServices[h]){
+                    validate = true
+                  }
+
+                }
+
+                if(validate == false){
+                  this.newServices.splice(g, 1)
+                }
+
+              }
 
               for(let i = 0; i < this.services_id.length; i++){
                 var take = false;
@@ -285,6 +320,7 @@ async presentAlert() {
                 if(take == false){
                   var exists = false
                   for(let k = 0; k < this.newServices.length; k++){
+                    
                     if(this.newServices[k] == this.services_id[i]){
                       exists = true
                     }
@@ -293,7 +329,6 @@ async presentAlert() {
                   if(exists == false){
                     this.newServices.push(this.services_id[i])
                   }
-
 
                 }
           

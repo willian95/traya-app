@@ -11,23 +11,23 @@ page-create-locality {
     color:white;
   }
   .button-ios {
-      border-radius: 7px !important;
-      height: 2.8em;
-      font-size: 1.6rem;
-      color: #fff;
-      background-color: #b0428f;
-      margin: 0.4rem 0.2rem;
-      padding: 0 1em;
-  }
-  .button-md {
-      border-radius: 7px !important;
-      height: 2.8em;
-      font-size: 1.6rem;
-      color: #fff;
-      background-color: #b0428f;
-      margin: 0.4rem 0.2rem;
-      padding: 0 1em;
-  }
+    border-radius: 7px !important;
+    height: 2.8em;
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1em;
+    width: 160px;
+}
+.button-md {
+  border-radius: 7px !important;
+  height: 2.8em;
+  font-size: 1.2rem;
+  color: #fff;
+  margin: 0.4rem 0.2rem;
+  padding: 0 1em;
+  width: 160px;
+}
 
 
   #registerServices input  {
@@ -117,4 +117,9 @@ page-create-locality {
     resize: none;
     color: white;
 }
+
+.bg{
+  width: 100% !important;
+}
+
 }

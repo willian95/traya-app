@@ -30,8 +30,10 @@ export class TrayaPage {
     notificationArray:any;
     notificationNumber:any;
     config:any;
-     loading:any;
+    loading:any;
+    hiringCount:any
   constructor(private statusBar: StatusBar, public loadingController: LoadingController, private menu: MenuController,public modalCtrl: ModalController,public events: Events,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private serviceUrl:ServiceUrlProvider) {
+    this.hiringCount = 0;
     this.url=serviceUrl.getUrl();
       this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
@@ -64,7 +66,11 @@ export class TrayaPage {
 
   ionViewDidLoad() {
     this.storeAction()
-  const channel = this.pusherNotify.init();
+    window.setInterval(() => {
+      this.countActiveHirings()
+    }, 5000) 
+  
+    const channel = this.pusherNotify.init();
     let self = this;
     channel.bind('notificationUser', function(data) {
       self.scheduleNotification(data.message,data.hiring.id);
@@ -208,6 +214,39 @@ showConfirm() {
   });
   confirm.present();
 }
+
+  countActiveHirings(){
+
+    if(localStorage.getItem('token') != null){
+      var headers = new HttpHeaders({
+        Authorization: localStorage.getItem('token'),
+      });
+      this.httpClient.post(this.url+'/api/countActive/hiring', {"user_id": localStorage.getItem('user_id')})
+      .subscribe((response:any)=> {
+       
+        if(response.success == true){
+          
+          if(localStorage.getItem('user_rol') == "1"){
+            
+            this.hiringCount = response.applicantCount
+
+          }else if(localStorage.getItem('user_rol') == "2"){
+            
+            this.hiringCount = response.bidderCount
+          
+          }
+
+        }
+      },
+      err => {
+        console.log('ERROR!: ', err);
+      }
+    );
+  }else{
+    console.log("sesion expirada");
+  }
+
+  }
 
 
 

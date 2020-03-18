@@ -29,7 +29,9 @@ notificationNumber:any;
     user_id:any;
     config:any;
     token:any;
+    hiringCount:any
   constructor(private statusBar: StatusBar, private menu: MenuController,public modalCtrl: ModalController,public events: Events,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private serviceUrl:ServiceUrlProvider) {
+    this.hiringCount = 0
     this.url=serviceUrl.getUrl();
 
       this.plt.ready().then((readySource) => {
@@ -76,6 +78,11 @@ notificationNumber:any;
     this.user_id = localStorage.getItem('user_id');
     this.getNotifications();
     this.getMode();
+
+    window.setInterval(() => {
+      this.countActiveHirings()
+    }, 5000) 
+
   }
   slideToIndex(index: number) {
    this.superTabs.slideTo(index);
@@ -200,5 +207,36 @@ storeAction(){
   });
 
  }
+
+ countActiveHirings(){
+
+  if(localStorage.getItem('token') != null){
+    var headers = new HttpHeaders({
+      Authorization: localStorage.getItem('token'),
+    });
+    this.httpClient.post(this.url+'/api/countActive/hiring', {"user_id": localStorage.getItem('user_id')})
+    .subscribe((response:any)=> {
+     
+      if(response.success == true){
+        
+        if(localStorage.getItem('user_rol') == "1"){
+          
+          this.hiringCount = response.applicantCount
+        }else if(localStorage.getItem('user_rol') == "2"){
+          this.hiringCount = response.bidderCount
+        
+        }
+
+      }
+    },
+    err => {
+      console.log('ERROR!: ', err);
+    }
+  );
+}else{
+  console.log("sesion expirada");
+}
+
+}
 
 }

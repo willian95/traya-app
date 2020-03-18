@@ -22,9 +22,10 @@
 
 
 <ion-content  class="myview">
+  <ion-badge item-end class="count-badge">{{ hiringCount }}</ion-badge>
   <super-tabs  tabsPlacement="top"  toolbarColor="primary" indicatorColor="primary" (tabSelect)="onTabSelect($event)">
     <super-tab [root]="page1" title="Servicios"></super-tab>
-    <super-tab [root]="page2" title="Solicitudes"></super-tab>
+    <super-tab [root]="page2" title="Solicitudes" (countActiveHirings)="countActiveHirings($event)"></super-tab>
   </super-tabs>
 
 

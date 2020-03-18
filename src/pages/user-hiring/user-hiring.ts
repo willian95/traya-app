@@ -57,6 +57,8 @@ export class UserHiringPage {
   servicesName:any;
   selectedOption:any;
   authEmail:any;
+  rol_id:any
+  authId:any
 
   scheduleNotification(message,hiring_id) {
     this.localNotifications.schedule({
@@ -79,6 +81,8 @@ export class UserHiringPage {
     this.user_id = localStorage.getItem('user_id');
     this.authEmail = localStorage.getItem('useremail')
     this.getNotifications();
+    this.rol_id = localStorage.getItem("user_rol")
+    this.authId = localStorage.getItem("user_id")
 
   }
   countCharacter(event){
@@ -92,7 +96,7 @@ export class UserHiringPage {
   createDescription() {
     console.log("lala");
     let alert = this.alertCtrl.create({
-      title: 'Explica brevemente tus necesidades',
+      title: 'Explica tus necesidades',
       inputs: [
       {
         name: 'comments',

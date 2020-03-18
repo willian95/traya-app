@@ -3,20 +3,20 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-   
-    <ion-title style="margin-bottom: -28px;" *ngIf="hiringDescription?.length > 30 ">
-        
-      <small>{{hiringDescription | slice:0:30}}</small>
     
-    </ion-title>
-
-    <ion-title *ngIf="hiringDescription?.length <= 30 ">
+    <span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px; margin-bottom: -28px; font-weight: bold;" *ngIf="hiringDescription?.length > 40 ">
         
-        <small>{{hiringDescription | slice:0:30}}</small>
-      
-      </ion-title>
+      <small>{{hiringDescription | slice:0:40}}</small>
+    
+    </span>
 
-    <button ion-button (click)="showDescription()"  *ngIf="hiringDescription?.length > 30 " style="float: right; margin-top: 2px;">
+    <span *ngIf="hiringDescription?.length <= 40 " style="text-transform: uppercase; color: #b0428f; font-size: 18px; line-height: 48px; font-weight: bold;">
+        
+        <small>{{hiringDescription | slice:0:40}}</small>
+      
+    </span>
+
+    <button ion-button (click)="showDescription()"  *ngIf="hiringDescription?.length >= 40 " style="float: right; margin-top: 10px;">
       <ion-icon ios="ios-add-circle" md="md-add"></ion-icon>
     </button>
   </ion-navbar>
@@ -202,21 +202,20 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
-              <div class="map" id="mapApplicant"> </div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
           <ion-col>  
-            <button ion-button (click)="updateShowMap()">
+            <!--<button ion-button (click)="updateShowMap()">
                 Compartir mi ubicación
+            </button>-->
+            <button ion-button (click)="goToGoogleLocation()">
+              Compartir mi ubicación
             </button>
           </ion-col>
-          <ion-col>  
-            <button ion-button (click)="goToProfile()">
-                Cambiar ubicación
+          <!--<ion-col>  
+            <button ion-button (click)="goToGoogleLocation()">
+                Mostrar mi ubicación
             </button>
-          </ion-col>  
+            
+          </ion-col>--> 
           
         </ion-row>
         <ion-row>
@@ -232,7 +231,9 @@
                 <ion-icon name="pin" style="font-size: 20px;" (click)="navigateTo(bidderAddress)"></ion-icon>
               </button>-->
               <p *ngIf="showMapBidder == 1">Ubicación del trabajador:</p>
-              <div class="map" id="map1" *ngIf="showMapBidder == 1" (click)="navigateTo(bidderAddress)"> </div>
+              <!--<div class="map" id="map1" *ngIf="showMapBidder == 1" (click)="navigateTo(bidderAddress)"> </div>-->
+              <p>{{ location }}, {{ this.detailsHirings.bidder.address }}</p>
+              <div class="map" id="map1" (click)="navigateTo(bidderAddress)"> </div>
             </div>
           </ion-col>
         </ion-row>
@@ -280,7 +281,7 @@
 <ion-row >
   <ion-item padding>
     <ion-label >Opinión</ion-label>
-    <ion-textarea id="comment"  [(ngModel)]="comment"  rows="3" cols="20" placeholder=" Dejá un comentario acerca del trabajo realizado, ¿Te gustó?" maxlength="160"  (ionChange)="countCharacter($event)"></ion-textarea>
+    <ion-textarea id="comment"  [(ngModel)]="comment" (click)="createDescription()" readonly  rows="3" cols="20" placeholder=" Dejá un comentario acerca del trabajo realizado, ¿Te gustó?" maxlength="160"  (ionChange)="countCharacter($event)"></ion-textarea>
   </ion-item>
           <small id="count">Caracteres: {{160 - opinionCount}} </small>
 
@@ -477,25 +478,24 @@
     </ion-row>
     <ion-row>
       <ion-col>
-          <div class="map" id="mapBidder"> </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>  
-        <button ion-button (click)="updateShowMap()">
+        <button ion-button (click)="goToGoogleLocation()">
+          Compartir mi ubicación
+        </button>  
+        <!--<button ion-button (click)="updateShowMap()">
             Compartir mi ubicación
-        </button>
+        </button>-->
       </ion-col>
-      <ion-col>  
-        <button ion-button (click)="goToProfile()">
-            Cambiar ubicación
+      <!--<ion-col>  
+          <button ion-button (click)="goToGoogleLocation()">
+            Mostra mi ubicación
         </button>
-      </ion-col>  
+      </ion-col>--> 
     </ion-row>
     <ion-row style="border: none;">
       <ion-col >    
         <div *ngIf="rol_id == 2">
           <p *ngIf="showMapApplicant == 1">Ubicación del usuario:</p>
+          <p>{{ location }}, {{ detailsHirings.applicant.address }}</p>
           <!--<button ion-button *ngIf="showMapApplicant == 1" (click)="navigateTo(applicantAddress)">
             <ion-icon name="pin" style="font-size: 20px;"></ion-icon>
           </button>-->
@@ -509,9 +509,10 @@
     </ion-row>
     <ion-row style="border: none;">
       <ion-col>
-        <div class="map" id="map2" *ngIf="showMapApplicant == 1" (click)="navigateTo(applicantAddress)">
-
-        </div>
+        
+        <!--<div class="map" id="map2" *ngIf="showMapApplicant == 1" (click)="navigateTo(applicantAddress)">-->
+          <div class="map" id="map2" (click)="navigateTo(applicantAddress)"></div>
+        
       </ion-col>
     </ion-row>
   </ion-grid>

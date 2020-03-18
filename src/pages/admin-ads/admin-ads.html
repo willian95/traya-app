@@ -75,7 +75,9 @@
       </ion-card-header>
 
       <ion-card-content>
-        <img [src]="url+'/ads/'+ad.name" style="width: 100%;">
+        <img *ngIf="ad.ad_type_id == 1" [src]="url+'/ads/'+ad.name" style="width: 100%; height: 90px;">
+        <img *ngIf="ad.ad_type_id == 2" [src]="url+'/ads/'+ad.name" style="width: 100%; height: 180px;">
+        <img *ngIf="ad.ad_type_id == 3" [src]="url+'/ads/'+ad.name" style="width: 100%; height: 270px;">
       </ion-card-content>
 
     </ion-card>

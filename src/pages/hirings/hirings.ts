@@ -21,6 +21,7 @@ import { PusherProvider } from '../../providers/pusher/pusher';
   templateUrl: 'hirings.html',
 })
 export class HiringsPage {
+  //@Output() countActiveHirings = new EventEmitter();
   url:any;
   constructor(public loadingController: LoadingController,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public events: Events, private serviceUrl:ServiceUrlProvider) {
   
@@ -99,6 +100,9 @@ presentNotifications(){
 
 
 getHirings() {
+  //alert("hey")
+  //console.log(this.countActiveHirings)
+  //this.countActiveHirings.emit();
   this.loading = this.loadingController.create({
     content: 'Por favor espere...'
   });
