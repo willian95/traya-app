@@ -9,5 +9,8 @@ import { GoogleLocationPage } from './google-location';
   imports: [
     IonicPageModule.forChild(GoogleLocationPage),
   ],
+  exports:[
+    GoogleLocationPage
+  ]
 })
 export class GoogleLocationPageModule {}

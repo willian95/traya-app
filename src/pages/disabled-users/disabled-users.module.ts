@@ -9,5 +9,8 @@ import { DisabledUsersPage } from './disabled-users';
   imports: [
     IonicPageModule.forChild(DisabledUsersPage),
   ],
+  exports:[
+    DisabledUsersPage
+  ]
 })
 export class DisabledUsersPageModule {}

@@ -1,4 +1,4 @@
-    <ion-header>
+    <ion-header *ngIf="registerComplete != '0'">
       <ion-navbar color="header">
        <button ion-button menuToggle >
      <ion-icon name="menu"></ion-icon>
@@ -39,10 +39,10 @@
        <label id="plus" *ngIf="rol_id != 3"  for="file"><ion-icon ios="ios-camera" md="md-camera"></ion-icon></label>
      </div>
      <ion-item >
-      <ion-text color="dark">
+      <span color="dark">
         <h2>MIS DATOS</h2>
         <small>Información</small>
-      </ion-text>
+      </span>
 
     </ion-item>
      <ion-item *ngIf="rol_id < 3">
@@ -87,8 +87,6 @@
       <ion-option *ngFor="let items of localityArray" [value]="items.id">{{items.name}}</ion-option>
     </ion-select>
   </ion-item>
-
-  
 
 
   <div padding>

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,LoadingController,Platform,AlertController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
-import { DetailsServicesPage } from '../details-services/details-services';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
@@ -38,6 +37,13 @@ export class UpdateServicesPage {
    token:any;
   servicesArray:any;
   loading:any;
+  rolId:any
+  userLocationId:any
+
+  ionViewDidEnter(){
+    this.rolId = window.localStorage.getItem("user_rol")
+    this.userLocationId = window.localStorage.getItem("user_locality_id")
+  }
 
   scheduleNotification(message,hiring_id) {
   this.localNotifications.schedule({
@@ -77,7 +83,7 @@ export class UpdateServicesPage {
   }
 
   viewDetailsServices(items,i){
-    this.navCtrl.push(DetailsServicesPage,{data:items}); // nav
+    this.navCtrl.push("DetailsServicesPage",{data:items}); // nav
   }
 
 }

@@ -9,5 +9,8 @@ import { StatisticsPage } from './statistics';
   imports: [
     IonicPageModule.forChild(StatisticsPage),
   ],
+  exports:[
+    StatisticsPage
+  ]
 })
 export class StatisticsPageModule {}

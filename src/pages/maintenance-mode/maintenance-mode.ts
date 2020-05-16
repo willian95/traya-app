@@ -56,7 +56,7 @@ export class MaintenanceModePage {
             this.loading.dismiss();
             this.presentAlert();
             this.events.publish('maintenance', res);
-            this.navCtrl.setRoot(HomeAdminPage)
+            this.navCtrl.setRoot("HomeAdminPage")
            },err => {
             this.loading.dismiss();
         }); //subscribe

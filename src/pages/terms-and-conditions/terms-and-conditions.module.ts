@@ -9,5 +9,8 @@ import { TermsAndConditionsPage } from './terms-and-conditions';
   imports: [
     IonicPageModule.forChild(TermsAndConditionsPage),
   ],
+  exports:[
+    TermsAndConditionsPage
+  ]
 })
 export class TermsAndConditionsPageModule {}

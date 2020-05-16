@@ -24,16 +24,6 @@
 					<div class="mbsc-card-subtitle" *ngIf="user_rol == 1"  >{{items.bidder.name }}</div>
 
 
-					<!--<ionic3-star-rating
-					activeIcon = "ios-star"
-					defaultIcon = "ios-star-outline"
-					activeColor = "#b0428f"
-					defaultColor = "#d0c5cc"
-					readonly="true"
-					fontSize = "16px"
-					[rating]="averageRatingInt">
-				</ionic3-star-rating>-->
-
 					<ion-avatar item-start>
 						<img [src]="items.bidder.image" *ngIf="items.bidder.image">
 					</ion-avatar>
@@ -54,7 +44,6 @@
               <div class="mbsc-card-subtitle">
 				<ion-badge color="primary" *ngIf="items.status_id ==4 "   [ngClass]="{'statusCalificado': items.status=='Calificado'}"> Calificado </ion-badge>
               	<ion-badge color="primary" *ngIf="items.status_id ==5 "  [ngClass]="{'statusCancelado': items.status=='Cancelado'}">Cancelado</ion-badge>
-
               </div>
             </ion-col>
           </ion-row>
@@ -63,8 +52,11 @@
 		</button>
 	</ion-list>
 
-	<ion-list *ngIf="hiringsArray == null || hiringsArray =='' " padding>
-		<h4 text-center>No hay solicitudes canceladas y/o calificadas </h4>
+	<ion-list *ngIf="loading == true " padding>
+		<h4 text-center>Cargando solicitudes </h4>
+	</ion-list>
 
+	<ion-list *ngIf="(hiringsArray == null || hiringsArray =='') && loading == false " padding>
+		<h4 text-center>No hay solicitudes canceladas y/o calificadas </h4>
 	</ion-list>
 </ion-content>

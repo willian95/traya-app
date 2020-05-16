@@ -9,5 +9,8 @@ import { ActiveHiringsPage } from './active-hirings';
   imports: [
     IonicPageModule.forChild(ActiveHiringsPage),
   ],
+  exports:[
+    ActiveHiringsPage
+  ]
 })
 export class ActiveHiringsPageModule {}

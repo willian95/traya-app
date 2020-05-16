@@ -9,5 +9,8 @@ import { UserOpinionsPage } from './user-opinions';
   imports: [
     IonicPageModule.forChild(UserOpinionsPage),
   ],
+  exports:[
+    UserOpinionsPage
+  ]
 })
 export class UserOpinionsPageModule {}

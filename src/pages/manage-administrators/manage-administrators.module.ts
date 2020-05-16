@@ -9,5 +9,8 @@ import { ManageAdministratorsPage } from './manage-administrators';
   imports: [
     IonicPageModule.forChild(ManageAdministratorsPage),
   ],
+  exports:[
+    ManageAdministratorsPage
+  ]
 })
 export class ManageAdministratorsPageModule {}

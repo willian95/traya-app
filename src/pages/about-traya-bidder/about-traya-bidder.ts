@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angular';
+import { HttpClient } from '@angular/common/http';
+import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 
 /**
  * Generated class for the AboutTrayaBidderPage page.
@@ -16,9 +18,11 @@ import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angula
 export class AboutTrayaBidderPage {
 
   showBackButton:any
+  url:any
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController, public httpClient: HttpClient,private serviceUrl:ServiceUrlProvider) {
 
+    this.url = serviceUrl.getUrl()
     this.showBackButton = false
     let about_bidder = localStorage.getItem('about_band_bidder')
 
@@ -39,5 +43,26 @@ export class AboutTrayaBidderPage {
     localStorage.setItem('about_band','true');
     this.viewCtrl.dismiss();
   }
+
+  ionViewDidEnter(){
+    this.storeAction()
+  }
+
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
  
 }

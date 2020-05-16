@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams} from 'ionic-angular';
-
+import { HttpClient } from '@angular/common/http';
+import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 /**
  * Generated class for the AboutTrayaPage page.
  *
@@ -15,14 +16,36 @@ import { IonicPage, NavController, NavParams} from 'ionic-angular';
 })
 export class AboutTrayaPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  url:any
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient,private serviceUrl:ServiceUrlProvider) {
+    this.url = serviceUrl.getUrl()
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AboutTrayaPage');
   }
 
+  ionViewDidEnter(){
+    this.storeAction()
+  }
 
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
 
 
 }

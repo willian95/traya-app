@@ -1,22 +1,19 @@
 import { Component } from '@angular/core';
 import { NavController,MenuController,Events,AlertController, Platform,ToastController, ModalController, ViewController  } from 'ionic-angular';
-import { LoginPage } from '../login/login';
-import { RequestOptions } from '@angular/http';
-import { RegisterPage } from '../register/register';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { ProfilePage } from '../profile/profile';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TrayaPage } from '../traya/traya';
 import { ServicesJobPage } from '../services-job/services-job';
-import { GooglePlus } from '@ionic-native/google-plus';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { TrayaBidderPage } from '../traya-bidder/traya-bidder';
 import { DetailHiringNotificationPage } from '../detail-hiring-notification/detail-hiring-notification';
 import { LocalNotifications } from '@ionic-native/local-notifications';
-import { NotificationPage } from '../notification/notification';
 import { HomeAdminPage } from '../home-admin/home-admin';
 import { UpdateModalPage } from '../update-modal/update-modal'; //importo el modal
 import { AppVersion } from '@ionic-native/app-version';
 import { StatusBar } from '@ionic-native/status-bar';
+import { IonicPage } from 'ionic-angular';
+import { UserHiringPage } from '../user-hiring/user-hiring';
+@IonicPage()
 
 @Component({
   selector: 'page-home',
@@ -93,16 +90,16 @@ presentAlert(data) {
       duration: 2000
     });
     toast.present();
-    this.navCtrl.setRoot(DetailHiringNotificationPage,{data:data});
+    this.navCtrl.setRoot("DetailHiringNotificationPage",{data:data});
 
   }
 
   goToLogin(){
-    this.navCtrl.push(LoginPage); // nav
+    this.navCtrl.push("LoginPage"); // nav
   }
 
   goToRegister(){
-    this.navCtrl.push(RegisterPage); // nav
+    this.navCtrl.push("RegisterPage"); // nav
   }
 
 
@@ -119,26 +116,52 @@ presentAlert(data) {
 
  
   validateSession(){
+    
     if(localStorage.getItem('token') != null){
       var headers = new HttpHeaders({
         Authorization: localStorage.getItem('token'),
       });
       this.httpClient.get(this.url+'/api/auth/user', { headers })
       .subscribe((response:any)=> {
+        
         this.menu.swipeEnable(true);
         this.events.publish('userLogged',response);
         if(response.roles[0].id== 1){
-          this.navCtrl.setRoot(TrayaPage);
-          this.events.publish('userLogged',response);
+          
+          this.httpClient.post(this.url+'/api/fcm/token/update', {"user_id": localStorage.getItem("user_id"), "deviceToken": localStorage.getItem('fcmToken')})
+          .subscribe((res:any) => {
+            console.log("validate", res)
+            this.navCtrl.setRoot("TrayaPage");
+            this.events.publish('userLogged',response);
+          })
+
+          
         }else if(response.roles[0].id==2 && response.services == ''){
-          this.navCtrl.setRoot(ServicesJobPage);
-          this.events.publish('userLogged',response);
+          this.httpClient.post(this.url+'/api/fcm/token/update', {"user_id": localStorage.getItem("user_id"), "devideToken": localStorage.getItem('fcmToken')})
+          .subscribe((res:any) => {
+            console.log("validate", res)
+            this.navCtrl.setRoot("ServicesJobPage");
+            this.events.publish('userLogged',response);
+          })
+          
         }else if(response.roles[0].id==2 && response.services != ''){
-          this.navCtrl.setRoot(TrayaBidderPage);
-          this.events.publish('userLogged',response);
+          console.log("test-validad-sesion", response)
+          this.httpClient.post(this.url+'/api/fcm/token/update', {"user_id": localStorage.getItem("user_id"), "devideToken": localStorage.getItem('fcmToken')})
+          .subscribe((res:any) => {
+            console.log("validate", res)
+            this.navCtrl.setRoot("TrayaBidderPage");
+            this.events.publish('userLogged',response);
+          })
+
+          
         }
         else if(response.roles[0].id ==3){
-          this.navCtrl.setRoot(HomeAdminPage);
+          this.navCtrl.setRoot("HomeAdminPage");
+          this.events.publish('userLogged',response);
+        }
+
+        else if(response.roles[0].id ==4){
+          this.navCtrl.setRoot("HomeAdminPage");
           this.events.publish('userLogged',response);
         }
       },
@@ -167,7 +190,7 @@ update(app_version){ //la funcion
     if (versionToday==true){
         this.closeModal();
       }else{
-      let modal=this.modalCtrl.create(UpdateModalPage);
+      let modal=this.modalCtrl.create("UpdateModalPage");
       modal.present();
       console.log('app antigua');
       }

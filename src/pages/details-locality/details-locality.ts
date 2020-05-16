@@ -122,7 +122,7 @@ export class DetailsLocalityPage {
           this.events.publish('localityEvent',this.description);
           //if(this.userRol == 3)
             //this.navCtrl.push(UpdateLocalityPage);
-          this.navCtrl.setRoot(HomeAdminPage);
+          this.navCtrl.setRoot("HomeAdminPage");
         },err => {
               this.loading.dismiss();
               this.toastAlert(err.error.errors);
@@ -154,7 +154,7 @@ export class DetailsLocalityPage {
         this.loading.dismiss();
         this.toastAlert(res.msg);
         this.events.publish('localityEvent',this.description);
-        this.navCtrl.setRoot(HomeAdminPage);
+        this.navCtrl.setRoot("HomeAdminPage");
         //if(this.userRol == 3)
         //this.navCtrl.push(UpdateLocalityPage);
       },err => {

@@ -85,6 +85,28 @@ export class UserHiringPage {
     this.authId = localStorage.getItem("user_id")
 
   }
+
+  ionViewDidEnter(){
+    this.storeAction()
+  }
+
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
+
   countCharacter(event){
     this.commentsCount=this.comments.length;
     if (this.commentsCount ==300) {
@@ -96,7 +118,7 @@ export class UserHiringPage {
   createDescription() {
     console.log("lala");
     let alert = this.alertCtrl.create({
-      title: 'Explica tus necesidades',
+      title: 'Descripción de la solicitud',
       inputs: [
       {
         name: 'comments',
@@ -184,7 +206,7 @@ export class UserHiringPage {
   }
 
   presentNotifications(){
-    this.navCtrl.push(NotificationPage); // nav
+    this.navCtrl.push("NotificationPage"); // nav
   }
 
 
@@ -317,8 +339,10 @@ export class UserHiringPage {
     } ); //subscribe
   }
   showOpinions(){
-    this.navCtrl.push(UserOpinionsPage,{data:this.usersServices});
+    this.navCtrl.push("UserOpinionsPage",{data:this.usersServices});
 
   }
+
+  
 
 }

@@ -116,8 +116,8 @@ export class AddAdministratorPage {
       this.loading.dismiss();
       //console.log(res)
       this.toastAlert('Usuario actualizado correctamente');
-      this.navCtrl.push(ManageAdministratorsPage); 
-      this.navCtrl.setRoot(HomeAdminPage);
+      this.navCtrl.push("ManageAdministratorsPage"); 
+      this.navCtrl.setRoot("HomeAdminPage");
 
     },err => {
         this.loading.dismiss();

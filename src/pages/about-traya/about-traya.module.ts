@@ -9,5 +9,8 @@ import { AboutTrayaPage } from './about-traya';
   imports: [
     IonicPageModule.forChild(AboutTrayaPage),
   ],
+  exports:[
+    AboutTrayaPage
+  ]
 })
 export class AboutTrayaPageModule {}

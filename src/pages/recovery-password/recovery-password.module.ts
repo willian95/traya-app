@@ -9,5 +9,8 @@ import { RecoveryPasswordPage } from './recovery-password';
   imports: [
     IonicPageModule.forChild(RecoveryPasswordPage),
   ],
+  exports:[
+    RecoveryPasswordPage
+  ]
 })
 export class RecoveryPasswordPageModule {}

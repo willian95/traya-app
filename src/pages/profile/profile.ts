@@ -8,6 +8,7 @@
     import { NotificationPage } from '../notification/notification';
     import { TrayaPage } from '../traya/traya';
     import { LoginPage } from '../login/login';
+    import { ServicesJobPage } from '../services-job/services-job';
     import { TrayaBidderPage } from '../traya-bidder/traya-bidder';
     import { LocalNotifications } from '@ionic-native/local-notifications';
 
@@ -21,6 +22,7 @@
     export class ProfilePage {
       url:any;
       pusher2:any;
+      registerComplete:any
       constructor(public events: Events,public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams,public loadingController: LoadingController,public httpClient: HttpClient,private alertCtrl: AlertController,private serviceUrl:ServiceUrlProvider, private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications) {
         this.loading = this.loadingController.create({
                  content: 'Por favor espere...'
@@ -29,7 +31,8 @@
              // this.pusher2=pusherNotify.init();
 
              // LOCALNOTIFACTION
-
+             this.registerComplete = localStorage.getItem("is_register_completed")
+             //console.log("test-register-complete", this.registerComplete)
       this.plt.ready().then((readySource) => {
         var me = this;
         this.localNotifications.on('click', function(notification){
@@ -66,6 +69,7 @@
       localityArray:any;
       servicesArray:any;
       myRand:any;
+      locationName:any
 
         ionViewDidLoad() {
         const channel = this.pusherNotify.init();
@@ -79,6 +83,27 @@
         this.getServices();
         this.getUser();
       }
+
+      ionViewDidEnter(){
+        this.storeAction()
+      }
+    
+      storeAction(){
+        var user_id = localStorage.getItem('user_id')
+        console.log(user_id)
+        
+        this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+        .pipe(
+          )
+        .subscribe((res:any)=> {
+          console.log(res)
+          
+      
+        },err => {
+          
+        });
+      
+       }
 
         scheduleNotification(message,hiring_id) {
       this.localNotifications.schedule({
@@ -137,7 +162,7 @@ alertChange(){
 
 
       presentNotifications(){
-        this.navCtrl.push(NotificationPage); // nav
+        this.navCtrl.push("NotificationPage"); // nav
       }
       getNotifications(){
         this.httpClient.get(this.url+"/api/notification/"+this.user_id+'?filters={"read":0}')
@@ -297,7 +322,20 @@ alertChange(){
           user_id:'',
           services_id:'',
           token:'',
+          is_register_completed:true
         };
+
+        var was_register_complete = localStorage.getItem("is_register_completed")
+        var locationId = this.location_id
+        var location_name = ""
+        this.localityArray.forEach(function(data, index){
+          if(data.id == locationId){
+            location_name = data.name
+          }
+        })
+
+        this.locationName = location_name
+
         if (this.userimage !=null) 
           data.image=this.userimage;
         if(this.name=="" || this.name==null){
@@ -306,7 +344,12 @@ alertChange(){
         }else if(this.email=="" || this.email==null){
           this.message="Por favor ingrese su correo.";
           this.errorAlert(this.message);
-        }else if(this.phone=="" || this.phone==null){
+        }
+        else if(this.domicile == "" || this.domicile == null){
+          this.message="Por favor ingrese su domicilio.";
+          this.errorAlert(this.message);
+        }
+        else if(this.phone=="" || this.phone==null || this.phone=="+54934"){
           this.message="Por favor ingrese su número de teléfono.";
           this.errorAlert(this.message);
         }else{
@@ -328,15 +371,23 @@ alertChange(){
           data.phone=this.phone;
           data.rol_id=this.rol_id;
           localStorage.setItem('user_rol',this.rol_id);
+          if(localStorage.getItem('is_register_completed') == "0"){
+            localStorage.setItem('is_register_completed', "1")
+          }
           data.description=this.description;
           data.user_id=this.user_id;
           data.services_id=this.services_id;
           data.token=this.token;
 
+          console.log("test-locationName", this.locationName)
+          localStorage.setItem('user_locality_name', this.locationName)
+          localStorage.setItem('user_domicile', this.domicile)
+
+          console.log("was_register_complete", was_register_complete)
+
           //return  this.httpClient.post(this.url+"/api/auth/user/update", {"password":this.password,"image":this.userimage,"location_id":this.location_id,"domicile":this.domicile,"name":this.name,"email":this.email,"phone":this.phone,"rol_id":this.rol_id,"description":this.description,"user_id":this.user_id,"token":this.token,'services':this.services_id})
           return  this.httpClient.post(this.url+"/api/auth/user/update", data)
-          .pipe(
-          )
+          .pipe()
           .subscribe((res:any)=> {
             console.log(res);
              this.loading.dismiss();
@@ -345,16 +396,23 @@ alertChange(){
             this.events.publish('userName', res)
             
             window.localStorage.setItem('user_locality_id', this.location_id)
+            window.localStorage.setItem('user_locality_name', this.locationName)
 
             //this.getUserRefresh();
             this.presentAlert();
            // if(this.rol_id != this.old_rol_id){
             //  this.navCtrl.setRoot(LoginPage);
             //}
-              if (this.rol_id == 2) {
-                this.navCtrl.setRoot(TrayaBidderPage); // nav
+              if (this.rol_id == 2) 
+              {
+
+                if(was_register_complete == "0"){
+                  this.navCtrl.setRoot("ServicesJobPage");  
+                }else{
+                  this.navCtrl.setRoot("TrayaBidderPage"); // nav
+                }
               }else if(this.rol_id ==1){
-                this.navCtrl.setRoot(TrayaPage); // nav
+                this.navCtrl.setRoot("TrayaPage"); // nav
               }
           },err => {
              this.loading.dismiss();

@@ -40,16 +40,23 @@ export class DetailsServicesPage {
   user_id:any;
   tokenCode:any;
   token:any;
+  locations:any
+  locality:any
+  rolId:any
+
   ionViewDidLoad() {
     this.user_id = localStorage.getItem('user_id');
     this.name = this.detailsServices.name;
     this.description = this.detailsServices.description;
     this.image = this.detailsServices.logo;
     this.services_id = this.detailsServices.id;
+    this.locality = this.detailsServices.location_id;
+    this.rolId = window.localStorage.getItem("user_rol");
     this.getNotifications();
+    this.fetchLocaltions()
   }
   presentNotifications(){
-    this.navCtrl.push(NotificationPage); // nav
+    this.navCtrl.push("NotificationPage"); // nav
   }
 
   getNotifications(){
@@ -93,13 +100,14 @@ export class DetailsServicesPage {
 
         this.loading.present();
         this.tokenCode = localStorage.getItem('tokenCode');
-        return  this.httpClient.put(this.url+"/api/services", {'_METHOD':'PUT','logo':this.image64,'name':this.name,'service_id':this.services_id,"description":this.description,"token":this.tokenCode})
+
+        return  this.httpClient.put(this.url+"/api/services", {'_METHOD':'PUT','logo':this.image64,'name':this.name,'service_id':this.services_id,"description":this.description,"token":this.tokenCode, "locationId": this.locality})
         .pipe(
         )
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.toastAlert(res.msg);
-          this.navCtrl.setRoot(UpdateServicesPage);
+          this.navCtrl.setRoot("UpdateServicesPage");
         },err => {
               this.loading.dismiss();
           console.log(err.error.errors);
@@ -121,10 +129,19 @@ export class DetailsServicesPage {
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.toastAlert(res.msg);
-          this.navCtrl.setRoot(UpdateServicesPage);
+          this.navCtrl.setRoot("UpdateServicesPage");
         },err => {
               this.loading.dismiss();
         }); //subscribe
+    }
+
+    fetchLocaltions(){
+
+      this.httpClient.get(this.url+"/api/locations")
+      .subscribe((response:any) => {
+        this.locations = response.data
+      })
+  
     }
 
 }

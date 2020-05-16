@@ -57,7 +57,10 @@ export class ActiveHiringsPage {
     this.rol_id = localStorage.getItem('user_rol');
     this.url=this.serviceUrl.getUrl();
       if (localStorage.getItem('valueServicesBidder') !=null) {
-     this.toastTweet();
+     
+        if(localStorage.getItem('terms') == 'true'){
+          this.toastTweet();
+        }
      this.storage.removeItem('valueServicesBidder');
     }
 
@@ -73,7 +76,7 @@ export class ActiveHiringsPage {
   });
 }
   presentNotifications(){
-    this.navCtrl.push(NotificationPage); // nav
+    this.navCtrl.push("NotificationPage"); // nav
   }
   getHiringsActive() {
      this.loading = this.loadingController.create({
@@ -100,6 +103,9 @@ export class ActiveHiringsPage {
   }
 
   viewDetails(items:any,i:any){
+
+    console.log(items)
+
     var contratactionNumber = items.id;
     localStorage.setItem('contratactionNumber',contratactionNumber);
     var status = items.status;
@@ -107,7 +113,7 @@ export class ActiveHiringsPage {
     this.httpClient.get(this.url+"/api/hiring/"+items.id)
   .pipe()
     .subscribe((res:any)=> {
-      this.navCtrl.push(HiringDetailsPage,{data:res});
+      this.navCtrl.push("HiringDetailsPage",{data:res});
   });
   }
   showProfile(){
@@ -131,6 +137,28 @@ export class ActiveHiringsPage {
 
 
 showHistory(){
-    this.navCtrl.push(HistoryHiringsPage); // nav
+    this.navCtrl.push("HistoryHiringsPage"); // nav
   }
+
+  ionViewDidEnter(){
+    this.storeAction()
+  }
+
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
+
 }

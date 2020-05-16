@@ -11,14 +11,16 @@
  </div>
 
 	<ion-list *ngIf="servicesArray != null">
-		<button ion-item *ngFor="let items of servicesArray ; let i =index" (click)="viewUsers(items,i)">
-			<ion-avatar item-start>
-				<img class="imgServices" [src]="items.logo" *ngIf="items.logo">
-				<div id="countBidders" *ngIf="items.usersPerLocality!=0">{{items.usersPerLocality}}</div>
-			</ion-avatar>
-			<h2>{{items.name}}</h2>
-      <small>{{items.description}}</small>
-		</button>
+		<div *ngFor="let items of servicesSearch ; let i =index">
+			<button ion-item  (click)="viewUsers(items,i)" *ngIf="items.location_id == userLocationId || items.location_id == 0">
+				<ion-avatar item-start>
+					<img class="imgServices" [src]="items.logo" *ngIf="items.logo">
+					<div id="countBidders" *ngIf="items.usersPerLocality!=0">{{items.usersPerLocality}}</div>
+				</ion-avatar>
+				<h2>{{items.name}}</h2>
+		  		<small>{{items.description}}</small>
+			</button>
+		</div>
 	</ion-list>
 
   <ion-list *ngIf="servicesArray == null || servicesArray =='' " padding>

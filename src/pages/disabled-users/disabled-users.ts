@@ -101,7 +101,7 @@ export class DisabledUsersPage {
 
  }
   viewDetailsUsers(items,i){
-    this.navCtrl.push(DetailsUsersPage,{data:items}); // nav
+    this.navCtrl.push("DetailsUsersPage",{data:items}); // nav
   }
 
 }

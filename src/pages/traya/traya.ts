@@ -2,15 +2,10 @@ import { Component,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams,Platform,AlertController,ToastController,ModalController,MenuController, LoadingController} from 'ionic-angular';
 import { Events } from 'ionic-angular';
 import { SuperTabs } from 'ionic2-super-tabs';
-import { ServicesPage } from '../services/services';
-import { MaintenancePage } from '../maintenance/maintenance';
-import { HiringsPage } from '../hirings/hirings';
-import { NotificationPage } from '../notification/notification';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
-import { TrayaBidderPage } from '../traya-bidder/traya-bidder';
 import { StatusBar } from '@ionic-native/status-bar';
 
 @IonicPage()
@@ -21,8 +16,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 export class TrayaPage {
   @ViewChild(SuperTabs) superTabs: SuperTabs;
 
-    page1: any = ServicesPage;
-    page2: any = HiringsPage;
+    page1: any = "ServicesPage";
+    page2: any = "HiringsPage";
     username:any;
     user_id:any;
     token:any;
@@ -64,11 +59,15 @@ export class TrayaPage {
   });
 }
 
-  ionViewDidLoad() {
+  ionViewDidEnter(){
     this.storeAction()
-    window.setInterval(() => {
+  }
+
+  ionViewDidLoad() {
+    
+    //window.setInterval(() => {
       this.countActiveHirings()
-    }, 5000) 
+    //}, 5000) 
   
     const channel = this.pusherNotify.init();
     let self = this;
@@ -87,7 +86,7 @@ export class TrayaPage {
    this.superTabs.slideTo(index);
  }
  presentNotifications(){
-   this.navCtrl.push(NotificationPage); // nav
+   this.navCtrl.push("NotificationPage"); // nav
  }
 
  storeAction(){
@@ -163,7 +162,7 @@ export class TrayaPage {
       //  this.navCtrl.setRoot(LoginPage);
       //}
         if (rol_id == "1") {
-          this.navCtrl.setRoot(TrayaBidderPage); // nav*/
+          this.navCtrl.setRoot("TrayaBidderPage"); // nav*/
         }
 
       })
@@ -178,7 +177,7 @@ export class TrayaPage {
      .subscribe((response:any)=> {
        this.config=response.data;
        if(this.config.active != 0){
-         const maintenanceModal = this.modalCtrl.create(MaintenancePage);
+         const maintenanceModal = this.modalCtrl.create("MaintenancePage");
          maintenanceModal.present();
          this.menu.swipeEnable(false);
        }

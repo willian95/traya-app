@@ -11,5 +11,8 @@ import { SuperTabsModule } from 'ionic2-super-tabs';
     IonicPageModule.forChild(TrayaPage),
     SuperTabsModule,
   ],
+  exports:[
+    TrayaPage
+  ]
 })
 export class TrayaPageModule {}

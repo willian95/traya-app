@@ -4,40 +4,18 @@ import { Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 //import { Storage } from '@ionic/storage';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { HomePage } from '../pages/home/home';
-import { RegisterServicesPage } from '../pages/register-services/register-services';
-import { TrayaPage } from '../pages/traya/traya';
-import { ProfilePage } from '../pages/profile/profile';
-import { ServicesJobPage } from '../pages/services-job/services-job';
-import { UpdateServicesPage } from '../pages/update-services/update-services';
-import { TrayaBidderPage } from '../pages/traya-bidder/traya-bidder';
 import { ServiceUrlProvider } from '../providers/service-url/service-url';
 import { PusherProvider } from '../providers/pusher/pusher';
 import { BackgroundMode } from '@ionic-native/background-mode';
-import { DetailHiringNotificationPage } from '../pages/detail-hiring-notification/detail-hiring-notification';
-import { ContactPage } from '../pages/contact/contact';
-import { RegisterPage } from '../pages/register/register';
-import { ManageAdministratorsPage } from '../pages/manage-administrators/manage-administrators';
-import { LoginPage } from '../pages/login/login';
-import { AboutTrayaPage } from '../pages/about-traya/about-traya';
-import { AboutTrayaBidderPage } from '../pages/about-traya-bidder/about-traya-bidder';
-import { CreateLocalityPage } from '../pages/create-locality/create-locality';
-import { UpdateLocalityPage } from '../pages/update-locality/update-locality';
-import { ManageUsersPage } from '../pages/manage-users/manage-users';
-import { DisabledUsersPage } from '../pages/disabled-users/disabled-users';
-import { MaintenanceModePage } from '../pages/maintenance-mode/maintenance-mode';
-import { StatisticsPage } from '../pages/statistics/statistics';
-import { DetailsLocalityPage } from '../pages/details-locality/details-locality';
-import { AdminAdsPage } from '../pages/admin-ads/admin-ads';
+
 
 import { LocalNotifications } from '@ionic-native/local-notifications';
 
-import Pusher from 'pusher-js';
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { Observable } from 'rxjs';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { FCM } from '@ionic-native/fcm';
 
 
 @Component({
@@ -46,7 +24,7 @@ import { Push, PushObject, PushOptions } from '@ionic-native/push';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   url:any;
-  rootPage: any = HomePage;
+  rootPage: any = "HomePage";
   name:any;
   image:any;
   token:any;
@@ -55,6 +33,7 @@ export class MyApp {
   storage:any;
   rol_id:any;
   config:any
+  showNotifications:any
   // hiring_id:any;
   text = '¡Descárgate Traya! es una App de Servicios…';
   textBody = 'te permite de manera rápida y sencilla conectarte con un profesional. \n'+
@@ -65,34 +44,60 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
   appMenuItems:any;
-  constructor(private localNotifications: LocalNotifications,private alertCtrl: AlertController,private socialSharing: SocialSharing,public actionSheetController: ActionSheetController,public backgroundMode: BackgroundMode,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public httpClient: HttpClient,public events: Events,private serviceUrl:ServiceUrlProvider,private pusher:PusherProvider, private push: Push) {
+  constructor(private localNotifications: LocalNotifications,private alertCtrl: AlertController,private socialSharing: SocialSharing,public actionSheetController: ActionSheetController,public backgroundMode: BackgroundMode,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public httpClient: HttpClient,public events: Events,private serviceUrl:ServiceUrlProvider,private pusher:PusherProvider, private push: Push, private fcm: FCM) {
     this.appMenuItems = [];
     this.initializeApp();
     this.url=serviceUrl.getUrl();
     this.storage = localStorage;
     this.validateHeaderMain=false;
-    this.backgroundMode.enable();
+    this.backgroundMode.disable();
     this.getConfig()
 
     this.pushSetup();
 
-      /***LLAMA LA FUNCION EN UN INTERVALO DE TIEMPO***/
-    //   Observable.interval(5000).subscribe(()=>{
-     //     this.tokenRefresh();
-     //   });
+     /*platform.ready().then(() => {
+
+      if (platform.is('cordova')){
+
+        //Subscribe on pause i.e. background
+        this.platform.pause.subscribe(() => {
+          //console.log("paused");
+          this.showNotifications = false
+        });
+
+        //Subscribe on resume i.e. foreground 
+        this.platform.resume.subscribe(() => {
+          window['paused'] = 0;
+          this.showNotifications = true
+          //console.log("resume");
+        });
+       }
+    });*/
 
 
+    /*this.fcm.onNotification().subscribe(notification => {
+      if(notification.wasTapped){
+        console.log("Received in background");
+      } else {
+        let alert = alertCtrl.create({
+          title: "titulo",
+          subTitle: "subtitulo"
+        });
+        alert.present();
+      };
+    })*/
 
-
-       this.localNotifications.on('click', (notification, state) => {
-      let json = JSON.parse(notification.data);
-
-      let alert = alertCtrl.create({
-        title: notification.title,
-        subTitle: json.mydata
-      });
-      alert.present();
-    })
+      /*if(this.showNotifications == true){
+        this.localNotifications.on('click', (notification, state) => {
+          let json = JSON.parse(notification.data);
+    
+          let alert = alertCtrl.create({
+            title: notification.title,
+            subTitle: json.mydata
+          });
+          alert.present();
+        })
+      }*/
 
   }
 
@@ -119,56 +124,61 @@ export class MyApp {
     
     this.appMenuItems=[];
     if(this.rol_id == 1){
-      this.appMenuItems.push({title: 'Servicios', component: TrayaPage, icon: 'people'}/**,{title: 'Acerca de TRAYA', component: AboutTrayaPage, icon: 'information-circle'}*/);
+      this.appMenuItems.push({title: 'Servicios', component: "TrayaPage", icon: 'people'}/**,{title: 'Acerca de TRAYA', component: AboutTrayaPage, icon: 'information-circle'}*/);
     }else if(this.rol_id ==2){
-      this.appMenuItems.push({title: 'Solicitudes de Trabajo', component: TrayaBidderPage, icon: 'list'},{title: 'Mis Servicios', component: ServicesJobPage, icon: 'add-circle'}/*,{title: 'Acerca de TRAYA', component: AboutTrayaBidderPage, icon: 'information-circle'}*/);
+      this.appMenuItems.push(
+        {title: 'Solicitudes de Trabajo', component: "TrayaBidderPage", icon: 'list'},
+        {title: 'Mis Servicios', component: "ServicesJobPage", icon: 'add-circle'}/*,{title: 'Acerca de TRAYA', component: AboutTrayaBidderPage, icon: 'information-circle'}*/);
     }else if(this.rol_id ==3){
       this.appMenuItems.push(
-        {title: 'Registrar Servicios', component: RegisterServicesPage, icon: 'add-circle'},
-        {title: 'Actualizar Servicios', component: UpdateServicesPage, icon: 'refresh-circle'},
-        {title: 'Crear Localidades', component: CreateLocalityPage, icon: 'locate'},
-        {title: 'Gestionar Localidades', component: UpdateLocalityPage, icon: 'refresh'},
-        {title: 'Usuarios Activos', component: ManageUsersPage, icon: 'contacts'},
-        {title: 'Usuarios Inactivos', component: DisabledUsersPage, icon: 'close'},
-        {title: 'Modo mantenimiento', component: MaintenanceModePage, icon: 'build', badge: this.config},
-        {title: 'Administradores de localidades', component: ManageAdministratorsPage, icon: 'pin'},
-        {title: 'Estadísticas de usuarios', component: StatisticsPage, icon: 'trending-up'});
+        {title: 'Registrar Servicios', component: "RegisterServicesLocationsPage", icon: 'add-circle'},
+        {title: 'Actualizar Servicios', component: "UpdateServicesPage", icon: 'refresh-circle'},
+        {title: 'Crear Localidades', component: "CreateLocalityPage", icon: 'locate'},
+        {title: 'Gestionar Localidades', component: "UpdateLocalityPage", icon: 'refresh'},
+        {title: 'Usuarios Activos', component: "ManageUsersPage", icon: 'contacts'},
+        {title: 'Usuarios Inactivos', component: "DisabledUsersPage", icon: 'close'},
+        {title: 'Modo mantenimiento', component: "MaintenanceModePage", icon: 'build', badge: this.config},
+        {title: 'Administradores de localidades', component: "ManageAdministratorsPage", icon: 'pin'},
+        {title: 'Estadísticas de usuarios', component: "StatisticsPage", icon: 'trending-up'},
+        {title: 'Publicidad', component: "AdsLocationsPage", icon: 'pricetag'});
     }else if(this.rol_id == 4){
       this.appMenuItems.push(
-        {title: 'Gestionar Notificaciones', component: DetailsLocalityPage, icon: 'add-circle'},
-        {title: 'Usuarios Activos', component: ManageUsersPage, icon: 'add-circle'},
-        {title: 'Usuarios Inactivos', component: DisabledUsersPage, icon: 'add-circle'},
-        {title: 'Estadísticas de usuarios', component: StatisticsPage, icon: 'trending-up'},
-        {title: 'Publicidad', component: AdminAdsPage, icon: 'pricetag'}
+        {title: 'Registrar Servicios', component: "RegisterServicesPage", icon: 'add-circle'},
+        {title: 'Actualizar Servicios', component: "UpdateServicesPage", icon: 'refresh-circle'},
+        {title: 'Gestionar Notificaciones', component: "DetailsLocalityPage", icon: 'add-circle'},
+        {title: 'Usuarios Activos', component: "ManageUsersPage", icon: 'add-circle'},
+        {title: 'Usuarios Inactivos', component: "DisabledUsersPage", icon: 'add-circle'},
+        {title: 'Estadísticas de usuarios', component: "StatisticsPage", icon: 'trending-up'},
+        //{title: 'Publicidad', component: "AdminAdsPage", icon: 'pricetag'}
       );
     }
   }
 
 
   viewContactPage(){
-    this.nav.push(ContactPage);
+    this.nav.push("ContactPage");
   }
 
   viewServicesJobPage(){
-    this.nav.push(ServicesJobPage)
+    this.nav.push("ServicesJobPage")
   }
 
   viewAboutTrayaPage(){
     if(this.rol_id == 1){
-    this.nav.push(AboutTrayaPage);
+    this.nav.push("AboutTrayaPage");
     }else{
-      this.nav.push(AboutTrayaBidderPage);
+      this.nav.push("AboutTrayaBidderMenuPage");
     }
   }
    viewLoginPage(){
-    this.nav.push(LoginPage);
+    this.nav.push("LoginPage");
   }
 
  viewRegisterPage(){
-    this.nav.push(RegisterPage);
+    this.nav.push("RegisterPage");
   }
   viewProfilePage(){
-    this.nav.push(ProfilePage);
+    this.nav.push("ProfilePage");
 
   }
   
@@ -338,7 +348,7 @@ initializeApp() {
 
   }
   goToProfile(){
-    this.nav.setRoot(ProfilePage);
+    this.nav.setRoot("ProfilePage");
   }
 
 
@@ -398,7 +408,7 @@ initializeApp() {
       this.appMenuItems=[];
       this.clearKeys();
       this.events.publish('userLogout',res);
-      this.nav.setRoot(HomePage);
+      this.nav.setRoot("HomePage");
     },err => {
     } ); //subscribe
   }
@@ -417,10 +427,32 @@ initializeApp() {
     };
  
     const pushObject: PushObject = this.push.init(options);
-    
 
-    pushObject.on('registration').subscribe((registration: any) => localStorage.setItem("fcmToken", registration.registrationId));
-    pushObject.on('notification').subscribe((notification: any) => console.log('Received a notification', notification));
+    pushObject.on('registration').subscribe((registration: any) => {
+      //alert("fcmtoken "+registration.registrationId)
+      if(registration != null){
+        if(registration.registrationId != null){
+          localStorage.setItem("fcmToken", registration.registrationId)
+        }
+      }
+      
+      //alert("test-fcmtoken "+registration.registrationId);
+    });
+    pushObject.on('notification').subscribe((notification: any) => {
+      
+      //let json = JSON.parse(notification.message);
+      this.nav.setRoot("HiringDetailsPage")
+      /*if(notification.page == "hiring"){
+        this.nav.push(HiringDetailsPage, {data: notification.hiring});
+      }*/
+
+      this.localNotifications.schedule({
+        id: 1,
+        title: notification.title,
+        text: notification.message
+      });
+
+    });
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
 

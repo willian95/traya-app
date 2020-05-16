@@ -39,7 +39,7 @@ import { HomeAdminPage } from '../home-admin/home-admin';
    }
 
    presentNotifications(){
-     this.navCtrl.push(NotificationPage); // nav
+     this.navCtrl.push("NotificationPage"); // nav
    }
 
 
@@ -84,7 +84,7 @@ import { HomeAdminPage } from '../home-admin/home-admin';
      .subscribe((res:any)=> {
        this.loading.dismiss();
        this.toastAlert('Usuario habilitado exitosamente');
-       this.navCtrl.setRoot(HomeAdminPage);
+       this.navCtrl.setRoot("HomeAdminPage");
 
      },err => {
        this.loading.dismiss();
@@ -112,7 +112,7 @@ import { HomeAdminPage } from '../home-admin/home-admin';
      .subscribe((res:any)=> {
        this.loading.dismiss();
        this.toastAlert('Usuario borrado exitosamente');
-       this.navCtrl.setRoot(HomeAdminPage);
+       this.navCtrl.setRoot("HomeAdminPage");
 
      },err => {
        this.loading.dismiss();

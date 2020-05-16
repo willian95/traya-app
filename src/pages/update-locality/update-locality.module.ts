@@ -9,5 +9,8 @@ import { UpdateLocalityPage } from './update-locality';
   imports: [
     IonicPageModule.forChild(UpdateLocalityPage),
   ],
+  exports:[
+    UpdateLocalityPage
+  ]
 })
 export class UpdateLocalityPageModule {}

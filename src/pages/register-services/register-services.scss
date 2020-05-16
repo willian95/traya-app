@@ -1,6 +1,6 @@
 page-register-services {
   .myview {
-    background: linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78));
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
     -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -33,19 +33,19 @@ page-register-services {
   width: 160px;
 }
 
-  #registerServices input  {
-  width: 100%;
+  #registerServices ion-input  {
+  /*width: 100%;
   padding: .375rem .75rem;
   font-size: 2rem;
-  line-height: 1.5;
-  background: rgba(14, 13, 13, 0.7);
+  line-height: 1.5;*/
+  /*background: rgba(14, 13, 13, 0.7);
    background-clip: padding-box;
-  border: 1px solid black;
-  color: #fff;
-  border-radius: .25rem;
+  border: 1px solid black;*/
+  color: #000;
+  /*border-radius: .25rem;
   -webkit-box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
   box-shadow: 0 2px 10px 1px rgba(0,0,0,0.5);
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;*/
   }
   ion-grid.grid {
     padding-top: 6rem;
@@ -63,23 +63,20 @@ page-register-services {
 	z-index: -1;
 }
 
+ion-label{
+  color: #000;
+}
+
 .inputfile + label {
     font-size: 1.25em;
     font-weight: 700;
-    color: white;
-    background-color: black;
+    color: #795C9B;
     display: inline-block;
     width: 100%;
     padding: .375rem .75rem;
     font-size: 2rem;
     line-height: 1.5;
-    background: rgba(14, 13, 13, 0.7);
     background-clip: padding-box;
-    border: 1px solid black;
-    color: #fff;
-    border-radius: .25rem;
-    -webkit-box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.5);
     -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
     transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
@@ -88,13 +85,13 @@ page-register-services {
 
 .inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: #000;
+
 }
 .inputfile + label {
 	cursor: pointer; /* "hand" cursor */
 }
 .inputfile:focus + label {
-	outline: 1px dotted #000;
+
 	outline: -webkit-focus-ring-color auto 5px;
 }
 .inputfile + label * {

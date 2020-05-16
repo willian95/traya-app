@@ -59,7 +59,7 @@ export class UpdateLocalityPage {
 
 
   viewDetailsLocality(items,i){
-    this.navCtrl.push(DetailsLocalityPage,{data:items}); // nav
+    this.navCtrl.push("DetailsLocalityPage",{data:items}); // nav
   }
 
 

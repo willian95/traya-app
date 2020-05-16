@@ -36,6 +36,8 @@ export class ContactPage {
 
   ionViewDidLoad() {
     this.tokenCode = localStorage.getItem('tokenCode');
+    this.name = localStorage.getItem('user')
+    this.email = localStorage.getItem('useremail')
   }
 
 
@@ -62,7 +64,7 @@ export class ContactPage {
 
    sendMessage() {
       if(this.name=="" || this.name==null){
-       this.message = "Por favor ingrese el nombre.";
+       this.message = "Por favor ingrese su nombre.";
        this.errorAlertToast1(this.message);
       }else if(this.comments=="" || this.comments==null){
         this.message="Por favor ingrese su comentario.";

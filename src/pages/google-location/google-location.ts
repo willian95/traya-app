@@ -55,12 +55,12 @@ export class GoogleLocationPage {
     
     this.detailsHiring = navParams.get('data');
     console.log(this.detailsHiring)
+    console.log(this.detailsHiring)
     this.url=serviceUrl.getUrl();
     this.myaddress = localStorage.getItem("user_domicile")
     this.location = localStorage.getItem("user_locality_name")
     this.user_id = localStorage.getItem('user_id')
-    this.rol_id = localStorage.getItem('rol_id')
-    console.log(this.myaddress)
+    this.rol_id = localStorage.getItem('user_rol')
 
   }
 
@@ -69,6 +69,27 @@ export class GoogleLocationPage {
       this.loadMap()
     }, 2000)
   }
+
+  ionViewDidEnter(){
+    this.storeAction()
+  }
+
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
 
 
   loadMap(){
@@ -161,7 +182,7 @@ export class GoogleLocationPage {
       inputs: [
         {
           name: 'title',
-          placeholder: 'Title',
+          placeholder: 'Escriba aquí la dirección',
           value: this.myaddress,
         },
       ],
@@ -218,6 +239,8 @@ export class GoogleLocationPage {
       .subscribe((res:any)=> {
         
         this.presentAlert(res.msg)
+        this.navCtrl.pop();
+        //this.navCtrl.push("HiringsPage");
 
       },err => {
        

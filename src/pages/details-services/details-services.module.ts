@@ -9,5 +9,8 @@ import { DetailsServicesPage } from './details-services';
   imports: [
     IonicPageModule.forChild(DetailsServicesPage),
   ],
+  exports:[
+    DetailsServicesPage
+  ]
 })
 export class DetailsServicesPageModule {}

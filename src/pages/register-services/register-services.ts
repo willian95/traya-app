@@ -16,6 +16,10 @@ import { HomeAdminPage } from '../home-admin/home-admin';
 export class RegisterServicesPage {
   url:any;
   constructor(public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private alertCtrl: AlertController,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
+
+    
+    this.rolId = window.localStorage.getItem('user_rol');
+
       this.loading = this.loadingController.create({
                content: 'Por favor espere...'
            });
@@ -40,7 +44,9 @@ export class RegisterServicesPage {
   image:any;
    message:any;
   loading:any;
-
+  rolId:any
+  locality:any
+  locations:any
 
     scheduleNotification(message,hiring_id) {
   this.localNotifications.schedule({
@@ -51,12 +57,23 @@ export class RegisterServicesPage {
     sound: null
   });
 }
+
+ionViewDidEnter(){
+  if(this.rolId == 3){
+    this.locality = this.navParams.get('locationId');
+    console.log("locality", this.locality)
+  }
+}
+
 ionViewDidLoad() {
    const channel = this.pusherNotify.init();
     let self = this;
     channel.bind('notificationUser', function(data) {
       self.scheduleNotification(data.message,data.hiring.id);
     });
+
+    
+
 }
 
  convertBase64(event) {
@@ -117,13 +134,20 @@ ionViewDidLoad() {
         headers.append("Accept", 'application/json');
         headers.append('Content-Type', 'application/json' );
         this.tokenCode = localStorage.getItem('tokenCode');
-        return  this.httpClient.post(this.url+"/api/services", {"name":this.name, "description":this.description,"logo":this.image,"token":this.tokenCode})
+
+        let locationId = window.localStorage.getItem('user_locality_id');
+
+        if(this.rolId == 3){
+          locationId = this.locality
+        }
+
+        return  this.httpClient.post(this.url+"/api/services", {"name":this.name, "description":this.description,"logo":this.image,"token":this.tokenCode, "rolId": this.rolId, "locationId": locationId})
           .pipe()
           .subscribe((res:any)=> {
             this.loading.dismiss();
             this.presentAlert();
 
-            this.navCtrl.setRoot(HomeAdminPage)
+            this.navCtrl.setRoot("HomeAdminPage")
 
            },err => {
             this.loading.dismiss();
@@ -136,9 +160,18 @@ ionViewDidLoad() {
         }); //subscribe
     }
 
+    
+
   }
 
+  fetchLocaltions(){
 
+    this.httpClient.get(this.url+"/api/locations")
+    .subscribe((response:any) => {
+      this.locations = response.data
+    })
+
+  }
 
 
 

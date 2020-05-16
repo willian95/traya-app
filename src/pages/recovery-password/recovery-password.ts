@@ -64,7 +64,7 @@ export class RecoveryPasswordPage {
 
   sendPassword(){
     if (this.email == null || this.email =='' ) {
-      this.errorAlert('Debe ingresar el correo');
+      this.errorAlert('Por favor ingrese su correo electrónico');
     }else{
   	 this.loading = this.loadingController.create({
                  content: 'Por favor espere...'

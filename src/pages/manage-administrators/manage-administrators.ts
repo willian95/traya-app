@@ -80,7 +80,7 @@ export class ManageAdministratorsPage {
   }
 
   viewDetailsUsers(items,i){
-    this.navCtrl.push(AddAdministratorPage,{data:items}); // nav
+    this.navCtrl.push("AddAdministratorPage",{data:items}); // nav
   }
 
 }

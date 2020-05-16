@@ -9,5 +9,8 @@ import { ModalInformationPage } from './modal-information';
   imports: [
     IonicPageModule.forChild(ModalInformationPage),
   ],
+  exports:[
+    ModalInformationPage
+  ]
 })
 export class ModalInformationPageModule {}

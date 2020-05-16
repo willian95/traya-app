@@ -9,5 +9,8 @@ import { RegisterServicesPage } from './register-services';
   imports: [
     IonicPageModule.forChild(RegisterServicesPage),
   ],
+  exports:[
+    RegisterServicesPage
+  ]
 })
 export class RegisterServicesPageModule {}

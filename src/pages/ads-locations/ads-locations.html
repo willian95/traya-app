@@ -1,0 +1,27 @@
+<!-- -->
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Localidades</strong>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <div *ngFor="let items of locations ; let i =index">
+
+    <button ion-item (click)="adminAd(items.id)" >
+      <div class="row">
+        <div col col-50>
+          <h2>{{items.name}}</h2>
+        </div>
+      </div>
+    </button>
+  </div>
+
+</ion-content>

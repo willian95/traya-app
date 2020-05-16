@@ -9,5 +9,8 @@ import { HomeAdminPage } from './home-admin';
   imports: [
     IonicPageModule.forChild(HomeAdminPage),
   ],
+  exports:[
+    HomeAdminPage
+  ]
 })
 export class HomeAdminPageModule {}

@@ -17,18 +17,20 @@
     <ion-row justify-content-center >
       <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
          <div text-center>
-          <h3 style="color: #fff">Registrar Localidad</h3>
+          <h3 style="color: #795C9B;">Registrar Localidad</h3>
         </div>
 
         <!-- LOGIN WITH APP -->
         <div id="registerServices" padding>
           <ion-item>
-          <ion-input [(ngModel)]="locality" type="text" placeholder="Nombre"></ion-input>
+            <ion-label floating>Nombre</ion-label>
+            <ion-input [(ngModel)]="locality" type="text"></ion-input>
           </ion-item>
 
           <ion-item>
-          <ion-textarea [(ngModel)]="description" rows="3" cols="20" placeholder="Descripción"></ion-textarea>
-      	</ion-item>
+            <ion-label floating>Descripción</ion-label>
+            <ion-textarea [(ngModel)]="description" rows="3" cols="20"></ion-textarea>
+      	  </ion-item>
 
         
         </div>

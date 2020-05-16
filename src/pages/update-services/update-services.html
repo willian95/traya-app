@@ -13,18 +13,56 @@
 
 <ion-content padding justify-content-end>
 	<ion-list>
-		<button ion-item *ngFor="let items of servicesArray ; let i =index" (click)="viewDetailsServices(items,i)">
-			<ion-avatar item-start>
-				<img [src]="items.logo+'?v='+items.updated_at" *ngIf="items.logo">
-			</ion-avatar>
-			<div class="row">
-				<div col col-50>
-			<h2>{{items.name}}</h2>
-          </div>
-          <!-- <div col col-50>
-			<ion-checkbox id="logoface" ios="logo-facebook" md="logo-facebook"></ion-checkbox>
-          </div> -->
-			</div>
-		</button>
+		<div *ngFor="let items of servicesArray ; let i =index">
+
+			<button	button ion-item  (click)="viewDetailsServices(items,i)"  *ngIf="rolId == 4 && items.location_id == userLocationId">
+				<ion-avatar item-start>
+					<img [src]="items.logo+'?v='+items.updated_at" *ngIf="items.logo">
+				</ion-avatar>
+				<div class="row">
+					<div col col-50>
+						<h2>{{items.name}}</h2>
+					</div>
+			<!-- <div col col-50>
+				<ion-checkbox id="logoface" ios="logo-facebook" md="logo-facebook"></ion-checkbox>
+			</div> -->
+				</div>
+			</button>
+		</div>
+
+		<div *ngFor="let items of servicesArray ; let i =index">
+
+			<button ion-item (click)="viewDetailsServices(items,i)"  *ngIf="rolId == 3">
+				<ion-avatar item-start>
+					<img [src]="items.logo+'?v='+items.updated_at" *ngIf="items.logo">
+				</ion-avatar>
+				<div class="row">
+					<div col col-50>
+						<h2>{{items.name}}</h2>
+					</div>
+			<!-- <div col col-50>
+				<ion-checkbox id="logoface" ios="logo-facebook" md="logo-facebook"></ion-checkbox>
+			</div> -->
+				</div>
+			</button>
+
+			
+
+			<button ion-item *ngIf="rolId == 4 && items.location_id != userLocationId">
+				<ion-avatar item-start>
+					<img [src]="items.logo+'?v='+items.updated_at" *ngIf="items.logo">
+				</ion-avatar>
+				<div class="row">
+					<div col col-50>
+						<h2>{{items.name}}</h2>
+					</div>
+			<!-- <div col col-50>
+				<ion-checkbox id="logoface" ios="logo-facebook" md="logo-facebook"></ion-checkbox>
+			</div> -->
+				</div>
+			</button>
+	
+		</div>
+		
 	</ion-list>
 </ion-content>

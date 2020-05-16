@@ -12,24 +12,34 @@
 </ion-header>
 <img src="assets/imgs/bg.png" class="bg">
 
-<ion-content padding class="myview">
-	<div padding>
-			<ion-label>
-				<h2 text-center>Debés aceptar los Términos y Condiciones para continuar</h2>
-			</ion-label>
-
-			<button ion-button full (click)="acceptTerms()">Continuar</button>
-			
-				<ion-grid>
-					<ion-row>
-						<ion-col col-3>
-							<ion-checkbox color="primary" [(ngModel)]="terms" text-right style="float: right;"></ion-checkbox>
-						</ion-col>
-						<ion-col col-9>
-							<button (click)="openTerms()" >Acepto Términos y  Condiciones</button>
-						</ion-col>
-					</ion-row>
-				</ion-grid>
-			
+<ion-content center text-center class="myview">
+	
+	<div style="height: 100vh; margin-top: -60px;">
+		<ion-grid style="height: 100%; padding-right: 2rem; padding-left: 2rem;">
+			<ion-row align-items-center style="height: 100%;">
+				<ion-col>
+					<ion-col>
+						<ion-label>
+							<h1 style="color: #000; text-align: center;">Debés aceptar los Términos y Condiciones para continuar</h1>
+						</ion-label>
+					</ion-col>
+				
+		
+					<button ion-button full (click)="acceptTerms()">Continuar</button>
+					
+						<ion-grid>
+							<ion-row>
+								<ion-col col-2>
+									<ion-checkbox color="primary" [(ngModel)]="terms" text-right style="float: right;"></ion-checkbox>
+								</ion-col>
+								<ion-col col-10>
+									<p (click)="openTerms()" style="color: #876DA1; font-weight: bolder; font-size: 15px; margin-top: -1px">Acepto Términos y  Condiciones</p>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
 	</div>
+		
 </ion-content>

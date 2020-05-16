@@ -123,7 +123,7 @@ export class StatisticsPage {
       .subscribe((res:any)=> {
         
       this.toastTweet(res.msg)
-      this.navCtrl.setRoot(HomeAdminPage);
+      this.navCtrl.setRoot("HomeAdminPage");
 
       });
     }else{

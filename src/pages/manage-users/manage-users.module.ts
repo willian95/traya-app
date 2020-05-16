@@ -9,5 +9,8 @@ import { ManageUsersPage } from './manage-users';
   imports: [
     IonicPageModule.forChild(ManageUsersPage),
   ],
+  exports:[
+    ManageUsersPage
+  ]
 })
 export class ManageUsersPageModule {}

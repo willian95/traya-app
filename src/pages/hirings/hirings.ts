@@ -69,13 +69,11 @@ doRefresh(refresher) {
   }, 2000);
 }
 
+
+
 ionViewDidLoad() {
   // if( localStorage.getItem('indexTab') == '1'){
   //
-  //
-  // }
-
-  this.storeAction()
   const channel = this.pusherNotify.init();
   let self = this;
   channel.bind('notificationUser', function(data) {
@@ -94,8 +92,13 @@ ionViewDidLoad() {
     this.getHiringsNoEvent();
   });
 }
+
+ionViewDidEnter(){
+  this.storeAction()
+}
+
 presentNotifications(){
-  this.navCtrl.push(NotificationPage); // nav
+  this.navCtrl.push("NotificationPage"); // nav
 }
 
 
@@ -157,12 +160,12 @@ viewDetails(items:any,i:any){
   this.httpClient.get(this.url+"/api/hiring/"+items.id)
   .pipe()
   .subscribe((res:any)=> {
-    this.navCtrl.push(HiringDetailsPage,{data:res});
+    this.navCtrl.push("HiringDetailsPage",{data:res});
   });
 }
 
 showHistory(){
-  this.navCtrl.push(HistoryHiringsPage); // nav
+  this.navCtrl.push("HistoryHiringsPage"); // nav
 
 }
 

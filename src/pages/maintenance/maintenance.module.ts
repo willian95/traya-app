@@ -9,5 +9,8 @@ import { MaintenancePage } from './maintenance';
   imports: [
     IonicPageModule.forChild(MaintenancePage),
   ],
+  exports:[
+    MaintenancePage
+  ]
 })
 export class MaintenancePageModule {}

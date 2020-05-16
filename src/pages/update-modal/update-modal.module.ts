@@ -9,5 +9,8 @@ import { UpdateModalPage } from './update-modal';
   imports: [
     IonicPageModule.forChild(UpdateModalPage),
   ],
+  exports:[
+    UpdateModalPage
+  ]
 })
 export class UpdateModalPageModule {}

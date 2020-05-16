@@ -47,6 +47,14 @@
       <img [src]="file" style="width: 100%; height: 270px" *ngIf="adType == 3">
     </ion-item>
 
+    <!--<ion-item *ngIf="roleId == 3">
+      <ion-label>Localidades</ion-label>
+      <ion-select [(ngModel)]="locality">
+        <ion-option value="{{ location.id }}" *ngFor="let location of locations">{{ location.name }}</ion-option>
+        
+      </ion-select>
+    </ion-item>-->
+
     <ion-item *ngIf="adsCount < 20">
       <button ion-button (click)="uploadAd()">Publicar</button>
     </ion-item>
@@ -58,29 +66,32 @@
   </ion-list>
 
   <ion-list>
+    <div *ngFor="let ad of ads ; let i =index">
 
-    <ion-card ion-item *ngFor="let ad of ads ; let i =index">
-          
-      <ion-card-header>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              {{ i + 1 }} - {{ ad.ad_type.name }}
-            </ion-col>
-            <ion-col>
-              <ion-icon name="trash" style="float: right;" (click)="showAlert(ad.id)"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-header>
+      <ion-card ion-item *ngIf="ad.location_id == locality">
+      
+        <ion-card-header>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                {{ i + 1 }} - {{ ad.ad_type.name }}
+              </ion-col>
+              <ion-col>
+                <ion-icon name="trash" style="float: right;" (click)="showAlert(ad.id)"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <img *ngIf="ad.ad_type_id == 1" [src]="url+'/ads/'+ad.name" style="width: 100%; height: 90px;">
+          <img *ngIf="ad.ad_type_id == 2" [src]="url+'/ads/'+ad.name" style="width: 100%; height: 180px;">
+          <img *ngIf="ad.ad_type_id == 3" [src]="url+'/ads/'+ad.name" style="width: 100%; height: 270px;">
+        </ion-card-content>
+  
+      </ion-card>
 
-      <ion-card-content>
-        <img *ngIf="ad.ad_type_id == 1" [src]="url+'/ads/'+ad.name" style="width: 100%; height: 90px;">
-        <img *ngIf="ad.ad_type_id == 2" [src]="url+'/ads/'+ad.name" style="width: 100%; height: 180px;">
-        <img *ngIf="ad.ad_type_id == 3" [src]="url+'/ads/'+ad.name" style="width: 100%; height: 270px;">
-      </ion-card-content>
-
-    </ion-card>
+    </div>
 
   </ion-list>
 

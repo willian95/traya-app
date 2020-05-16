@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+/*import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { RegisterServicesPage } from '../pages/register-services/register-services';
@@ -35,18 +35,19 @@ import { ManageUsersPage } from '../pages/manage-users/manage-users';
 import { MaintenanceModePage } from '../pages/maintenance-mode/maintenance-mode';
 import { MaintenancePage } from '../pages/maintenance/maintenance';
 import { AboutTrayaBidderPage } from '../pages/about-traya-bidder/about-traya-bidder';
+import { AboutTrayaBidderMenuPage } from '../pages/about-traya-bidder-menu/about-traya-bidder-menu';
 import { StatisticsPage } from '../pages/statistics/statistics';
 import { ManageAdministratorsPage } from '../pages/manage-administrators/manage-administrators';
-import { AddAdministratorPage } from '../pages/add-administrator/add-administrator';
+import { AddAdministratorPage } from '../pages/add-administrator/add-administrator';*/
 
-import { UpdateLocalityPage } from '../pages/update-locality/update-locality';
+/*import { UpdateLocalityPage } from '../pages/update-locality/update-locality';
 import { ModalInformationPage } from '../pages/modal-information/modal-information';
 import { RecoveryPasswordPage } from '../pages/recovery-password/recovery-password';
 import { TermsAndConditionsPage } from '../pages/terms-and-conditions/terms-and-conditions';
 import { DetailsUsersPage } from '../pages/details-users/details-users';
 import { DisabledUsersPage } from '../pages/disabled-users/disabled-users';
 import { UpdateModalPage } from '../pages/update-modal/update-modal';
-import { TermsPage } from '../pages/terms/terms';
+import { TermsPage } from '../pages/terms/terms';*/
 
 import { BackgroundMode } from '@ionic-native/background-mode';
 
@@ -78,11 +79,13 @@ import { Push } from '@ionic-native/push';
 import { AppVersion } from '@ionic-native/app-version';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { BrMaskerModule } from 'brmasker-ionic-3';
+import { FCM } from '@ionic-native/fcm';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
+    /*HomePage,
     LoginPage,
     RegisterPage,
     RegisterServicesPage,
@@ -110,6 +113,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     AboutModalPage,
     HomeAdminPage,
     AboutTrayaBidderPage,
+    AboutTrayaBidderMenuPage,
     ModalInformationPage,
     RecoveryPasswordPage,
     TermsAndConditionsPage,
@@ -124,7 +128,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     ManageAdministratorsPage,
     AddAdministratorPage,
     AdminAdsPage,
-    GoogleLocationPage
+    GoogleLocationPage*/
   ],
   imports: [
     BrowserModule,
@@ -134,12 +138,13 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     SuperTabsModule.forRoot(),
+    BrMaskerModule
     //LongPressModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
+    /*HomePage,
     LoginPage,
     RegisterPage,
     RegisterServicesPage,
@@ -167,6 +172,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     AboutModalPage,
     HomeAdminPage,
     AboutTrayaBidderPage,
+    AboutTrayaBidderMenuPage,
     ModalInformationPage,
     RecoveryPasswordPage,
     TermsAndConditionsPage,
@@ -181,7 +187,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     ManageAdministratorsPage,
     AddAdministratorPage,
     AdminAdsPage,
-    GoogleLocationPage
+    GoogleLocationPage*/
   ],
   providers: [
     StatusBar,
@@ -202,6 +208,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     AppVersion,
     Geolocation,
     Push,
+    FCM,
     GoogleMaps,
     LaunchNavigator,
     NativeGeocoder

@@ -43,8 +43,8 @@
               <img [src]="administrator.image+'?v='+administrator.user.updated_at" *ngIf="administrator.image" >
             </ion-avatar>
             <ion-card-title> {{administrator.user.name}} </ion-card-title>
-            <ion-card-subtitle> <small>{{administrator.user.last_login}}</small> </ion-card-subtitle> <br>
-            <ion-card-subtitle> <small>Tipo de usuario: {{administrator.role_name}}</small> </ion-card-subtitle>
+            <p> <small>{{administrator.user.last_login}}</small> </p> <br>
+            <p> <small>Tipo de usuario: {{administrator.role_name}}</small> </p>
           </ion-card-header>
   
   
@@ -62,8 +62,8 @@
               <img [src]="items.image+'?v='+items.user.updated_at" *ngIf="items.image" >
             </ion-avatar>
             <ion-card-title> {{items.user.name}} </ion-card-title>
-            <ion-card-subtitle> <small>{{items.user.last_login}}</small> </ion-card-subtitle> <br>
-            <ion-card-subtitle> <small>Tipo de usuario: {{items.role_name}}</small> </ion-card-subtitle>
+            <p> <small>{{items.user.last_login}}</small> </p> <br>
+            <p> <small>Tipo de usuario: {{items.role_name}}</small> </p>
           </ion-card-header>
   
   

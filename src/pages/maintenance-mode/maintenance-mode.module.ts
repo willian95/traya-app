@@ -9,5 +9,8 @@ import { MaintenanceModePage } from './maintenance-mode';
   imports: [
     IonicPageModule.forChild(MaintenanceModePage),
   ],
+  exports:[
+    MaintenanceModePage
+  ]
 })
 export class MaintenanceModePageModule {}

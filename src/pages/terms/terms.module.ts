@@ -9,5 +9,8 @@ import { TermsPage } from './terms';
   imports: [
     IonicPageModule.forChild(TermsPage),
   ],
+  exports:[
+    TermsPage
+  ]
 })
 export class TermsPageModule {}

@@ -162,10 +162,30 @@ export class UsersServicesPage {
 
 		}
 
+		ionViewDidEnter(){
+			this.storeAction()
+		  }
+		
+		  storeAction(){
+			var user_id = localStorage.getItem('user_id')
+			console.log(user_id)
+			
+			this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+			.pipe(
+			  )
+			.subscribe((res:any)=> {
+			  console.log(res)
+			  
+		  
+			},err => {
+			  
+			});
+		  
+		   }
 
 
 		presentNotifications(){
-			this.navCtrl.push(NotificationPage); // nav
+			this.navCtrl.push("NotificationPage"); // nav
 		}
 
 		   async presentAlert() {
@@ -202,7 +222,7 @@ export class UsersServicesPage {
   			}
 
 		viewProfile(items,i){
-			this.navCtrl.push(UserHiringPage,{data:items});
+			this.navCtrl.push("UserHiringPage",{data:items});
 		}
 		getHirings() {
 			this.user_id = localStorage.getItem('user_id');
@@ -226,7 +246,7 @@ export class UsersServicesPage {
 				this.loading.dismiss();
 				this.presentAlert();
 				this.getHirings();
-				this.navCtrl.push(HiringsPage); // nav
+				this.navCtrl.push("HiringsPage"); // nav
 
 			},err => {
 				this.loading.dismiss();
@@ -236,7 +256,7 @@ export class UsersServicesPage {
 
 		presentPrompt() {
 			let alert = this.alertCtrl.create({
-				title: 'Descripción',
+				title: 'Descripción de la multi-solicitud',
 				inputs: [
 				{
 					name: 'descripcion',

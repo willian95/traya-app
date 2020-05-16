@@ -9,5 +9,8 @@ import { DetailsLocalityPage } from './details-locality';
   imports: [
     IonicPageModule.forChild(DetailsLocalityPage),
   ],
+  exports:[
+    DetailsLocalityPage
+  ]
 })
 export class DetailsLocalityPageModule {}

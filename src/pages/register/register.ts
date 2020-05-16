@@ -2,15 +2,11 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,MenuController,LoadingController,ToastController,ModalController,Events } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { AlertController } from 'ionic-angular';
-import { LoginPage } from '../login/login';
 import { TermsAndConditionsPage } from '../terms-and-conditions/terms-and-conditions';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
-import { AboutTrayaPage } from '../about-traya/about-traya';
 import { AboutModalPage } from '../about-modal/about-modal';
 import { AboutTrayaBidderPage } from '../about-traya-bidder/about-traya-bidder';
 import { HomeAdminPage } from '../home-admin/home-admin';
-import { RecoveryPasswordPage } from '../recovery-password/recovery-password';
-import { ProfilePage } from '../profile/profile';
 import { TrayaPage } from '../traya/traya';
 import { TrayaBidderPage } from '../traya-bidder/traya-bidder';
 import { ServicesJobPage } from '../services-job/services-job';
@@ -54,6 +50,7 @@ export class RegisterPage {
   locationP:any;
   showEyePass:any
   showEyeRePass:any
+  maxlength:any
 
    ionViewDidLoad() {
       //this.menu.swipeEnable(false);
@@ -75,10 +72,20 @@ validatePasswordLength($event){
   }
 }
   addPhoneFormat(){
+    this.hideEyeButton()
     this.phone="+549"
   }
+
+  checkPhoneFormat(){
+
+    if(this.phone.substring(0, 4) != "+549"){
+      this.phone = "+549"
+    }
+
+  }
+
   terms(){
-    this.navCtrl.push(TermsAndConditionsPage);
+    this.navCtrl.push("TermsAndConditionsPage");
 
   }
 showPasswordText(){
@@ -132,6 +139,15 @@ async presentAlert() {
   hideEyeButton(){
     this.showEyePass = false
     this.showEyeRePass = false
+
+    if(this.domicile == "Calle y Número"){
+      this.domicile = ""
+    }
+
+    if(this.phone == "Código de área y número"){
+      this.phone = ""
+    }
+
   }
 
   domicileFocus(){
@@ -145,13 +161,41 @@ async presentAlert() {
   }
 
   checkDomicileInput(){
-    console.log("entre")
+    
       if(this.domicile.indexOf("Calle y Número") > -1){
 
         this.domicile = this.domicile.substring(this.domicile.length - 1, this.domicile.length)
         let domicile = document.getElementById("domicile")
         domicile.style.color = "#000"
   
+      }
+    
+  }
+
+  phoneFocus(){
+    this.hideEyeButton()
+    
+    if(this.phone == null || this.phone == ""){
+      this.phone = "Código de área y número"
+      let phone = document.getElementById("phone")
+      phone.style.color = "#999"
+    }
+  }
+
+  checkPhoneInput(){
+      
+      if(this.phone.indexOf("Código de área y número") > -1){
+
+        this.phone = this.phone.substring(this.phone.length -1, this.phone.length)
+        let phone = document.getElementById("phone")
+        phone.style.color = "#000"
+        
+        this.maxlength = 11
+
+      }else{
+
+        this.maxlength = 50
+
       }
     
   }
@@ -262,22 +306,22 @@ async errorAlert(message) {
       localStorage.setItem('user_domicile',user_domicile);
       localStorage.setItem('user_locality_id',user_locality_id);
       this.openModal();
-      const termsModal = this.modalCtrl.create(TermsAndConditionsPage);
+      const termsModal = this.modalCtrl.create("TermsAndConditionsPage");
        termsModal.present();
 
       if(res.roles[0].id== 1){
-        this.navCtrl.setRoot(TrayaPage);
+        this.navCtrl.setRoot("TrayaPage");
         this.events.publish('userLogged',res);
         localStorage.setItem('valueServices',valueServices);
       }else if(res.roles[0].id==2 && res.services ==''){
-      this.navCtrl.setRoot(ServicesJobPage);
+      this.navCtrl.setRoot("ServicesJobPage");
       this.events.publish('userLogged',res);
     }else if(res.roles[0].id==2 && res.services !=null){
-      this.navCtrl.setRoot(TrayaBidderPage);
+      this.navCtrl.setRoot("TrayaBidderPage");
       this.events.publish('userLogged',res);
     }
     else if(res.roles[0].id ==3){
-      this.navCtrl.setRoot(HomeAdminPage);
+      this.navCtrl.setRoot("HomeAdminPage");
       this.events.publish('userLogged',res);
     }
   },err => {
@@ -288,33 +332,40 @@ async errorAlert(message) {
 
 
     addUsers() {
-      if(this.name=="" || this.name==null){
-       this.message = "Por favor ingrese el nombre.";
+      
+      if(this.image=="" || this.image==null){
+        this.message="Por favor seleccione una imagen.";
+      }
+      else if(this.name=="" || this.name==null){
+       this.message = "Por favor ingrese su nombre.";
        this.errorAlert(this.message);
       }else if(this.phone=="" || this.phone==null){
-        this.message="Por favor ingrese el número celular.";
+        this.message="Por favor ingrese su teléfono.";
         this.errorAlert(this.message);
-      }else if(this.location_id=="" || this.location_id==null){
+      }else if(this.email=="" || this.email==null){
+        this.message="Por favor ingrese su correo electrónico.";
+        this.errorAlert(this.message);
+      }
+      else if(this.password=="" || this.password ==null){
+        this.message="Por favor ingrese la contraseña.";
+          this.errorAlert(this.message);
+        }
+        else if(this.password != this.passwordRepeat){
+          this.message="Las contraseñas no coinciden.";
+          this.errorAlert(this.message);
+      }
+      else if(this.location_id=="" || this.location_id==null){
         this.message="Por favor ingrese su localidad.";
         this.errorAlert(this.message);
       }else if(this.domicile=="" || this.domicile==null){
         this.message="Por favor ingrese su domicilio.";
         this.errorAlert(this.message);
-      }else if(this.email=="" || this.email==null){
-        this.message="Por favor ingrese el correo electronico.";
-        this.errorAlert(this.message);
-      }else if(this.password=="" || this.password ==null){
-      this.message="Por favor ingrese la contraseña.";
-        this.errorAlert(this.message);
-      }else if(this.rol_id=="" || this.rol_id==null){
+      }
+      else if(this.rol_id=="" || this.rol_id==null){
         this.message="Por favor seleccione el tipo de usuario.";
         this.errorAlert(this.message);
-      }else if(this.password != this.passwordRepeat){
-          this.message="Las contraseñas no coinciden.";
-          this.errorAlert(this.message);
-      }else if(this.image=="" || this.image==null){
-        this.message="Por favor seleccione la imagen.";
-      }else{
+      }
+      else{
         
            this.loading = this.loadingController.create({
              content: 'Por favor espere...'
@@ -324,7 +375,7 @@ async errorAlert(message) {
        var headers = new Headers();
         headers.append("Accept", 'application/json');
         headers.append('Content-Type', 'application/json' );
-        return  this.httpClient.post(this.url+"/api/signup", {"name":this.name,"email":this.email, "password":this.password,"phone":this.phone,"rol_id":this.rol_id,"description":this.description,"image":this.image,"domicile":this.domicile,"location_id":this.location_id})
+        return  this.httpClient.post(this.url+"/api/signup", {"name":this.name,"email":this.email, "password":this.password,"phone":"+549"+this.phone.replace(/ /g,''),"rol_id":this.rol_id,"description":this.description,"image":this.image,"domicile":this.domicile,"location_id":this.location_id})
         .pipe(
         )
         .subscribe((res:any)=> {

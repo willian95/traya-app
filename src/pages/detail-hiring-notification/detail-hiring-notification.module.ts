@@ -9,5 +9,8 @@ import { DetailHiringNotificationPage } from './detail-hiring-notification';
   imports: [
     IonicPageModule.forChild(DetailHiringNotificationPage),
   ],
+  exports:[
+    DetailHiringNotificationPage
+  ]
 })
 export class DetailHiringNotificationPageModule {}

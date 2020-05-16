@@ -1,0 +1,67 @@
+<!-- -->
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle menuClose (click)="closeModal()" *ngIf="showBackButton">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-title>
+      <h3>Acerca de Traya</h3>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<img src="assets/imgs/bg.png" class="bg">
+
+
+<ion-content padding class="myview" >
+  <ion-grid>
+    <ion-row  >
+
+        <div id="header" style="text-align: center; width: 100%;" >
+          <span text-center> <strong>TRAYA</strong> <i>app de servicios</i> </span>
+          <p text-center> <strong>Conseguir trabajo ahora </strong> es fácil, <i> seguí estos pasos</i></p>
+          
+        </div>
+    </ion-row>
+      <div id="contenido">
+    <ion-list>
+          <ion-item>
+       <ion-label>
+       <ion-badge color="primary">1</ion-badge> 
+       Los usuarios elegirán entre tú y tus colegas, si te eligen, te harán saber su necesidad y te preguntarán: 
+        <ion-badge color="primary">¿PODÉS HACERLO? </ion-badge>
+     </ion-label>
+      </ion-item>
+
+      <ion-item>
+          <ion-label>
+        <ion-badge color="primary">2</ion-badge>
+          Si quieres realizar el trabajo debes <ion-badge>Aceptar</ion-badge> la solicitud, y estarás <ion-badge>Disponible</ion-badge> para el usuario
+          <small>(este paso no implica que estes contratado, solo haces saber al usuario que te interesa resolver su problema)</small>: <ion-badge>ESTOY DISPONIBLE
+          </ion-badge>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+          <ion-label>
+          <ion-badge color="primary">3</ion-badge>
+          Ahora el usuario puede contratarte: <ion-badge>CONTRATADO</ion-badge>
+      </ion-label>
+      </ion-item>
+
+      <ion-item>
+          <ion-label>
+          <ion-badge color="primary">4</ion-badge>
+          Terminado tu trabajo el usuario puede calificarte y dejar una opinión sobre ti, así la comunidad conoce como trabajas: <ion-badge>CALIFICADO</ion-badge>
+      </ion-label>
+      </ion-item>
+    </ion-list>
+      </div>
+
+    <div id="footer" padding>
+      <small>TRAYA actúa solo como nexo entre trabajadores y usuarios, incentiva los buenos trabajos, pero no se responsabiliza por ellos ni por las acciones de los usuarios. TRAYA no cobra por sus servicios, es GRATIS!</small>
+      </div>
+
+
+  </ion-grid>
+
+</ion-content>

@@ -75,6 +75,27 @@ export class NotificationPage {
   });
 }
 
+ionViewDidEnter(){
+  this.storeAction()
+  }
+
+  storeAction(){
+  var user_id = localStorage.getItem('user_id')
+  console.log(user_id)
+  
+  this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+  .pipe(
+    )
+  .subscribe((res:any)=> {
+    console.log(res)
+    
+  
+  },err => {
+    
+  });
+  
+   }
+
 
 
   ionViewDidLoad() {
@@ -112,7 +133,7 @@ export class NotificationPage {
     this.httpClient.get(this.url+"/api/hiring/"+items.hiring_id)
   .pipe()
     .subscribe((res:any)=> {
-      this.navCtrl.push(DetailHiringNotificationPage,{data:res});
+      this.navCtrl.push("DetailHiringNotificationPage",{data:res});
   });
   }
 

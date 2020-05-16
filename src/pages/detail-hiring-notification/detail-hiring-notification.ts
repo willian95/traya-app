@@ -116,6 +116,27 @@ export class DetailHiringNotificationPage {
     this.getDetailHiring();
   }
 
+  ionViewDidEnter(){
+    this.storeAction()
+  }
+
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
+
 
   getDetailHiring(){
     this.httpClient.get(this.url+"/api/hiring/"+this.hiring_id)
@@ -315,16 +336,16 @@ acceptHiring(){
       .subscribe((res:any)=> {
         this.loading.dismiss();
         this.presentAlert(res.msg);
-        this.navCtrl.push(HiringsPage)
+        this.navCtrl.push("HiringsPage")
        },err => {
         this.loading.dismiss();
         this.errorAlert(err.error.errors);
-        this.navCtrl.push(HiringsPage)
+        this.navCtrl.push("HiringsPage")
     }); //subscribe
   }
 
   presentNotifications(){
-    this.navCtrl.push(NotificationPage); // nav
+    this.navCtrl.push("NotificationPage"); // nav
   }
 
 

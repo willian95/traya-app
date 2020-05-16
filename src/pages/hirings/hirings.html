@@ -72,13 +72,13 @@
 	</ion-list>
 
 	<ion-fab bottom right style="bottom:70px;">
-		<button ion-fab  title="Historial" (click)="showHistory()">
+		<button ion-fab  title="Historial" (click)="showHistory()" style="background-color: #bdc3c7;">
 			<ion-icon ios="ios-clock" md="md-clock"></ion-icon>
 		</button>
 	</ion-fab>
 
 	<ion-fab bottom right>
-		<button ion-fab  title="Actualizar" (click)="getHirings()">
+		<button ion-fab  title="Actualizar" (click)="getHirings()" style="background-color: #bdc3c7;">
 			<ion-icon ios="ios-refresh" md="md-refresh"></ion-icon>
 		</button>
 	</ion-fab>
@@ -88,7 +88,7 @@
 			<!--h4 text-center padding>Cargando solicitudes activas..</h4-->
 
 		<div padding>
-			<h5 text-center>¡Revisa tu HISTORIAL! </h5>			
+			<h5 text-center>¡Revisa tu HISTORIAL! <ion-icon ios="ios-clock" md="md-clock" style="color: #ff9ff3"></ion-icon></h5>			
 		</div>
 	</ion-list>
 </ion-content>

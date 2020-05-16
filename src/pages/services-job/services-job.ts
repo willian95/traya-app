@@ -25,9 +25,9 @@ export class ServicesJobPage {
 
   constructor(public modalCtrl: ModalController,private menu: MenuController,public toastController: ToastController,private plt: Platform,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,private serviceUrl:ServiceUrlProvider, public viewCtrl: ViewController) {
     this.newServices = []
-    this.loading = this.loadingController.create({
+    /*this.loading = this.loadingController.create({
              content: 'Cargando por favor espere...'
-          });
+          });*/
     this.url=serviceUrl.getUrl();
 
       this.plt.ready().then((readySource) => {
@@ -93,12 +93,34 @@ export class ServicesJobPage {
     // this.initRefresh();
 
   }
+
+  ionViewDidEnter(){
+    this.storeAction()
+  }
+
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
+
  goBack(){
    this.rol_id=localStorage.getItem('user_rol');
      if (this.rol_id == 2) {
-       this.navCtrl.push(TrayaBidderPage); // nav
+       this.navCtrl.push("TrayaBidderPage"); // nav
      }else if(this.rol_id ==1){
-       this.navCtrl.push(TrayaPage); // nav
+       this.navCtrl.push("TrayaPage"); // nav
      }
 
   }
@@ -185,7 +207,7 @@ async presentAlert() {
     .subscribe((res:any)=> {
       this.servicesArray=res.data;
   },err => {
-        this.loading.dismiss();
+        //this.loading.dismiss();
         if (err.error.errors == undefined) {
           this.errorAlert('Ha ocurrido un error en el servidor.');
         }else{
@@ -196,7 +218,7 @@ async presentAlert() {
   }
 
   addServicesToShow(){
-    alert('hey')
+    //alert('hey')
   }
 
   associateUsers(){
@@ -208,7 +230,7 @@ async presentAlert() {
       this.loading = this.loadingController.create({
         content: 'Por favor espere...'
       });
-      this.loading.present();
+      //this.loading.present();
       var headers = new Headers();
       headers.append("Accept", 'application/json');
       headers.append('Content-Type', 'application/json' );
@@ -220,7 +242,7 @@ async presentAlert() {
       .subscribe((res:any)=> {
          this.loading.dismiss();
         this.presentAlert();
-        this.navCtrl.setRoot(TrayaBidderPage);
+        this.navCtrl.setRoot("TrayaBidderPage");
 
       },err => {
         this.loading.dismiss();
@@ -234,7 +256,7 @@ async presentAlert() {
     }
   }
   presentNotifications(){
-    this.navCtrl.push(NotificationPage); // nav
+    this.navCtrl.push("NotificationPage"); // nav
   }
     countCharacter(event){
       this.descriptionCount=this.description.length;
@@ -250,13 +272,13 @@ async presentAlert() {
           var headers = new HttpHeaders({
             Authorization: localStorage.getItem('token'),
           });
-           this.loading = this.loadingController.create({
+           /*this.loading = this.loadingController.create({
         content: 'Por favor espere...'
-      });
-      this.loading.present();
+      });*/
+      //this.loading.present();
           this.httpClient.get(this.url+'/api/auth/user', { headers })
           .subscribe((response:any)=> {
-            this.loading.dismiss();
+            //this.loading.dismiss();
              this.showUser2(response);
             this.services_id=[];
              for(var i=0;i<response.services.length;i++){
@@ -350,7 +372,7 @@ async presentAlert() {
       this.loading = this.loadingController.create({
         content: 'Por favor espere...'
       });
-      this.loading.present();
+      //this.loading.present();
          this.name=response.user.name;
             this.email=response.user.email;
             this.phone=response.profile.phone;
@@ -373,32 +395,15 @@ async presentAlert() {
 
       if(rol_id == "1")
         {
-          this.navCtrl.setRoot(TrayaPage);
+          this.navCtrl.setRoot("TrayaPage");
         
         }
       else
       {
-        this.navCtrl.setRoot(TrayaBidderPage);
+        this.navCtrl.setRoot("TrayaBidderPage");
        
       }
 
     }
-
-    storeAction(){
-      var user_id = localStorage.getItem('user_id')
-      console.log(user_id)
-      
-      this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
-      .pipe(
-        )
-      .subscribe((res:any)=> {
-        console.log(res)
-        
-    
-      },err => {
-        
-      });
-    
-     }
 
 }

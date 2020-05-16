@@ -23,7 +23,7 @@ export class TrayaBidderPage {
   url:any;
 notificationArray:any;
 notificationNumber:any;
-    page1: any = ActiveHiringsPage;
+    page1: any = "ActiveHiringsPage";
     // page2: any = HistoryHiringsPage;
     username:any;
     user_id:any;
@@ -79,9 +79,9 @@ notificationNumber:any;
     this.getNotifications();
     this.getMode();
 
-    window.setInterval(() => {
+    //window.setInterval(() => {
       this.countActiveHirings()
-    }, 5000) 
+    //}, 5000) 
 
   }
   slideToIndex(index: number) {
@@ -92,7 +92,7 @@ notificationNumber:any;
    this.superTabs.showToolbar(false);
  }
  presentNotifications(){
-   this.navCtrl.push(NotificationPage); // nav
+   this.navCtrl.push("NotificationPage"); // nav
  }
  getNotifications(){
    this.httpClient.get(this.url+"/api/notification/"+this.user_id+'?filters={"read":0}')
@@ -141,7 +141,7 @@ notificationNumber:any;
     //  this.navCtrl.setRoot(LoginPage);
     //}
       if (rol_id == "2") {
-        this.navCtrl.setRoot(TrayaPage); // nav*/
+        this.navCtrl.setRoot("TrayaPage"); // nav*/
       }
 
     })
@@ -156,7 +156,7 @@ notificationNumber:any;
      .subscribe((response:any)=> {
        this.config=response.data;
        if(this.config.active != 0){
-         const maintenanceModal = this.modalCtrl.create(MaintenancePage);
+         const maintenanceModal = this.modalCtrl.create("MaintenancePage");
          maintenanceModal.present();
          this.menu.swipeEnable(false);
        }

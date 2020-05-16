@@ -11,5 +11,8 @@ import { SuperTabsModule } from 'ionic2-super-tabs';
     IonicPageModule.forChild(TrayaBidderPage),
     SuperTabsModule,
   ],
+  exports:[
+    TrayaBidderPage
+  ]
 })
 export class TrayaBidderPageModule {}

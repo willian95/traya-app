@@ -26,17 +26,31 @@ export class AdminAdsPage {
   loading:any
   showImage:any
   imagePreview:any
+  roleId:any
+  locations:any
+  locality:any
+  userLocationId:any
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient, private serviceUrl:ServiceUrlProvider, private toastController:ToastController, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
     this.url=serviceUrl.getUrl();
+    
     this.adType = ""
     this.showImage = false
+    this.roleId = window.localStorage.getItem('user_rol')
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AdminAdsPage');
     this.getAdTypes()
-    this.getAds()
+    
+  }
+
+  ionViewDidEnter(){
+    if(this.roleId == 3){
+      this.locality = this.navParams.get("locationId")
+      this.getAds()
+    }
+    
   }
 
   convertBase64(event) {
@@ -67,7 +81,12 @@ export class AdminAdsPage {
 
     let formData = new FormData();
     formData.append('file', this.file)
-    formData.append('locality_id', localStorage.getItem('user_locality_id'))
+    if(this.roleId != 3){
+      formData.append('locality_id', localStorage.getItem('user_locality_id'))
+    }else{
+      formData.append('locality_id', this.locality)
+    }
+    
     formData.append('ad_type_id', this.adType)
 
     this.loading = this.loadingCtrl.create({
@@ -126,7 +145,14 @@ export class AdminAdsPage {
     });
     this.loading.present();
 
-    this.httpClient.get(this.url+'/api/administrator/ad/location/'+localStorage.getItem('user_locality_id'))
+    let locationId:any;
+    if(this.roleId == 3){
+      locationId = 0
+    }else{
+      locationId = localStorage.getItem('user_locality_id')
+    }
+
+    this.httpClient.get(this.url+'/api/administrator/ad/location/'+this.locality)
     .subscribe((response:any)=> {
 
 
@@ -177,6 +203,15 @@ export class AdminAdsPage {
       this.loading.dismiss()
 
     });
+
+  }
+
+  fetchLocaltions(){
+
+    this.httpClient.get(this.url+"/api/locations")
+    .subscribe((response:any) => {
+      this.locations = response.data
+    })
 
   }
 

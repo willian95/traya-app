@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,MenuController,LoadingController,Events,ModalController,ToastController } from 'ionic-angular';
-// import { HttpClient,HttpHeaders} from '@angular/common/http';
-import { RequestOptions } from '@angular/http';
 import { AlertController } from 'ionic-angular';
 import { ProfilePage } from '../profile/profile';
 import { TrayaPage } from '../traya/traya';
@@ -11,8 +9,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { LoginProvider } from '../../providers/login/login';
 import { HelperProvider } from '../../providers/helper/helper';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { AboutTrayaPage } from '../about-traya/about-traya';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AboutModalPage } from '../about-modal/about-modal';
 import { AboutTrayaBidderPage } from '../about-traya-bidder/about-traya-bidder';
 import { HomeAdminPage } from '../home-admin/home-admin';
@@ -21,8 +18,8 @@ import { TermsAndConditionsPage } from '../terms-and-conditions/terms-and-condit
 import { MaintenancePage } from '../maintenance/maintenance';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
-
 @IonicPage()
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
@@ -38,6 +35,8 @@ export class LoginPage {
     });
     this.url=serviceUrl.getUrl();
     this.deviceToken = localStorage.getItem('fcmToken')
+    //alert("fcmtoken "+this.deviceToken)
+    
     // let status bar overlay webview
     //this.statusBar.overlaysWebView(true);
 
@@ -69,31 +68,28 @@ export class LoginPage {
     if (localStorage.getItem('user_rol') == '2') {
       if(localStorage.getItem('about_band_bidder') == null){
         localStorage.setItem('about_band_bidder','false');
-        const bidderModal = this.modalCtrl.create(AboutTrayaBidderPage);
+        const bidderModal = this.modalCtrl.create("AboutTrayaBidderPage");
         bidderModal.present();
       }else if(localStorage.getItem('about_band_bidder') === 'false'){
-        const bidderModal = this.modalCtrl.create(AboutTrayaBidderPage);
+        const bidderModal = this.modalCtrl.create("AboutTrayaBidderPage");
         bidderModal.present();
       }
     }else if(localStorage.getItem('user_rol') == '1'){
       if(localStorage.getItem('about_band') == null){
         localStorage.setItem('about_band','false');
-        const profileModal = this.modalCtrl.create(AboutModalPage);
+        const profileModal = this.modalCtrl.create("AboutModalPage");
         profileModal.present();
       }else if(localStorage.getItem('about_band') === 'false'){
-        const profileModal = this.modalCtrl.create(AboutModalPage);
+        const profileModal = this.modalCtrl.create("AboutModalPage");
         profileModal.present();
       }
     }
-
-
 
   }
 
   sendGoogleData(res){
     return  this.httpClient.post(this.url+"/api/social/socialAuth", {"email": res.email, "userId": res.userId, "name": res.displayName, "deviceToken": this.deviceToken, googleLogin: true})
-      .pipe(
-        )
+      .pipe()
       .subscribe((res:any)=> {
         var token = res.token;
         var tokenCode = res.tokenCode;
@@ -128,9 +124,10 @@ export class LoginPage {
         localStorage.setItem('user_domicile',user_domicile);
         localStorage.setItem('user_locality_id',user_locality_id);
         localStorage.setItem('user_locality_name',user_locality_name);
+        localStorage.setItem('is_register_completed', res.user.is_register_completed)
        
          if(res.roles[0].id ==3 || res.roles[0].id ==4){
-          this.navCtrl.setRoot(HomeAdminPage);
+          this.navCtrl.setRoot("HomeAdminPage");
           this.events.publish('userLogged',res);
           
         }
@@ -149,7 +146,6 @@ export class LoginPage {
   }
 
   loginGoogle(){
-
     
     this.loading = this.loadingController.create({
       content: 'Por favor espere...'
@@ -232,7 +228,7 @@ export class LoginPage {
         localStorage.setItem('user_locality_name',user_locality_name);
        
          if(res.roles[0].id ==3 || res.roles[0].id ==4){
-          this.navCtrl.setRoot(HomeAdminPage);
+          this.navCtrl.setRoot("HomeAdminPage");
           this.events.publish('userLogged',res);
           
         }
@@ -244,7 +240,7 @@ export class LoginPage {
   }
 
   recoveryPassword(){
-    this.navCtrl.push(RecoveryPasswordPage);
+    this.navCtrl.push("RecoveryPasswordPage");
   }
 
   showPasswordText(){
@@ -293,31 +289,38 @@ export class LoginPage {
         .subscribe((response:any)=> {
           this.config=response.data;
           if(this.config.active ==0){
-            console.log("entro al inactivo")
+            //console.log("entro al inactivo")
             this.openModal();
              if (localStorage.getItem('terms') ==null) {
-               const termsModal = this.modalCtrl.create(TermsAndConditionsPage);
+               const termsModal = this.modalCtrl.create("TermsAndConditionsPage");
               termsModal.present();
              }
 
-             if(res.roles[0].id== 1){
+             if(localStorage.getItem("is_register_completed") == "0"){
+              this.events.publish('userLogged',res);
+              this.navCtrl.setRoot("ProfilePage");
+             }
+             else if(res.roles[0].id== 1){
                console.log('traya');
-               this.navCtrl.setRoot(TrayaPage);
+               this.navCtrl.setRoot("TrayaPage");
                this.events.publish('userLogged',res);
                localStorage.setItem('valueServices',valueServices);
              }else if(res.roles[0].id==2 && res.services ==''){
-               this.navCtrl.setRoot(ServicesJobPage);
+               this.navCtrl.setRoot("ServicesJobPage");
                this.events.publish('userLogged',res);
                localStorage.setItem('valueServicesBidder',valueServicesBidder);
              }else if(res.roles[0].id==2 && res.services !=null){
-               this.navCtrl.setRoot(TrayaBidderPage);
+               this.navCtrl.setRoot("TrayaBidderPage");
                this.events.publish('userLogged',res);
                localStorage.setItem('valueServicesBidder',valueServicesBidder);
              }
           }else if(this.config.active ==1){
-            const maintenanceModal = this.modalCtrl.create(MaintenancePage);
+            if(res.roles[0].id < 3){
+              const maintenanceModal = this.modalCtrl.create("MaintenancePage");
             maintenanceModal.present();
             this.menu.swipeEnable(false);
+            }
+            
           }
         },
         err => {
@@ -344,10 +347,10 @@ export class LoginPage {
         var headers = new Headers();
       headers.append("Accept", 'application/json');
       headers.append('Content-Type', 'application/json' );
-     
+
+      
       return  this.httpClient.post(this.url+"/api/login", {"email":this.email, "password":this.password, "deviceToken": this.deviceToken})
-      .pipe(
-        )
+      .pipe()
       .subscribe((res:any)=> {
         this.loading.dismiss();
         var token = res.token;
@@ -385,7 +388,7 @@ export class LoginPage {
         localStorage.setItem('user_locality_name',location_name);
        
          if(res.roles[0].id ==3 || res.roles[0].id ==4){
-          this.navCtrl.setRoot(HomeAdminPage);
+          this.navCtrl.setRoot("HomeAdminPage");
           this.events.publish('userLogged',res);
           
         }
@@ -395,7 +398,7 @@ export class LoginPage {
         this.loading.dismiss();
         this.errorAlert(err.error.msg);
         console.log(err);
-      } ); //subscribe
+      } );
     }
       }
 

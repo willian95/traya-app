@@ -43,6 +43,7 @@ export class ServicesPage {
   }
   token:any;
   servicesArray:any;
+  servicesSearch:any;
   loading:any;
   usersLoading:any;
   searchText:any;
@@ -50,6 +51,7 @@ export class ServicesPage {
   notificationArray:any;
   storage:any;
   notificationNumber:any;
+  userLocationId:any
 
 
     scheduleNotification(message,hiring_id) {
@@ -65,7 +67,7 @@ export class ServicesPage {
 
 
   ionViewDidLoad() {
-    this.storeAction()
+ 
    const channel = this.pusherNotify.init();
     let self = this;
     channel.bind('notificationUser', function(data) {
@@ -75,7 +77,9 @@ export class ServicesPage {
     this.user_id = localStorage.getItem('user_id');
     this.getServices();
     if (localStorage.getItem('valueServices') !=null) {
-     this.toastTweet();
+      if(localStorage.getItem('terms') == 'true'){
+        this.toastTweet();
+      }
      this.storage.removeItem('valueServices');
     }
 
@@ -83,10 +87,32 @@ export class ServicesPage {
     // Observable.interval(200000).subscribe(()=>{
     //    this.toastTweet();
     //  });
-
+    this.userLocationId = window.localStorage.getItem("user_locality_id")
 
 
   }
+
+  ionViewDidEnter(){
+    this.storeAction()
+  }
+
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
+
  doRefresh(refresher) {
     setTimeout(() => {
       refresher.complete();
@@ -96,7 +122,7 @@ export class ServicesPage {
 
 
   presentNotifications(){
-    this.navCtrl.push(NotificationPage); // nav
+    this.navCtrl.push("NotificationPage"); // nav
   }
 
 
@@ -106,6 +132,7 @@ export class ServicesPage {
   .pipe()
     .subscribe((res:any)=> {
     this.servicesArray=res.data;
+    this.servicesSearch = res.data
 
   });
   }
@@ -119,6 +146,7 @@ export class ServicesPage {
     .subscribe((res:any)=> {
      this.loading.dismiss();
     this.servicesArray=res.data;
+    this.servicesSearch = res.data
 
   });
   }
@@ -143,18 +171,46 @@ export class ServicesPage {
       var services_id = items.id;
       localStorage.setItem('servicesName',servicesName);
       localStorage.setItem('services_id',services_id);
-      this.navCtrl.push(UsersServicesPage,{data:res.data});
+      this.navCtrl.push("UsersServicesPage",{data:res.data});
       usersLoading.dismiss();
   });
   }
   search(){
-    this.httpClient.get(this.url+"/api/services?"+'filters={"name":"'+this.searchText+'"}')
+
+    if(this.searchText != ""){
+      var text = this.searchText.toUpperCase();
+      text = text.replace("Á", "A")
+      text = text.replace("É", "E")
+      text = text.replace("Í", "I")
+      text = text.replace("Ó", "O")
+      text = text.replace("Ú", "U")
+      this.servicesSearch = []
+
+      this.servicesArray.forEach((data, index) => {
+       
+        //console.log(data.name.includes(text))
+        let searchString = data.name.toUpperCase()
+      
+        if(searchString.includes(text)){
+          this.servicesSearch.push(data)
+
+        }
+
+      })
+
+      
+
+    }else{
+      this.servicesSearch = this.servicesArray;
+    }
+
+    /*this.httpClient.get(this.url+"/api/services?"+'filters={"name":"'+this.searchText+'"}')
 
     .pipe()
       .subscribe((res:any)=> {
       this.servicesArray=res.data;
 
-    });
+    });*/
   }
 
   async toastTweet() {
@@ -172,23 +228,6 @@ export class ServicesPage {
     }
     
   }
-
-  storeAction(){
-    var user_id = localStorage.getItem('user_id')
-    console.log(user_id)
-    
-    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
-    .pipe(
-      )
-    .subscribe((res:any)=> {
-      console.log(res)
-      
-  
-    },err => {
-      
-    });
-  
-   }
 
 
 }

@@ -9,5 +9,8 @@ import { AdminAdsPage } from './admin-ads';
   imports: [
     IonicPageModule.forChild(AdminAdsPage),
   ],
+  exports:[
+    AdminAdsPage
+  ]
 })
 export class AdminAdsPageModule {}

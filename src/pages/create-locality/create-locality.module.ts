@@ -9,5 +9,8 @@ import { CreateLocalityPage } from './create-locality';
   imports: [
     IonicPageModule.forChild(CreateLocalityPage),
   ],
+  exports:[
+    CreateLocalityPage
+  ]
 })
 export class CreateLocalityPageModule {}

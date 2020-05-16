@@ -9,5 +9,8 @@ import { AboutTrayaBidderPage } from './about-traya-bidder';
   imports: [
     IonicPageModule.forChild(AboutTrayaBidderPage),
   ],
+  exports:[
+    AboutTrayaBidderPage
+  ]
 })
 export class AboutTrayaBidderPageModule {}

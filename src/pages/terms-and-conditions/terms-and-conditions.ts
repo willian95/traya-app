@@ -31,6 +31,7 @@ export class TermsAndConditionsPage {
       var terms='true';
       localStorage.setItem('terms',terms);
        this.viewCtrl.dismiss();
+       this.toastTweet()
     }else{
       this.message="Debe aceptar los Términos y Condiciones para continuar."
       this.alert(this.message);
@@ -39,6 +40,20 @@ export class TermsAndConditionsPage {
 
   goBack(){
     this.navCtrl.pop();
+  }
+
+  async toastTweet() {
+    var notification = localStorage.getItem('location_description')
+
+    if(notification != "null"){
+      const toast = await this.toastController.create({
+        message: notification,
+        showCloseButton: true,
+        closeButtonText: 'Cerrar',
+        cssClass: 'your-toast-css-class'
+      });
+      toast.present();
+    }
   }
 
    async alert(message) {
@@ -53,7 +68,7 @@ export class TermsAndConditionsPage {
     }
 
     openTerms(){
-    let modal=this.modalCtrl.create(TermsPage);
+    let modal=this.modalCtrl.create("TermsPage");
     modal.present();
     }
    

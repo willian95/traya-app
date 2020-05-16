@@ -8,7 +8,7 @@
 <!--<img src="assets/imgs/bg.png" class="bg">-->
 
 
-<ion-content padding class="myview" style="margin-top: -22px;">
+<ion-content padding class="myview">
   <ion-grid>
     <ion-row justify-content-center >
       <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
@@ -42,7 +42,7 @@
             <ion-icon class="input-icon" name="call" item-left> </ion-icon>
             
             <ion-label floating>Teléfono</ion-label>
-            <ion-input [(ngModel)]="phone" type="text" (ionFocus)="addPhoneFormat()" (focus)="hideEyeButton()" id="phone"></ion-input>
+            <ion-input [(ngModel)]="phone" type="tel" (ionFocus)="phoneFocus()" (keyup)="checkPhoneInput()" id="phone" [maxlength]="maxlength"></ion-input>
           </ion-item>
 
           <ion-item class="item-bordered">
@@ -79,33 +79,8 @@
 
 
           <!-- <ion-input id="description"[(ngModel)]="description" type="text" placeholder="Descripción"></ion-input> -->
-          
 
-          <ion-list radio-group class="no-background" [(ngModel)]="rol_id">
-            
-            <ion-grid style="margin-top: 20px;">
-              <ion-icon class="input-icon" name="people" item-left style="margin-left: 14px; position: absolute;"></ion-icon>
-              <ion-row>
-                <span style="color: #999; font-size: 18px; margin-left: 49px;">
-                  Usted es:
-                </span>
-              </ion-row>
-              <ion-row>
-                <ion-col style="margin-left: 30px;">
-                  <ion-item class="no-background">
-                    <ion-label>Usuario</ion-label>
-                    <ion-radio mode="md" value="1" (click)="hideEyeButton()"></ion-radio>
-                  </ion-item>
-                  <ion-item class="no-background">
-                    <ion-label>Trabajador</ion-label>
-                    <ion-radio mode="md" value="2" (click)="hideEyeButton()"></ion-radio>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-list>
-
-          <ion-item padding class="item-bordered" style="margin-top: -40px;">
+          <ion-item padding class="item-bordered" style="margin-top: -8px;">
             <ion-icon class="input-icon" name="pin" item-left></ion-icon>
             <ion-select [(ngModel)]="location_id" (click)="hideEyeButton()"  placeholder="Localidad:" style="padding: 0; padding-top: 25px; width: 100%;" interface="action-sheet" cancelText="">
                 <ion-option *ngFor="let items of localityArray" [value]="items.id">{{items.name}}</ion-option>
@@ -120,6 +95,30 @@
             <ion-label floating>Ingrese su domicilio</ion-label>
             <ion-input [(ngModel)]="domicile" type="text" (ionFocus)="domicileFocus()" (keyup)="checkDomicileInput()"  id="domicile"></ion-input>
           </ion-item>
+
+          <ion-list radio-group class="no-background" [(ngModel)]="rol_id">
+            
+            <ion-grid style="margin-top: 20px;">
+              <!--<ion-icon class="input-icon" name="people" item-left style="margin-left: 14px; position: absolute;"></ion-icon>
+              <ion-row>
+                <span style="color: #999; font-size: 18px; margin-left: 49px;">
+                  Usted es:
+                </span>
+              </ion-row>-->
+              <ion-row>
+                <ion-col style="margin-left: 30px;">
+                  <ion-item class="no-background">
+                    <ion-label>Usuario</ion-label>
+                    <ion-radio mode="md" value="1" (click)="hideEyeButton()"></ion-radio>
+                  </ion-item>
+                  <ion-item class="no-background">
+                    <ion-label>Trabajador</ion-label>
+                    <ion-radio mode="md" value="2" (click)="hideEyeButton()"></ion-radio>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-list>
 
 
           <!-- <ion-item>

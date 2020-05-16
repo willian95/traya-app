@@ -45,7 +45,7 @@ export class HiringDetailsPage {
   
   constructor(private superTabsCtrl: SuperTabsController,public modalCtrl: ModalController,public toastController: ToastController,public events: Events,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public actionSheetController: ActionSheetController,public callNumber: CallNumber,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications, private geolocation: Geolocation, public viewCtrl: ViewController, public appCtrl: App, private launchNavigator: LaunchNavigator, private nativeGeocoder: NativeGeocoder) {
     this.detailsHirings = navParams.get('data');
-    console.log(this.detailsHirings)
+    
     this.showMap = false
     this.opinionCount = 0
     //console.log("applicant", this.detailsHirings.applicant.address)
@@ -181,12 +181,35 @@ export class HiringDetailsPage {
     }
 
     //if(this.showMapBidder == 1){
-      this.getMaps()
+      //this.getMaps()
     
 
   }
+
+  ionViewDidEnter(){
+    this.storeAction()
+    this.getMaps()
+  }
+
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
+
   presentNotifications(){
-    this.navCtrl.push(NotificationPage); // nav
+    this.navCtrl.push("NotificationPage"); // nav
   }
   getNotifications(){
     this.httpClient.get(this.url+"/api/notification/"+this.user_id+'?filters={"read":0}')
@@ -468,7 +491,7 @@ async presentActionSheet() {
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.presentAlert(res.msg);
-          this.navCtrl.setRoot(ActiveHiringsPage);
+          this.navCtrl.setRoot("ActiveHiringsPage");
           this.getHiringsActive();
          },err => {
           this.loading.dismiss();
@@ -505,8 +528,12 @@ async presentActionSheet() {
           this.presentAlert('Solicitud eliminada');
           //window.location.reload()
           this.getHiringsActive();
-          // this.navCtrl.setRoot(ActiveHiringsPage);
-          this.navCtrl.setRoot(HiringsPage);
+          if(this.rol_id == 2){
+            this.navCtrl.setRoot("ActiveHiringsPage");
+          }else{
+            this.navCtrl.setRoot("HiringsPage");
+          }
+          
 
         },err => {
           this.loading.dismiss();
@@ -530,12 +557,11 @@ async presentActionSheet() {
     this.method='PUT';
     this.hiring_id=this.detailsHirings.id;
     return  this.httpClient.post(this.url+"/api/hiring", {"status_id":3, "_method":this.method,"hiring_id":this.hiring_id,"token":this.tokenCode})
-      .pipe(
-      )
+      .pipe()
       .subscribe((res:any)=> {
         this.loading.dismiss();
         this.presentAlert(res.msg);
-        this.navCtrl.setRoot(HiringsPage);
+        this.navCtrl.setRoot("HiringsPage");
         this.getHiringsActive();
        },err => {
         this.loading.dismiss();
@@ -567,11 +593,11 @@ async presentActionSheet() {
           this.loading.dismiss();
           this.presentAlert(res.msg);
           /*this.navCtrl.push(ServicesPage)*/
-          this.navCtrl.setRoot(HiringsPage);
+          this.navCtrl.setRoot("HiringsPage");
          },err => {
           this.loading.dismiss();
           this.errorAlert('Ha ocurrido un error');
-          this.navCtrl.push(HiringsPage)
+          this.navCtrl.push("HiringsPage")
       }); //subscribe
     }
 
@@ -592,6 +618,8 @@ async presentActionSheet() {
       return  this.httpClient.get(this.url+"/api/hiring/get/map/"+this.hiring_id, {headers})
         .pipe()
         .subscribe((res:any)=> {
+
+          console.log("showmap", res)
 
           this.showMapBidder = res.show_bidder_map
           this.showMapApplicant = res.show_applicant_map
@@ -721,7 +749,7 @@ async presentActionSheet() {
 
     goToGoogleLocation(){
 
-      this.navCtrl.push(GoogleLocationPage, {data:this.detailsHirings});
+      this.navCtrl.push("GoogleLocationPage", {data:this.detailsHirings});
 
     }
 

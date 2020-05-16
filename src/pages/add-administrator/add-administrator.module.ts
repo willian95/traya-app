@@ -9,5 +9,8 @@ import { AddAdministratorPage } from './add-administrator';
   imports: [
     IonicPageModule.forChild(AddAdministratorPage),
   ],
+  exports:[
+    AddAdministratorPage
+  ]
 })
 export class AddAdministratorPageModule {}

@@ -43,6 +43,7 @@ export class HistoryHiringsPage {
   notificationArray:any;
   notificationNumber:any;
   averageRatingInt:any;
+  loading:any
 
     scheduleNotification(message,hiring_id) {
   this.localNotifications.schedule({
@@ -88,15 +89,17 @@ export class HistoryHiringsPage {
     });
   }
   presentNotifications(){
-    this.navCtrl.push(NotificationPage); // nav
+    this.navCtrl.push("NotificationPage"); // nav
   }
 
   getHiringsActive() {
+    this.loading = true
   this.httpClient.get(this.url+"/api/hiring?"+"user_id="+this.user_id+'&filters={"status_id":[4,5]}')
   .pipe()
     .subscribe((res:any)=> {
     this.hiringsArray=res.data;
     console.log("hiring");
+    this.loading = false
     for (var i = this.hiringsArray.length - 1; i >= 0; i--) {
       this.averageRatingInt=this.hiringsArray[i].bidder.averageRatingInt;
     }
@@ -109,7 +112,29 @@ export class HistoryHiringsPage {
     this.httpClient.get(this.url+"/api/hiring/"+items.id)
   .pipe()
     .subscribe((res:any)=> {
-      this.navCtrl.push(HiringDetailsPage,{data:res});
+      this.navCtrl.push("HiringDetailsPage",{data:res});
   });
   }
+
+  ionViewDidEnter(){
+    this.storeAction()
+  }
+
+  storeAction(){
+    var user_id = localStorage.getItem('user_id')
+    console.log(user_id)
+    
+    this.httpClient.post(this.url+"/api/userLastAction", {user_id: user_id} )
+    .pipe(
+      )
+    .subscribe((res:any)=> {
+      console.log(res)
+      
+  
+    },err => {
+      
+    });
+  
+   }
+
 }

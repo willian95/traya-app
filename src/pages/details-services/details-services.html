@@ -32,6 +32,14 @@
         <ion-input type="text" [(ngModel)]="description" name="description" required></ion-input>
       </ion-item>
 
+      <ion-item *ngIf="rolId == 3">
+        <ion-label>Localidad</ion-label>
+        <ion-select [(ngModel)]="locality">
+          <ion-option value="0">Todas las localidades</ion-option>
+          <ion-option value="{{ location.id }}" *ngFor="let location of locations">{{ location.name }}</ion-option>
+        </ion-select>
+      </ion-item>
+
       <div id="buttons" class="row" padding >
           <div col col-50>
               <button ion-button full color="danger" (click)="deleteServices()">Eliminar</button>
