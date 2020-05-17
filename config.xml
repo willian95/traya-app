@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="20" id="com.ionicframework.traya" version="1.0.2" xmlns:android="http://schemas.android.com/apk/res/android">
+<widget android-versionCode="20" id="com.ionicframework.traya" version="1.0.3" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>TRAYA</name>
     <description>TRAYA/APP</description>
     <author email="sistemaslhurtado@gmail.com">Ingenia Venezuela</author>
     <access launch-external="yes" origin="whatsapp://*" />
     <access launch-external="yes" origin="https://wa.me/*" />
     <allow-navigation href="*" />
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <content original-src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

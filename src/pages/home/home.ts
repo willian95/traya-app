@@ -12,6 +12,7 @@ import { UpdateModalPage } from '../update-modal/update-modal'; //importo el mod
 import { AppVersion } from '@ionic-native/app-version';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicPage } from 'ionic-angular';
+import { AppUpdate } from '@ionic-native/app-update';
 import { UserHiringPage } from '../user-hiring/user-hiring';
 @IonicPage()
 
@@ -24,8 +25,7 @@ export class HomePage {
   protected app_version: any;
   
 
-  constructor(private statusBar: StatusBar, private appVersion: AppVersion, public toastController: ToastController,public navCtrl: NavController, public modalCtrl: ModalController,private menu: MenuController,public httpClient: HttpClient,private serviceUrl:ServiceUrlProvider,public events: Events,private localNotifications: LocalNotifications,private alertCtrl: AlertController, private plt: Platform,public viewCtrl: ViewController, private app: AppVersion) {
-    this.url=serviceUrl.getUrl();
+  constructor(private statusBar: StatusBar, public toastController: ToastController,public navCtrl: NavController, public modalCtrl: ModalController,private menu: MenuController,public httpClient: HttpClient,public events: Events,private localNotifications: LocalNotifications,private alertCtrl: AlertController, private plt: Platform,public viewCtrl: ViewController, private app: AppVersion, private appUpdate: AppUpdate) {
 
     this.plt.ready().then((readySource) => {
       var me = this;
@@ -173,7 +173,6 @@ presentAlert(data) {
     console.log("sesion expirada");
   }
 }
-
 
 update(app_version){ //la funcion
 

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ViewController   } from 'ionic-angular';
+import { AppUpdate } from '@ionic-native/app-update';
+import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 
 /**
  * Generated class for the UpdateModalPage page.
@@ -14,8 +16,9 @@ import { IonicPage, NavController, NavParams,ViewController   } from 'ionic-angu
   templateUrl: 'update-modal.html',
 })
 export class UpdateModalPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController) {
+  url:any
+  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController, private appUpdate: AppUpdate, private serviceUrl:ServiceUrlProvider) {
+    this.url=serviceUrl.getUrl();
   }
 
   ionViewDidLoad() {
@@ -24,7 +27,7 @@ export class UpdateModalPage {
 
    closeModal() {
     this.viewCtrl.dismiss();
-    window.location.href="market://details?id=com.ionicframework.traya";
+    //window.location.href="market://details?id=com.ionicframework.traya";
   
   }
  dontSee() {

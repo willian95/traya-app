@@ -10,7 +10,6 @@ import { ServiceUrlProvider } from '../providers/service-url/service-url';
 import { PusherProvider } from '../providers/pusher/pusher';
 import { BackgroundMode } from '@ionic-native/background-mode';
 
-
 import { LocalNotifications } from '@ionic-native/local-notifications';
 
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -45,9 +44,11 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
   appMenuItems:any;
   constructor(private localNotifications: LocalNotifications,private alertCtrl: AlertController,private socialSharing: SocialSharing,public actionSheetController: ActionSheetController,public backgroundMode: BackgroundMode,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public httpClient: HttpClient,public events: Events,private serviceUrl:ServiceUrlProvider,private pusher:PusherProvider, private push: Push, private fcm: FCM) {
+
     this.appMenuItems = [];
     this.initializeApp();
     this.url=serviceUrl.getUrl();
+
     this.storage = localStorage;
     this.validateHeaderMain=false;
     this.backgroundMode.disable();

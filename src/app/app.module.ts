@@ -81,6 +81,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { BrMaskerModule } from 'brmasker-ionic-3';
 import { FCM } from '@ionic-native/fcm';
+import { AppUpdate } from '@ionic-native/app-update';
 
 @NgModule({
   declarations: [
@@ -205,6 +206,7 @@ import { FCM } from '@ionic-native/fcm';
     Facebook,
     LoginProvider,
     HelperProvider,
+    AppUpdate,
     AppVersion,
     Geolocation,
     Push,
