@@ -15,12 +15,16 @@
   <ion-grid>
 
       <div text-center class="animated fadeInDown">
-          <img src="assets/imgs/logo_traya.png" class="logo"/>         
-<span>Hola, actualmente estas usando una versión antigua de TRAYA, por favor actualiza para que puedas seguir disfrutando del servicio que solo TRAYA te puede brindar </span>
+        <p text-center style="margin-bottom: -10px;"><img src="assets/imgs/logo_traya.png" class="logo" style="width: 130px;"/> </p>
+        <span style="font-family: 'Lucila'; color: #7f0093;"><span style="font-size: 10rem; margin-right: 12px; color: #7f0093;">t</span><span style="font-size: 7rem;">raya</span></span>
+        <h3 style="font-family: 'Myriad'; font-size: 2rem; color: #795C9B; margin-top: -12px;">APP DE SERVICIOS</h3>       
+<span>Hola, actualmente estás usando una versión antigua de Traya, por favor actualiza para que puedas seguir disfrutando de la App</span>
+        <h3 *ngIf="showView == true">{{ downProg }} %</h3>
 </div>
          <div id="buttons" class="row" padding >
           <div col col-100>
-            <button ion-button full (click)="closeModal()">Actualizar</button>
+            <!--<button ion-button full (click)="closeModal()">Actualizar</button>-->
+            <button ion-button full (click)="update()" *ngIf="showView == false">Actualizar</button>
           </div>
         </div>
 

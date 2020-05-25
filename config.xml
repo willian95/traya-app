@@ -6,7 +6,7 @@
     <access launch-external="yes" origin="whatsapp://*" />
     <access launch-external="yes" origin="https://wa.me/*" />
     <allow-navigation href="*" />
-    <content original-src="index.html" src="http://localhost:8100" />
+    <content src="index.html" />
     <content original-src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

@@ -25,6 +25,8 @@ export class ManageUsersPage {
   userLocation:any
   rol_id:any;
   usersCount:any
+  page:any = 1
+  totalPages:any = 0
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
     this.url=serviceUrl.getUrl();
@@ -59,6 +61,16 @@ export class ManageUsersPage {
 
   }
 
+  loadMore(){
+    this.page++
+    this.getUsers()
+  }
+
+  loadLess(){
+    this.page--
+    this.getUsers()
+  }
+
    getUsers() {
 
     var headers = new HttpHeaders({
@@ -76,12 +88,13 @@ export class ManageUsersPage {
 
     if(localStorage.getItem("user_rol") == "4"){
 
-      this.httpClient.post(this.url+'/api/users/activeUsersLocation', {location_id: user_locality, user_id: localStorage.getItem('user_id')}, { headers })
+      this.httpClient.post(this.url+'/api/users/activeUsersLocation', {page:this.page, location_id: user_locality, user_id: localStorage.getItem('user_id')}, { headers })
       .pipe()
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.usersArray=res.data;
-          this.usersCount = this.usersArray.length
+          this.usersCount = res.usersCount
+          this.totalPages = Math.ceil(this.usersCount / 20)
 
           for (var i = 0; i < this.usersArray.length; i++) {
             if(this.usersArray[i].roles[0].id == 1){
@@ -90,17 +103,19 @@ export class ManageUsersPage {
               this.user_rol='Trabajador';
             }
           }
+
       });
 
     }else if(localStorage.getItem("user_rol") == "3"){
 
-      this.httpClient.post(this.url+'/api/users/activeUsersLocation', {location_id: this.userLocation, user_id: localStorage.getItem('user_id')}, { headers })
+      this.httpClient.post(this.url+'/api/users/activeUsersLocation', {page: this.page, location_id: this.userLocation, user_id: localStorage.getItem('user_id')}, { headers })
       //this.httpClient.get(this.url+"/api/users?"+'filters={"trashed":"1"}',{headers})
       .pipe()
         .subscribe((res:any)=> {
         this.loading.dismiss();
         this.usersArray=res.data;
-        this.usersCount = this.usersArray.length
+        this.usersCount = res.usersCount
+        this.totalPages = Math.ceil(this.usersCount / 20)
           console.log(this.usersArray)
         for (var i = 0; i < this.usersArray.length; i++) {
           if(this.usersArray[i].roles[0].id == 1){

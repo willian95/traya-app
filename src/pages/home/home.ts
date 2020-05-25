@@ -14,6 +14,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { IonicPage } from 'ionic-angular';
 import { AppUpdate } from '@ionic-native/app-update';
 import { UserHiringPage } from '../user-hiring/user-hiring';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener';
+import { NgZone } from '@angular/core';
+
 @IonicPage()
 
 @Component({
@@ -23,13 +28,16 @@ import { UserHiringPage } from '../user-hiring/user-hiring';
 export class HomePage {
   url:any;
   protected app_version: any;
+  downProg = 0
   
 
-  constructor(private statusBar: StatusBar, public toastController: ToastController,public navCtrl: NavController, public modalCtrl: ModalController,private menu: MenuController,public httpClient: HttpClient,public events: Events,private localNotifications: LocalNotifications,private alertCtrl: AlertController, private plt: Platform,public viewCtrl: ViewController, private app: AppVersion, private appUpdate: AppUpdate) {
+  constructor(private statusBar: StatusBar, public toastController: ToastController,public navCtrl: NavController, public modalCtrl: ModalController,private menu: MenuController,public httpClient: HttpClient,public events: Events,private localNotifications: LocalNotifications,private alertCtrl: AlertController, private plt: Platform,public viewCtrl: ViewController, private app: AppVersion, private appUpdate: AppUpdate, private transfer: FileTransfer, private file: File, private serviceUrl: ServiceUrlProvider, private fileOpener: FileOpener, private ngZone: NgZone) {
 
+    this.url = this.serviceUrl.getUrl()
     this.plt.ready().then((readySource) => {
       var me = this;
       this.app.getVersionNumber().then(value => {
+        
         this.update(value)
 
       }).catch(err => {
@@ -71,18 +79,6 @@ presentAlert(data) {
   });
   alert.present();
   }
-
-
-  async redirectDetailHiringNotification2(data) {
-     // const toast = await this.toastController.create({
-     //   message: 'Tienes una nueva solicitud',
-     //   duration: 2000
-     // });
-     // toast.present();
-     //this.navCtrl.setRoot(DetailHiringNotificationPage,{data:data});
-  }
-
-
 
   async redirectDetailHiringNotification(data) {
     const toast = await this.toastController.create({
@@ -174,23 +170,56 @@ presentAlert(data) {
   }
 }
 
+updateTest(){
+
+  const fileTransfer = this.transfer.create(); //this.tranfer is from "@ionic-native/file-transfer";
+    let fileUrl = this.url+"/traya.apk";
+    console.log(fileUrl)
+  const savePath = this.file.externalRootDirectory  + '/Download/' + 'traya.apk';
+  
+    fileTransfer.onProgress((progressEvent) => {
+      this.ngZone.run(() => {
+      //console.log(progressEvent);
+      var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+      console.log(perc)
+      this.downProg = perc;
+      })
+    });
+    fileTransfer.download(fileUrl, savePath)
+    .then((entry) => {
+
+      const nativePath = entry.toURL();
+      alert(nativePath)
+      this.runNewVersionApk(nativePath);
+    }, (err) => {
+      console.log(err)
+      alert("SERVER ERROR TO DOWNLOAD FILE")
+    });
+
+}
+
+runNewVersionApk(path) {
+  //this.fileOpener is from '@ionic-native/file-opener';
+  this.fileOpener.open(path, 'application/vnd.android.package-archive');
+}
+
 update(app_version){ //la funcion
 
     var headers = new Headers();
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json' );
     return  this.httpClient.post(this.url+"/api/updateapk", {"versionApk": app_version})
-    .pipe(
-    )
+    .pipe()
     .subscribe((res:any)=> {
    var versionToday = res.data;
-    console.log(res.data);
+    console.log("test-update", res.data);
     //console.log(versionToday);
     if (versionToday==true){
         this.closeModal();
       }else{
       let modal=this.modalCtrl.create("UpdateModalPage");
       modal.present();
+      //this.menu.swipeEnable(false);
       console.log('app antigua');
       }
     },err => {

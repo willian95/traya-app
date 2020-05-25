@@ -73,6 +73,7 @@ import { HelperProvider } from '../providers/helper/helper';
 import { AdminAdsPage } from '../pages/admin-ads/admin-ads';
 import { GoogleLocationPage } from '../pages/google-location/google-location';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 //import { LongPressModule } from 'ionic-long-press';
 
 import { Push } from '@ionic-native/push';
@@ -82,6 +83,9 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { BrMaskerModule } from 'brmasker-ionic-3';
 import { FCM } from '@ionic-native/fcm';
 import { AppUpdate } from '@ionic-native/app-update';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener';
 
 @NgModule({
   declarations: [
@@ -195,6 +199,7 @@ import { AppUpdate } from '@ionic-native/app-update';
     SplashScreen,
     CallNumber,
     GooglePlus,
+    AndroidPermissions,
     BackgroundMode,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ServiceUrlProvider,
@@ -204,6 +209,9 @@ import { AppUpdate } from '@ionic-native/app-update';
     SocialSharing,
     DeviceAccounts,
     Facebook,
+    File,
+    FileOpener,
+    FileTransfer,
     LoginProvider,
     HelperProvider,
     AppUpdate,
