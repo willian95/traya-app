@@ -35,14 +35,17 @@ export class HomePage {
 
     this.url = this.serviceUrl.getUrl()
     this.plt.ready().then((readySource) => {
-      var me = this;
-      this.app.getVersionNumber().then(value => {
-        
-        this.update(value)
+      if (this.plt.is('android')) {
+        var me = this;
+        this.app.getVersionNumber().then(value => {
+          
+          this.update(value)
 
-      }).catch(err => {
-        console.log(err);
-      });
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+      
 
       // let status bar overlay webview
       //this.statusBar.overlaysWebView(true);
