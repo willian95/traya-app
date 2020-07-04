@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController,Platform,ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController,Platform,ToastController, ModalController, MenuController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HiringDetailsPage } from '../hiring-details/hiring-details';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { NotificationPage } from '../notification/notification';
@@ -19,12 +19,22 @@ import { HistoryHiringsPage } from '../history-hirings/history-hirings';
 export class ActiveHiringsPage {
 
   url:any;
-  constructor(public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications,private alertCtrl: AlertController) {
+  constructor(public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications,private alertCtrl: AlertController, public modalCtrl: ModalController, public menu: MenuController) {
     this.url=serviceUrl.getUrl();
  this.storage = localStorage;
  console.log(localStorage.getItem('valueServicesBidder'));
+
+    this.checkNotificationId()
+
+    this.plt.ready().then((readySource) => {
+      this.localNotifications.on("click", (notification, state) =>{
+        
+        this.checkNotificationId()
+      })
+    });
+
       // LOCALNOTIFACTION
-         this.plt.ready().then((readySource) => {
+         /*this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -34,7 +44,7 @@ export class ActiveHiringsPage {
       });
       alert.present();
     })
-  });
+  });*/
   }
 
   loading:any;
@@ -48,9 +58,9 @@ export class ActiveHiringsPage {
   ionViewDidLoad() {
     const channel = this.pusherNotify.init();
     let self = this;
-    channel.bind('notificationUser', function(data) {
+    /*channel.bind('notificationUser', function(data) {
       self.scheduleNotification(data.message,data.hiring.id);
-    });
+    });*/
 
 
     this.getHiringsActive();
@@ -62,6 +72,153 @@ export class ActiveHiringsPage {
           this.toastTweet();
         }
      this.storage.removeItem('valueServicesBidder');
+    }
+
+  }
+
+  firstQuestion(receiverName, serviceName, id){
+    const confirm = this.alertCtrl.create({
+      message: 'Hola, te contactaste con '+receiverName+' ¿pudiste solucionar tu necesidad?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.httpClient.post(this.url+"/api/contact-review/first-question-answer", {answer: false, contact_review_id: id})
+            .subscribe((res:any) => {
+              this.thankYou()
+              
+
+            })
+            
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.httpClient.post(this.url+"/api/contact-review/first-question-answer", {answer: true, contact_review_id: id})
+            .subscribe((res:any) => {
+
+              this.secondQuestion(receiverName, serviceName, id)
+
+            })
+            
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  thankYou(){
+    const alert = this.alertCtrl.create({
+      subTitle: 'Gracias!',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  secondQuestion(receiverName, serviceName, id){
+    const confirm = this.alertCtrl.create({
+      message: '¿Deseas valorar el trabajo de '+receiverName+'  en '+serviceName+'?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.httpClient.post(this.url+"/api/contact-review/second-question-answer", {answer: false, contact_review_id: id})
+            .subscribe((res:any) => {
+
+              this.thankYouForYourTime()
+
+            })
+           
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.httpClient.post(this.url+"/api/contact-review/second-question-answer", {answer: true, contact_review_id: id})
+            .subscribe((res:any) => {
+
+              this.httpClient.get(this.url+"/api/hiring/"+id)
+              .pipe()
+                .subscribe((res:any)=> {
+                  this.navCtrl.push("HiringDetailsPage",{data:res});
+              });
+
+            })
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  thankYouForYourTime(){
+    const alert = this.alertCtrl.create({
+      message: 'Gracias por su tiempo!',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  checkContactReview(){
+    
+    this.httpClient.post(this.url+'/api/contact-review/check', {user_id: localStorage.getItem("user_id")})
+    .subscribe((res:any) => {
+
+      //alert(res.askQuestion)
+      //console.log("test-res", res)
+      if(res.askQuestion == true){
+
+        
+        //this.firstQuestion(res.userReceiver.name, res.service.name, res.contactReview.id)
+
+        /*const contactReviewModal = this.modalCtrl.create("ModalContactReviewPage", {userReceiver: res.userReceiver, contactReview: res.contactReview, service: res.service});
+        contactReviewModal.present();
+        contactReviewModal.onDidDismiss(() => {
+          
+          this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("contactReviewId"))
+          .pipe()
+            .subscribe((res:any)=> {
+              localStorage.removeItem("contactReviewId")
+              this.navCtrl.push("HiringDetailsPage",{data:res});
+          });
+
+        });
+        this.menu.swipeEnable(false);*/
+      }
+
+    })
+
+  }
+
+  checkNotificationId(){
+
+    
+    if(localStorage.getItem("notificationId") != null){
+      this.loading = this.loadingController.create({
+          content: 'Por favor espere active hirings...'
+      });
+      //this.loading.present()
+      console.log("active-hirings-notification")
+      this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
+      .pipe()
+        .subscribe((res:any)=> {
+          //this.loading.dismiss()
+          if(res.applicant.id == this.user_id){
+
+        
+     
+          }else{
+           
+            localStorage.removeItem("notificationId")
+            this.navCtrl.push("HiringDetailsPage",{data:res});
+          }
+          
+      });
+
+      //this.loading.dismiss()
+      
     }
 
   }
@@ -142,6 +299,7 @@ showHistory(){
 
   ionViewDidEnter(){
     this.storeAction()
+    //this.checkContactReview()
   }
 
   storeAction(){

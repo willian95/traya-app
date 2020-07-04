@@ -21,7 +21,7 @@ export class UpdateServicesPage {
          this.url=serviceUrl.getUrl();
 
              // LOCALNOTIFACTION
-         this.plt.ready().then((readySource) => {
+       /*  this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -31,7 +31,7 @@ export class UpdateServicesPage {
       });
       alert.present();
     })
-  });
+  });*/
 
   }
    token:any;

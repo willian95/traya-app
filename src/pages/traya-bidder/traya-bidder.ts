@@ -1,5 +1,5 @@
 import { Component,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams,Platform,AlertController,ToastController,ModalController,MenuController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,Platform,AlertController,ToastController,ModalController,MenuController, LoadingController } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 import { SuperTabs } from 'ionic2-super-tabs';
 import { ActiveHiringsPage } from '../active-hirings/active-hirings';
@@ -30,21 +30,37 @@ notificationNumber:any;
     config:any;
     token:any;
     hiringCount:any
-  constructor(private statusBar: StatusBar, private menu: MenuController,public modalCtrl: ModalController,public events: Events,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private serviceUrl:ServiceUrlProvider) {
+    loading:any
+  constructor(private statusBar: StatusBar, public loadingController: LoadingController, private menu: MenuController,public modalCtrl: ModalController,public events: Events,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private serviceUrl:ServiceUrlProvider) {
     this.hiringCount = 0
     this.url=serviceUrl.getUrl();
 
-      this.plt.ready().then((readySource) => {
-    this.localNotifications.on('click', (notification, state) => {
-      let json = JSON.parse(notification.data);
+    this.events.subscribe('countHirings', (data) =>{
+      this.countActiveHirings()
+    });
 
-      let alert = alertCtrl.create({
-        title: notification.title,
-        subTitle: json.mydata
-      });
-      alert.present();
-    })
-  });
+    /*this.plt.ready().then((readySource) => {
+      this.localNotifications.on('click', (notification, state) => {
+      
+        this.loading = this.loadingController.create({
+            content: 'Por favor espere...'
+        });
+        this.loading.present()
+        console.log("traya-bidder-notification changeUser")
+        this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
+        .pipe()
+          .subscribe((res:any)=> {
+            this.loading.dismiss()
+            if(res.applicant.id == this.user_id){
+  
+             this.changeUserType()
+  
+            }
+        });
+        this.loading.dismiss()
+  
+      })
+    });*/
 
   // let status bar overlay webview
   //this.statusBar.overlaysWebView(true);
@@ -61,6 +77,19 @@ notificationNumber:any;
     data: { mydata: hiring_id },
     sound: null
   });
+}
+
+checkNotificationId(){
+
+  if(localStorage.getItem("notificationId") != null){
+    this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
+    .pipe()
+      .subscribe((res:any)=> {
+        localStorage.removeItem("notificationId")
+        this.navCtrl.push("HiringDetailsPage",{data:res});
+    });
+  }
+
 }
 
 
@@ -84,6 +113,13 @@ notificationNumber:any;
     //}, 5000) 
 
   }
+
+  ionViewDidEnter(){
+
+    this.storeAction()
+
+  }
+
   slideToIndex(index: number) {
    this.superTabs.slideTo(index);
  }
@@ -170,6 +206,7 @@ notificationNumber:any;
  }
 }
 
+
 showConfirm() {
   const confirm = this.alertCtrl.create({
     message: '¿Desea cambiar de modo Trabajador a modo Usuario? ',
@@ -216,7 +253,9 @@ storeAction(){
     });
     this.httpClient.post(this.url+'/api/countActive/hiring', {"user_id": localStorage.getItem('user_id')})
     .subscribe((response:any)=> {
-     
+      
+      console.log("test-reponse", response)
+
       if(response.success == true){
         
         if(localStorage.getItem('user_rol') == "1"){

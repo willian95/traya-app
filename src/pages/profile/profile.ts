@@ -33,7 +33,7 @@
              // LOCALNOTIFACTION
              this.registerComplete = localStorage.getItem("is_register_completed")
              //console.log("test-register-complete", this.registerComplete)
-      this.plt.ready().then((readySource) => {
+      /*this.plt.ready().then((readySource) => {
         var me = this;
         this.localNotifications.on('click', function(notification){
           let json = JSON.parse(notification.data);
@@ -44,7 +44,7 @@
           });
           alert.present();
            })
-     });
+     });*/
       }
       name:any;
       email:any;

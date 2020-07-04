@@ -4,20 +4,31 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     
-    <span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px; margin-bottom: -28px; font-weight: bold;" *ngIf="hiringDescription?.length > 40 ">
+    <!--<span style="color: #b0428f; font-size: 14px; line-height: 48px; margin-bottom: -28px; font-weight: bold;" *ngIf="hiringDescription?.length > 40 ">
         
       <small>{{hiringDescription | slice:0:40}}</small>
     
-    </span>
+    </span>-->
 
-    <span *ngIf="hiringDescription?.length <= 40 " style="text-transform: uppercase; color: #b0428f; font-size: 18px; line-height: 48px; font-weight: bold;">
+    <div (click)="showCompleteDescription()">
+      <p style="color: #b0428f; font-size: 18px; line-height: 18px; font-weight: bold; margin-top: 10px; padding-right: 40px; padding-top: 5px;">
         
-        <small>{{hiringDescription | slice:0:40}}</small>
+        <small>{{hiringDescription | slice:0:70}}</small>
       
-    </span>
+      </p>
+    </div>
+    
 
-    <button ion-button (click)="showDescription()"  *ngIf="hiringDescription?.length >= 40 " style="float: right; margin-top: 10px;">
+    <!--<button ion-button (click)="showDescription()"  *ngIf="hiringDescription?.length >= 40 " style="float: right; margin-top: 10px;">
       <ion-icon ios="ios-add-circle" md="md-add"></ion-icon>
+    </button>-->
+    <button ion-button (click)="confirmAlert()" style="float: right; background-color: #bdc3c7; position: absolute; right: 5px;
+    bottom: 11px;" *ngIf="hiringDescription?.length <= 35">
+      <ion-icon ios="ios-close" md="md-close"></ion-icon>
+    </button>
+    <button ion-button (click)="confirmAlert()" style="float: right; background-color: #bdc3c7; position: absolute; right: 5px;
+    bottom: 18px;" *ngIf="hiringDescription?.length > 35">
+      <ion-icon ios="ios-close" md="md-close"></ion-icon>
     </button>
   </ion-navbar>
 </ion-header>
@@ -34,9 +45,9 @@
             
           </ion-col>
           <ion-col>
-              <button ion-button (click)="confirmAlert()" style="float: right; margin-right: -20px; background-color: #bdc3c7">
+              <!--<button ion-button (click)="confirmAlert()" style="float: right; margin-right: -20px; background-color: #bdc3c7">
                   <ion-icon ios="ios-close" md="md-close"></ion-icon>
-                </button>
+                </button>-->
           </ion-col>
         </ion-row>
         <ion-row >
@@ -63,18 +74,19 @@
             <ion-item id="pr1" style="padding-left: 0px;">
               <ion-icon name="person" slot="start"></ion-icon>
               <ion-label color="dark" style="margin-top: 6px;">
-                  <h2>
+                  <h2 (click)="servicesActionSheet()">
                     {{bidderName}}
                   </h2>
-                  <div id="pr2">
+                  <div id="pr2" (click)="servicesActionSheet()">
                     <span>{{servicesName}}</span>
                   </div>
               </ion-label>
             </ion-item>
           </ion-col>
           <ion-col col col-1>
-            <button ion-button style="margin-top: 10px" (click)="servicesActionSheet()">
-              <ion-icon ios="ios-add" md="md-add"></ion-icon>
+            <button ion-button style="margin-top: 10px" v-if="rol_id == 1">
+              <ion-icon ios="ios-heart-outline" md="md-heart-outline" (click)="storeFavorite()" *ngIf="favoriteCheck == false"></ion-icon>
+              <ion-icon ios="ios-heart" md="md-heart" (click)="deleteFavorite()" *ngIf="favoriteCheck == true"></ion-icon>
             </button>
           </ion-col>
 
@@ -313,11 +325,11 @@
         <ion-col>
           
         </ion-col>
-        <ion-col>
+        <!--<ion-col>
             <button ion-button (click)="confirmAlert()" style="float: right; margin-right: -20px; background-color: #bdc3c7">
                 <ion-icon ios="ios-close" md="md-close"></ion-icon>
               </button>
-        </ion-col>
+        </ion-col>-->
       </ion-row>
    <ion-row >
           <ion-col col col-6 >

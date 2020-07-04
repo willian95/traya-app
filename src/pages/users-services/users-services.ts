@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController,Platform,ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController,Platform,ToastController, Events } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { UserHiringPage } from '../user-hiring/user-hiring';
 import { AlertController } from 'ionic-angular';
@@ -29,7 +29,7 @@ export class UsersServicesPage {
 	lowerAdWeight:any
 	seenAds:any
 
-	constructor(public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private alertCtrl: AlertController,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
+	constructor(public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private alertCtrl: AlertController,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider, public events: Events) {
 		
 		this.showUpperAds = true
 		this.showLowerAds = true
@@ -48,7 +48,7 @@ export class UsersServicesPage {
 		this.usersArray=[];
 		this.validateMT=false;
 
-		this.plt.ready().then((readySource) => {
+		/*this.plt.ready().then((readySource) => {
 			this.localNotifications.on('click', (notification, state) => {
 				let json = JSON.parse(notification.data);
 
@@ -58,7 +58,7 @@ export class UsersServicesPage {
 				});
 				alert.present();
 			})
-		});
+		});*/
 
 	}
 	name:any;
@@ -246,7 +246,9 @@ export class UsersServicesPage {
 				this.loading.dismiss();
 				this.presentAlert();
 				this.getHirings();
-				this.navCtrl.push("HiringsPage"); // nav
+				this.events.publish("countHirings", "count")
+				this.navCtrl.push("ServicesPage"); // nav
+				
 
 			},err => {
 				this.loading.dismiss();
@@ -367,44 +369,56 @@ export class UsersServicesPage {
 			.pipe()
 			.subscribe((res:any)=> {
 
-				console.log("upper", res)
 
-				if(res.noAds == true){
-					this.showUpperAds = false
-				}else{
+				
+				if(res.fewerAds.length == 1){
+					this.upperAdArray.push(res.fewerAds[0])
+				}
+				else if(res.fewerAds.length == 2){
+					this.upperAdArray.push(res.fewerAds[0])
+				}
+				else if(res.fewerAds.length == 3){
+					this.upperAdArray.push(res.fewerAds[2])
+				}
 
-					if(res.ads.length > 0 && res.exists > 0){
-
-						if(res.ads[0]){
-							if((res.ads[0].ad_type_id + this.upperAdWeight) <= 3 && this.upperAdWeight <= 3){
-							
-								this.upperAdWeight = this.upperAdWeight + res.ads[0].ad_type_id
-								this.upperAdArray.push(res.ads[0])
-								this.seenAds.push(res.ads[0].id)
+				else{
+					if(res.noAds == true){
+						this.showUpperAds = false
+					}else{
+	
+						if(res.ads.length > 0 && res.exists > 0){
+	
+							if(res.ads[0]){
+								if((res.ads[0].ad_type_id + this.upperAdWeight) <= 3 && this.upperAdWeight <= 3){
 								
-								this.upperAdArray.sort(function(a, b){
-									//return a.ad_type_id - b.ad_type_id
-									console.log("sort-a", a)
-									console.log("sort-b", b)
-									if (a.ad_type_id === b.ad_type_id) {
-										return 0;
-									}
-									else {
-										return (a.ad_type_id > b.ad_type_id) ? -1 : 1;
-									}
-								})
-
-								this.getUpperAds()
+									this.upperAdWeight = this.upperAdWeight + res.ads[0].ad_type_id
+									this.upperAdArray.push(res.ads[0])
+									this.seenAds.push(res.ads[0].id)
+									
+									this.upperAdArray.sort(function(a, b){
+										//return a.ad_type_id - b.ad_type_id
+										console.log("sort-a", a)
+										console.log("sort-b", b)
+										if (a.ad_type_id === b.ad_type_id) {
+											return 0;
+										}
+										else {
+											return (a.ad_type_id > b.ad_type_id) ? -1 : 1;
+										}
+									})
+	
+									this.getUpperAds()
+				
+								}else if((res.ads[0].ad_type_id + this.upperAdWeight) > 3 && this.upperAdWeight < 3){
 			
-							}else if((res.ads[0].ad_type_id + this.upperAdWeight) > 3 && this.upperAdWeight < 3){
-		
-								this.getUpperAds()
-		
+									this.getUpperAds()
+			
+								}
 							}
+		
 						}
 	
 					}
-
 				}
 				
 
@@ -437,41 +451,53 @@ export class UsersServicesPage {
 			.subscribe((res:any)=> {
 				
 				console.log("lower", res)
+				if(res.fewerAds.length == 1){
+					
+				}
+				else if(res.fewerAds.length == 2){
 
-				if(res.noAds == true){
-					this.showLowerAds = false
-				}else{
+					this.lowerAdArray.push(res.fewerAds[1])
+				}else if(res.fewerAds.length == 3){
+					this.lowerAdArray.push(res.fewerAds[1])
+				}
+				else{
 
-					if(res.ads.length > 0 && res.exists > 0){
-
-						if(res.ads[0]){
+					if(res.noAds == true){
+						this.showLowerAds = false
+					}else{
 	
-							if((res.ads[0].ad_type_id + this.lowerAdWeight) <= 3 && this.lowerAdWeight <= 3){
-							
-								this.lowerAdWeight = this.lowerAdWeight + res.ads[0].ad_type_id
-								this.lowerAdArray.push(res.ads[0])
-								this.seenAds.push(res.ads[0].id)
-
-								this.lowerAdArray.sort(function(a, b){
-									//return a.ad_type_id - b.ad_type_id
-									//console.log("sort-a", a)
-									//console.log("sort-b", b)
-									if (a.ad_type_id === b.ad_type_id) {
-										return 0;
-									}
-									else {
-										return (a.ad_type_id > b.ad_type_id) ? -1 : 1;
-									}
-								})
+						if(res.ads.length > 0 && res.exists > 0){
+	
+							if(res.ads[0]){
 		
-								this.getLowerAds()
+								if((res.ads[0].ad_type_id + this.lowerAdWeight) <= 3 && this.lowerAdWeight <= 3){
+								
+									this.lowerAdWeight = this.lowerAdWeight + res.ads[0].ad_type_id
+									this.lowerAdArray.push(res.ads[0])
+									this.seenAds.push(res.ads[0].id)
+	
+									this.lowerAdArray.sort(function(a, b){
+										//return a.ad_type_id - b.ad_type_id
+										//console.log("sort-a", a)
+										//console.log("sort-b", b)
+										if (a.ad_type_id === b.ad_type_id) {
+											return 0;
+										}
+										else {
+											return (a.ad_type_id > b.ad_type_id) ? -1 : 1;
+										}
+									})
 			
-							}else if((res.ads[0].ad_type_id + this.lowerAdWeight) > 3 && this.lowerAdWeight < 3){
-		
-								this.getLowerAds()
+									this.getLowerAds()
+				
+								}else if((res.ads[0].ad_type_id + this.lowerAdWeight) > 3 && this.lowerAdWeight < 3){
+			
+									this.getLowerAds()
+			
+								}
 		
 							}
-	
+		
 						}
 	
 					}

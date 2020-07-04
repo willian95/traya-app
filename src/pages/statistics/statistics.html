@@ -47,6 +47,9 @@
       <ion-col>
        <b>Trabajadores</b>
       </ion-col>
+      <ion-col>
+        <b>Total</b>
+       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
@@ -54,6 +57,9 @@
       </ion-col>
       <ion-col>
        <b>{{ workers }}</b>
+      </ion-col>
+      <ion-col>
+        <b>{{ users + workers }}</b>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="user_rol >= '3'" style="margin-top: 20px;">

@@ -1,0 +1,88 @@
+page-favorite {
+
+    .custom-list{
+        margin-right: -18px;
+    }
+    
+    
+    
+    .custom-list .item-inner{
+        padding: 0;
+        border-bottom: none !important;
+    }
+    
+        .list-md {
+            margin: 0;
+        }
+    
+    .label-md{
+        margin: 0px;
+    }
+    .list-md > .item-block:last-child{
+        border-bottom: none !important;
+    }
+    
+      .input-wrapper {
+          display: -webkit-box;
+          display: -webkit-flex;
+          // text-align: right;
+          display: -ms-flexbox;
+          display: flex;
+          overflow: hidden;
+          -webkit-box-flex: 1;
+          -webkit-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          -webkit-box-orient: inherit;
+          -webkit-box-direction: inherit;
+          -webkit-flex-direction: inherit;
+          -ms-flex-direction: inherit;
+          flex-direction: inherit;
+          -webkit-box-align: inherit;
+          -webkit-align-items: inherit;
+          -ms-flex-align: inherit;
+          align-items: inherit;
+          -webkit-align-self: stretch;
+          -ms-flex-item-align: stretch;
+          align-self: stretch;
+          text-overflow: ellipsis;
+      }
+      .list-md > .item-block:last-child, .list-md > .item-wrapper:last-child .item-block {
+          border-bottom: 0.55px solid #c8c7cc;
+      }
+      button#mt {
+        background: #b0428f;
+        color: white;
+    }
+    .ionic3-star-rating[_ngcontent-c0] .button[_ngcontent-c0] {
+        height: 24px;
+        background: none;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        width: 21px;
+        text-align: right;
+    
+    }
+    
+    
+    .ionic3-star-rating[_ngcontent-c0] .button[_ngcontent-c0] ion-icon[_ngcontent-c0] {
+        font-size: 20px;
+        text-align: right;
+    
+    }
+    .item-md ion-avatar ion-img, .item-md ion-avatar img {
+        border-radius: 50%;
+        overflow: hidden;
+        width: 63px !important;
+        height: 63px !important;
+    }
+    h3 {
+        position: relative;
+        top: 2px;
+    }
+    
+    .item.item-md .checkbox-md {
+        margin: unset;
+    }
+
+}

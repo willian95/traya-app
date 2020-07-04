@@ -19,8 +19,8 @@ import { HomeAdminPage } from '../home-admin/home-admin';
 export class StatisticsPage {
 
   url:any;
-  workers:0;
-  users:0;
+  workers:number = 0;
+  users:number = 0;
   locations:any
   location:any
   newUsers:any

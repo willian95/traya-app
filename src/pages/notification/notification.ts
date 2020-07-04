@@ -33,7 +33,7 @@ export class NotificationPage {
     this.url=serviceUrl.getUrl();
     this.dataPrueba = navParams.get('data');
 
-         this.plt.ready().then((readySource) => {
+       /*  this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -43,7 +43,7 @@ export class NotificationPage {
       });
       alert.present();
     })
-  });
+  });*/
   }
    loading:any;
   user_id:any;

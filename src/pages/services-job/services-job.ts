@@ -30,7 +30,7 @@ export class ServicesJobPage {
           });*/
     this.url=serviceUrl.getUrl();
 
-      this.plt.ready().then((readySource) => {
+      /*this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -40,7 +40,7 @@ export class ServicesJobPage {
       });
       alert.present();
     })
-  });
+  });*/
 
   }
   token:any;

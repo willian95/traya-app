@@ -7,19 +7,18 @@
     </div>
       <ion-grid [class.hide]="!validateHeaderMain">
         <ion-row>
-          <ion-col col-4>
-              <div class="user-avatar">
-                <img [src]="image" *ngIf="image && rol_id != 3" style="height: 68px;width: 68px;">
-                <img src="assets/imgs/logo_traya.png" *ngIf="rol_id == 3" style="height: 68px;width: 68px;">
+          <ion-col col-12>
+              <div class="user-avatar" text-center style="margin-left: 90px;">
+                <img [src]="image" *ngIf="image && rol_id != 3" style="height: 85px;width: 85px;">
+                <img src="assets/imgs/logo_traya.png" *ngIf="rol_id == 3" style="height: 85px;width: 85px;">
+                <button *ngIf="rol_id != 3" id="viewProfilePage" ion-button  (click)="viewProfilePage()" menuClose>
+                  <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+                </button>
               </div>
 
-                <button *ngIf="rol_id != 3" id="viewProfilePage" ion-button  (click)="viewProfilePage()" menuClose>
-                   <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
-                </button>
-
           </ion-col>
-          <ion-col padding-top col-8>
-            <h2 ion-text class="no-margin bold text-white">
+          <ion-col col-12>
+            <h2 ion-text class="no-margin bold text-white" style="margin-top: -20px;text-align: center; margin-bottom: 10px;">
               <!-- {{username | async}} -->
               {{name}}
             </h2>
@@ -28,12 +27,12 @@
 
         <ion-row no-padding class="other-data">
           <ion-col no-padding class="column">
-            <button ion-button icon-left small   menuClose (click)="viewProfilePage()">
+            <button ion-button icon-left small full   menuClose (click)="viewProfilePage()" text-center>
               <ion-icon name="contact"></ion-icon>
-              Editar Perfil
+              Mi Perfil
             </button>
           </ion-col>
-          <ion-col no-padding class="column">
+          <ion-col no-padding class="column" style="margin-left: 3px;">
             <button ion-button icon-left small full  menuClose (click)="confirmLogout()">
               <ion-icon name="log-out"></ion-icon>
               Cerrar Sesión
@@ -48,7 +47,7 @@
 
   <ion-content color="primary">
 
-    <ion-list class="user-list">
+    <ion-list class="user-list" style="margin-top: 4px;">
       <button ion-item menuClose class="text-1x" *ngFor="let menuItem of appMenuItems" (click)="openPage(menuItem)">
         <ion-icon item-left [name]="menuItem.icon" color="primary"></ion-icon>
         <span ion-text color="primary">{{menuItem.title}}</span><span class="side-menu-badge" *ngIf="menuItem.badge == 0">Off</span><span class="side-menu-badge" *ngIf="menuItem.badge == 1">On</span>

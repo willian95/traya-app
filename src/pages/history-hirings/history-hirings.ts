@@ -25,7 +25,7 @@ export class HistoryHiringsPage {
   constructor(public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
     this.url=serviceUrl.getUrl();
 
-     this.plt.ready().then((readySource) => {
+     /*this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -35,7 +35,7 @@ export class HistoryHiringsPage {
       });
       alert.present();
     })
-  });
+  });*/
   }
   user_id:any;
   user_rol:any;

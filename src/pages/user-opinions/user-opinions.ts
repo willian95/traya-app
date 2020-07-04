@@ -22,7 +22,7 @@ export class UserOpinionsPage {
     this.usersServices = navParams.get('data');
     console.log(this.usersServices.comments)
         // LOCALNOTIFACTION
-         this.plt.ready().then((readySource) => {
+     /*    this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -32,7 +32,7 @@ export class UserOpinionsPage {
       });
       alert.present();
     })
-  });
+  });*/
 
 
   }

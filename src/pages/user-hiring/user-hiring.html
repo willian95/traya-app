@@ -4,6 +4,10 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px; font-weight: bold;">{{name}}</span>
+    <ion-buttons end *ngIf="user_id != bidder_id">
+      <button ion-button (click)="storeFavorite()" *ngIf="favoriteCheck == false"><ion-icon ios="ios-heart-outline" md="md-heart-outline"></ion-icon></button>
+      <button ion-button (click)="deleteFavorite()" *ngIf="favoriteCheck == true"><ion-icon ios="ios-heart" md="md-heart"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
@@ -25,10 +29,10 @@
                 {{username}}
               </h2>
               <div id="pr2">
-                <span>{{servicesName}}</span>
+                <span *ngIf="comingFrom != 'favorite'">{{servicesName}}</span>
                 <button ion-button  small (click)="presentActionSheet()" style="margin-top: -6px;">
                   <ion-icon ios="ios-add" md="md-add"></ion-icon>
-                </button>
+                </button> 
                 
               </div>
           </ion-label>
@@ -69,6 +73,14 @@
     
       <ion-grid *ngIf="usersServices.email != authEmail">
         <ion-row>
+          <ion-col col-12 *ngIf="comingFrom == 'favorite'">
+            <ion-item>
+              <ion-label>Servicios</ion-label>
+            <ion-select [(ngModel)]="services_id">
+              <ion-option value="{{ service.service.id }}" *ngFor="let service of usersServices.services">{{ service.service.name }}</ion-option>
+            </ion-select>
+            </ion-item>
+          </ion-col>
           <ion-col col-1 style="padding-top: 13px; padding-left: 13px;">
             <ion-icon md="ios-create-outline" style="font-size: 25px;"></ion-icon>
           </ion-col>

@@ -47,7 +47,7 @@ export class DetailHiringNotificationPage {
     });
 
     // LOCALNOTIFACTION
-    this.plt.ready().then((readySource) => {
+    /*this.plt.ready().then((readySource) => {
       this.localNotifications.on('click', (notification, state) => {
         let json = JSON.parse(notification.data);
 
@@ -57,7 +57,7 @@ export class DetailHiringNotificationPage {
         });
         alert.present();
       })
-    });
+    });*/
   }
 
   detailsHirings:any;

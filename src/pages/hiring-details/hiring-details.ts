@@ -10,7 +10,7 @@ import { ProfilePage } from '../profile/profile';
 import { ActiveHiringsPage } from '../active-hirings/active-hirings';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
-import { ModalInformationPage } from '../modal-information/modal-information';
+//import { ModalInformationPage } from '../modal-information/modal-information';
 import { ServicesPage } from '../services/services';
 import { SuperTabsController } from 'ionic2-super-tabs';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -73,7 +73,7 @@ export class HiringDetailsPage {
     }
 
     this.loading = this.loadingController.create({
-             content: 'Por favor espere...'
+             content: 'Por favor espere hirings details...'
          });
     this.url=serviceUrl.getUrl();
     
@@ -83,7 +83,7 @@ export class HiringDetailsPage {
          });
 
            // LOCALNOTIFACTION
-         this.plt.ready().then((readySource) => {
+        /* this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -94,7 +94,7 @@ export class HiringDetailsPage {
       alert.present();
     })
     
-  });
+  });*/
 
 
   }
@@ -132,6 +132,7 @@ export class HiringDetailsPage {
   hiringDescription:any;
   selectedOption:any;
   map:any
+  favoriteCheck:any = false
 
 
    scheduleNotification(message,hiring_id) {
@@ -143,6 +144,20 @@ export class HiringDetailsPage {
     sound: null
   });
 }
+
+  checkFavorite(){
+
+    this.httpClient.post(this.url+"/api/favorite/check", {auth_id: this.user_id, user_id: this.bidder_id})
+    .pipe()
+    .subscribe((res:any)=> {
+      
+      if(res.success == true){
+        this.favoriteCheck = res.favoriteCheck
+      }
+
+    });
+
+  }
 
   ionViewDidLoad() {
 
@@ -172,10 +187,10 @@ export class HiringDetailsPage {
     if (this.detailsHirings.status_id == 2 && this.rol_id ==1) {
         if(localStorage.getItem('bidder_on') == null){
         localStorage.setItem('bidder_on','false');
-        const infoModal = this.modalCtrl.create(ModalInformationPage);
+        const infoModal = this.modalCtrl.create("ModalInformationPage");
         infoModal.present();
       }else if(localStorage.getItem('bidder_on') == 'false'){
-         const infoModal = this.modalCtrl.create(ModalInformationPage);
+         const infoModal = this.modalCtrl.create("ModalInformationPage");
         infoModal.present();
       }
     }
@@ -189,6 +204,7 @@ export class HiringDetailsPage {
   ionViewDidEnter(){
     this.storeAction()
     this.getMaps()
+    this.checkFavorite()
   }
 
   storeAction(){
@@ -477,9 +493,21 @@ async presentActionSheet() {
 
     }
 
+    showCompleteDescription(){
+      
+      //if(this.hiringDescription.length >= 70){
+        const alert = this.alertCtrl.create({
+          subTitle: this.hiringDescription,
+          buttons: ['OK']
+        });
+        alert.present();
+      //}
+      
+    }
+
     /****METODO PARA CREAR LA CONTRATACION***/
     createHiring(){
-      this.loading.present();
+      //this.loading.present();
       var headers = new Headers();
       headers.append("Accept", 'application/json');
       headers.append('Content-Type', 'application/json' );
@@ -489,12 +517,12 @@ async presentActionSheet() {
       return  this.httpClient.post(this.url+"/api/hiring", {"status_id":2, "_method":this.method,"hiring_id":this.hiring_id,"token":this.tokenCode})
         .pipe()
         .subscribe((res:any)=> {
-          this.loading.dismiss();
+          //this.loading.dismiss();
           this.presentAlert(res.msg);
           this.navCtrl.setRoot("ActiveHiringsPage");
           this.getHiringsActive();
          },err => {
-          this.loading.dismiss();
+          //this.loading.dismiss();
           this.errorAlert('Ha ocurrido un error');
          
       }); //subscribe
@@ -517,6 +545,7 @@ async presentActionSheet() {
       this.errorAlert('Ups! no es posible borrar de tu historial las solicitudes canceladas y/o calificadas');
       
     }
+    
 
     else{
       this.loading.present();
@@ -528,6 +557,7 @@ async presentActionSheet() {
           this.presentAlert('Solicitud eliminada');
           //window.location.reload()
           this.getHiringsActive();
+          this.events.publish("countHirings", "count")
           if(this.rol_id == 2){
             this.navCtrl.setRoot("ActiveHiringsPage");
           }else{
@@ -592,6 +622,7 @@ async presentActionSheet() {
         .subscribe((res:any)=> {
           this.loading.dismiss();
           this.presentAlert(res.msg);
+          this.events.publish("countHirings", "count")
           /*this.navCtrl.push(ServicesPage)*/
           this.navCtrl.setRoot("HiringsPage");
          },err => {
@@ -691,14 +722,17 @@ async presentActionSheet() {
       .then((coordinates: NativeGeocoderForwardResult[]) => {
         //console.log('The coordinates are latitude=' + coordinates[0].latitude + ' and longitude=' + coordinates[0].longitude)
 
-        if(this.rol_id == 1){
-          var mapEle = document.getElementById('map1') as HTMLElement;
-          console.log("showMapBidder",this.showMapBidder)
-          console.log("mapEle",mapEle)
-        } 
-        else{
-          var mapEle = document.getElementById('map2') as HTMLElement;
+        if(this.showMap == true){
+          if(this.rol_id == 1){
+            var mapEle = document.getElementById('map1') as HTMLElement;
+            console.log("showMapBidder",this.showMapBidder)
+            console.log("mapEle",mapEle)
+          } 
+          else{
+            var mapEle = document.getElementById('map2') as HTMLElement;
+          }
         }
+        
 
         
 
@@ -707,11 +741,12 @@ async presentActionSheet() {
           //const myLatLng = {lat: 11.7064801, lng: -70.2196518}
 
           // create map
-          this.map = new google.maps.Map(mapEle, {
-            center: myLatLng,
-            zoom: 15
-          });
-
+          if(this.showMap == true){
+            this.map = new google.maps.Map(mapEle, {
+              center: myLatLng,
+              zoom: 15
+            });
+          
           //this.directionsDisplay.setMap(this.map);
 
           google.maps.event.addListenerOnce(this.map, 'idle', () => {
@@ -732,6 +767,8 @@ async presentActionSheet() {
 
           })
 
+          }
+
       })
       //.catch((error: any) => console.log("geocoder error", error));
         
@@ -750,6 +787,32 @@ async presentActionSheet() {
     goToGoogleLocation(){
 
       this.navCtrl.push("GoogleLocationPage", {data:this.detailsHirings});
+
+    }
+
+    storeFavorite(){
+
+      this.httpClient.post(this.url+"/api/favorite/store", {"auth_id": this.user_id, "user_id": this.detailsHirings.bidder.id})
+      .pipe()
+      .subscribe((res:any)=> {
+        
+        this.presentAlert(res.msg)
+        this.checkFavorite()
+
+      })
+
+    }
+
+    deleteFavorite(){
+
+      this.httpClient.post(this.url+"/api/favorite/delete", {"auth_id": this.user_id, "user_id": this.detailsHirings.bidder.id})
+      .pipe()
+      .subscribe((res:any)=> {
+        
+        this.presentAlert(res.msg)
+        this.checkFavorite()
+
+      })
 
     }
 

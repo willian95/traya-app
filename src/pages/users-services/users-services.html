@@ -49,7 +49,7 @@
     </ion-list>
 
 
-  <ion-list  *ngIf="usersServices != null" style="border-bottom: 1px solid #535c68; border-top: 1px solid #535c68; margin-top: 5px; margin-bottom: 5px;">
+  <ion-list  *ngIf="usersServices != null" style="margin-top: 5px; margin-bottom: 5px;">
   <button ion-item *ngFor="let items of usersServices ; let i =index" class="border-service" (click)="viewProfile(items,i)">
       <ion-avatar item-start>
         <img [src]="items.image" *ngIf="items.image">

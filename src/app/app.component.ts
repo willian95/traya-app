@@ -125,7 +125,10 @@ export class MyApp {
     
     this.appMenuItems=[];
     if(this.rol_id == 1){
-      this.appMenuItems.push({title: 'Servicios', component: "TrayaPage", icon: 'people'}/**,{title: 'Acerca de TRAYA', component: AboutTrayaPage, icon: 'information-circle'}*/);
+      this.appMenuItems.push(
+        {title: 'Servicios', component: "TrayaPage", icon: 'people'},
+        {title: 'Favoritos', component: "FavoriteTabsPage", icon: 'heart'}
+        /**,{title: 'Acerca de TRAYA', component: AboutTrayaPage, icon: 'information-circle'}*/);
     }else if(this.rol_id ==2){
       this.appMenuItems.push(
         {title: 'Solicitudes de Trabajo', component: "TrayaBidderPage", icon: 'list'},
@@ -433,6 +436,7 @@ initializeApp() {
       //alert("fcmtoken "+registration.registrationId)
       if(registration != null){
         if(registration.registrationId != null){
+
           localStorage.setItem("fcmToken", registration.registrationId)
         }
       }
@@ -441,17 +445,51 @@ initializeApp() {
     });
     pushObject.on('notification').subscribe((notification: any) => {
       
+      console.log("test-notification", notification)
       //let json = JSON.parse(notification.message);
-      this.nav.setRoot("HiringDetailsPage")
+      //this.nav.setRoot("HiringDetailsPage")
       /*if(notification.page == "hiring"){
         this.nav.push(HiringDetailsPage, {data: notification.hiring});
       }*/
 
-      this.localNotifications.schedule({
-        id: 1,
-        title: notification.title,
-        text: notification.message
-      });
+      var serverNotification = notification
+      localStorage.setItem("notificationId", serverNotification.additionalData.hiring_id)
+
+      if (notification.additionalData.foreground) {
+
+        this.localNotifications.schedule({
+          id: 1,
+          title: notification.title,
+          text: notification.message
+        });
+
+        localStorage.setItem("notificationId", serverNotification.additionalData.hiring_id)
+
+      }
+      
+      if(notification.additionalData.coldstart){
+
+        //alert("hey")
+        localStorage.setItem("notificationId", serverNotification.additionalData.hiring_id)
+        /*this.localNotifications.schedule({
+          id: 1,
+          title: notification.title,
+          text: notification.message
+        });*/
+
+        /*this.localNotifications.on('click', (notification, state) => {
+          console.log("test-local-notification", serverNotification)
+          this.httpClient.get(this.url+"/api/hiring/"+serverNotification.additionalData.hiring_id)
+          .pipe()
+            .subscribe((res:any)=> {
+              this.nav.push("HiringDetailsPage",{data:res});
+          });
+
+        });*/
+
+      }
+
+      
 
     });
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));

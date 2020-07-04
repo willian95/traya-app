@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController,Events,Platform,AlertController,ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController,Events,Platform,AlertController,ToastController, ModalController, MenuController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { HiringDetailsPage } from '../hiring-details/hiring-details';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
@@ -23,12 +23,23 @@ import { PusherProvider } from '../../providers/pusher/pusher';
 export class HiringsPage {
   //@Output() countActiveHirings = new EventEmitter();
   url:any;
-  constructor(public loadingController: LoadingController,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public events: Events, private serviceUrl:ServiceUrlProvider) {
-  
+  constructor(public loadingController: LoadingController,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public events: Events, private serviceUrl:ServiceUrlProvider, public modalCtrl: ModalController, public menu: MenuController) {
+    
+    console.log("nav", this.navCtrl)
+
     this.url=serviceUrl.getUrl();
     // LOCALNOTIFACTION
-   this.getHirings()
-    this.plt.ready().then((readySource) => {
+    if(localStorage.getItem("notificationId") == null){
+      this.getHirings()
+    }
+    this.checkNotificationId()
+   this.plt.ready().then((readySource) => {
+    this.localNotifications.on("click", (notification, state) =>{
+     
+      this.checkNotificationId()
+    })
+  });
+   /* this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -38,7 +49,7 @@ export class HiringsPage {
       });
       alert.present();
     })
-  });
+  });*/
 }
 loading:any;
 hiringsArray:any;
@@ -51,6 +62,7 @@ filters:any;
 averageRatingInt:any;
 notificationArray:any;
 notificationNumber:any;
+token:any
 
 scheduleNotification(message,hiring_id) {
   this.localNotifications.schedule({
@@ -60,6 +72,80 @@ scheduleNotification(message,hiring_id) {
     data: { mydata: hiring_id },
     sound: null
   });
+}
+
+checkNotificationId(){
+
+  if(localStorage.getItem("notificationId") != null){
+    this.loading = this.loadingController.create({
+      content: 'Por favor espere...'
+  });
+  console.log("hirings-notification")
+  //this.loading.present()
+    this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
+    .pipe()
+      .subscribe((res:any)=> {
+        //this.loading.dismiss()
+        if(res.bidder.id == this.user_id){
+
+          //alert("Debes dirigirte al modo trabajador")
+
+        }else{
+          localStorage.removeItem("notificationId")
+          this.navCtrl.push("HiringDetailsPage",{data:res});
+          
+        }
+    });
+
+    //this.loading.dismiss()
+
+    
+  }
+
+}
+
+changeUserType(){
+
+  var data={
+    rol_id:'',
+    user_id:'',
+    token:'',
+  };
+
+  var headers = new Headers();
+  headers.append("Accept", 'application/json');
+  headers.append('Content-Type', 'application/json');
+  this.token = localStorage.getItem('tokenCode');
+  this.user_id = localStorage.getItem('user_id');
+  
+  var rol_id = localStorage.getItem('user_rol');
+  
+  //if(rol_id == "1"){
+    data.rol_id = "2"
+  //}else{
+    //data.rol_id = "1"
+  //}
+
+  data.token=this.token;
+        //return  this.httpClient.post(this.url+"/api/auth/user/update", {"password":this.password,"image":this.userimage,"location_id":this.location_id,"domicile":this.domicile,"name":this.name,"email":this.email,"phone":this.phone,"rol_id":this.rol_id,"description":this.description,"user_id":this.user_id,"token":this.token,'services':this.services_id})
+  return  this.httpClient.post(this.url+"/api/auth/user/update", data)
+  .pipe()
+  .subscribe((res:any)=> {
+    console.log(res);
+      
+    localStorage.setItem('user_rol', data.rol_id);
+      this.events.publish('userImage',res);
+      this.events.publish('userRol',data.rol_id);
+    
+    
+    // if(this.rol_id != this.old_rol_id){
+    //  this.navCtrl.setRoot(LoginPage);
+    //}
+      if (rol_id == "1") {
+        this.navCtrl.setRoot("TrayaBidderPage"); // nav*/
+      }
+
+    })
 }
 
 doRefresh(refresher) {
@@ -95,6 +181,7 @@ ionViewDidLoad() {
 
 ionViewDidEnter(){
   this.storeAction()
+  this.checkContactReview()
 }
 
 presentNotifications(){
@@ -184,5 +271,124 @@ storeAction(){
   });
 
  }
+
+ firstQuestion(receiverName, serviceName, id){
+  const confirm = this.alertCtrl.create({
+    message: 'Hola, te contactaste con '+receiverName+' ¿pudiste solucionar tu necesidad?',
+    buttons: [
+      {
+        text: 'No',
+        handler: () => {
+          this.httpClient.post(this.url+"/api/contact-review/first-question-answer", {answer: false, contact_review_id: id})
+          .subscribe((res:any) => {
+            this.thankYou()
+            
+
+          })
+          
+        }
+      },
+      {
+        text: 'Sí',
+        handler: () => {
+          this.httpClient.post(this.url+"/api/contact-review/first-question-answer", {answer: true, contact_review_id: id})
+          .subscribe((res:any) => {
+
+            this.secondQuestion(receiverName, serviceName, id)
+
+          })
+          
+        }
+      }
+    ]
+  });
+  confirm.present();
+}
+
+thankYou(){
+  const alert = this.alertCtrl.create({
+    title:"",
+    subTitle: 'Gracias!',
+    buttons: ['OK']
+  });
+  alert.present();
+}
+
+secondQuestion(receiverName, serviceName, id){
+  const confirm = this.alertCtrl.create({
+    message: '¿Deseas valorar el trabajo de '+receiverName+'  en '+serviceName+'?',
+    buttons: [
+      {
+        text: 'No',
+        handler: () => {
+          this.httpClient.post(this.url+"/api/contact-review/second-question-answer", {answer: false, contact_review_id: id})
+          .subscribe((res:any) => {
+
+            this.thankYouForYourTime()
+
+          })
+         
+        }
+      },
+      {
+        text: 'Sí',
+        handler: () => {
+          this.events.publish("countHirings", "count")
+          this.httpClient.post(this.url+"/api/contact-review/second-question-answer", {answer: true, contact_review_id: id})
+          .subscribe((res:any) => {
+
+            this.httpClient.get(this.url+"/api/hiring/"+res.hiring.id)
+            .pipe()
+              .subscribe((res:any)=> {
+                this.navCtrl.push("HiringDetailsPage",{data:res});
+            });
+
+          })
+        }
+      }
+    ]
+  });
+  confirm.present();
+}
+
+thankYouForYourTime(){
+  const alert = this.alertCtrl.create({
+    title:"",
+    subTitle: 'Gracias por su tiempo!',
+    buttons: ['OK']
+  });
+  alert.present();
+}
+
+checkContactReview(){
+  
+  this.httpClient.post(this.url+'/api/contact-review/check', {user_id: localStorage.getItem("user_id")})
+  .subscribe((res:any) => {
+
+    //alert(res.askQuestion)
+    //console.log("test-res", res)
+    if(res.askQuestion == true){
+
+      
+      this.firstQuestion(res.userReceiver.name, res.service.name, res.contactReview.id)
+
+      /*const contactReviewModal = this.modalCtrl.create("ModalContactReviewPage", {userReceiver: res.userReceiver, contactReview: res.contactReview, service: res.service});
+      contactReviewModal.present();
+      contactReviewModal.onDidDismiss(() => {
+        
+        this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("contactReviewId"))
+        .pipe()
+          .subscribe((res:any)=> {
+            localStorage.removeItem("contactReviewId")
+            this.navCtrl.push("HiringDetailsPage",{data:res});
+        });
+
+      });
+      this.menu.swipeEnable(false);*/
+    }
+
+  })
+
+}
 
 }

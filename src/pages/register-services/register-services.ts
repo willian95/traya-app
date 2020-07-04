@@ -25,7 +25,7 @@ export class RegisterServicesPage {
            });
            this.url=serviceUrl.getUrl();
 
-             this.plt.ready().then((readySource) => {
+       /*      this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
 
@@ -35,7 +35,7 @@ export class RegisterServicesPage {
       });
       alert.present();
     })
-  });
+  });*/
   }
   name:any;
   description:any;

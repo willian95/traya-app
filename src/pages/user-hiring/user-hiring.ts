@@ -19,13 +19,18 @@ import { SuperTabsController } from 'ionic2-super-tabs';
 })
 export class UserHiringPage {
   url:any;
+  comingFrom:any
 
   constructor( private superTabsCtrl: SuperTabsController,public actionSheetController: ActionSheetController,public toastController: ToastController,private plt: Platform,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,public navCtrl: NavController, public navParams: NavParams,public callNumber: CallNumber,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public events: Events,private serviceUrl:ServiceUrlProvider) {
     this.usersServices = navParams.get('data');
+    
+    this.comingFrom = navParams.get("comingFrom")
+    console.log("test-comingFrom", this.comingFrom)
+
     this.loading = this.loadingController.create({content: 'Por favor espere...'});
     this.url=serviceUrl.getUrl();
     // LOCALNOTIFACTION
-    this.plt.ready().then((readySource) => {
+    /*this.plt.ready().then((readySource) => {
       this.localNotifications.on('click', (notification, state) => {
         let json = JSON.parse(notification.data);
 
@@ -35,9 +40,10 @@ export class UserHiringPage {
         });
         alert.present();
       })
-    });
+    });*/
 
   }
+  serviceFavorite:any
   usersServices:any;
   commentsCount:any;
   username:any;
@@ -59,6 +65,8 @@ export class UserHiringPage {
   authEmail:any;
   rol_id:any
   authId:any
+  favoriteCheck:any = false
+  
 
   scheduleNotification(message,hiring_id) {
     this.localNotifications.schedule({
@@ -88,6 +96,7 @@ export class UserHiringPage {
 
   ionViewDidEnter(){
     this.storeAction()
+    this.checkFavorite()
   }
 
   storeAction(){
@@ -221,6 +230,17 @@ export class UserHiringPage {
     toast.present();
   }
 
+  async presentAlertFavorite(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 10000,
+      showCloseButton: true,
+      closeButtonText: 'Cerrar',
+      cssClass: 'urgent-notification'
+    });
+    toast.present();
+  }
+
 
   async errorAlert(message) {
     const toast = await this.toastController.create({
@@ -264,7 +284,8 @@ export class UserHiringPage {
   }
 
   storeContact(type){
-      
+    
+    let services_id = localStorage.getItem('services_id');
     let contactType = ""
     if(type == 1){
       contactType = "whatsapp"
@@ -277,7 +298,7 @@ export class UserHiringPage {
     headers.append('Content-Type', 'application/json' );
     this.tokenCode = localStorage.getItem('tokenCode');
 
-    this.httpClient.post(this.url+"/api/hiring/contact", {"type": contactType, "receiver_id": this.bidder_id, "token": this.tokenCode}).pipe()
+    this.httpClient.post(this.url+"/api/hiring/contact", {"type": contactType, "receiver_id": this.bidder_id, "token": this.tokenCode, "service_id": services_id}).pipe()
     .subscribe((res:any)=> {
        
     },err => {
@@ -316,27 +337,79 @@ export class UserHiringPage {
     });
   }
 
-  createHiring() {
-    this.loading = this.loadingController.create({content: 'Por favor espere...'});
-    this.loading.present();
-    var headers = new Headers();
-    headers.append("Accept", 'application/json');
-    headers.append('Content-Type', 'application/json' );
-    this.tokenCode = localStorage.getItem('tokenCode');
-    this.services_id = localStorage.getItem('services_id');
-    return  this.httpClient.post(this.url+"/api/hiring", {"bidder_id":this.bidder_id,"service_id":this.services_id,"description":this.comments, "token":this.tokenCode})
-    .pipe(
-      )
+  checkFavorite(){
+
+    this.httpClient.post(this.url+"/api/favorite/check", {auth_id: this.user_id, user_id: this.bidder_id})
+    .pipe()
     .subscribe((res:any)=> {
-      this.loading.dismiss();
-      this.presentAlert();
-      this.superTabsCtrl.slideTo(1);
-      this.events.publish('getHiringsEvent',res);
-      this.comments='';
-    },err => {
-      this.loading.dismiss();
-      console.log(err.error.errors);
-    } ); //subscribe
+      
+      if(res.success == true){
+        this.favoriteCheck = res.favoriteCheck
+      }
+
+    });
+
+  }
+
+  storeFavorite(){
+
+    this.httpClient.post(this.url+"/api/favorite/store", {"auth_id": this.user_id, "user_id": this.bidder_id})
+    .pipe()
+    .subscribe((res:any)=> {
+      
+      this.presentAlertFavorite(res.msg)
+      this.checkFavorite()
+
+    })
+
+  }
+
+  deleteFavorite(){
+
+    this.httpClient.post(this.url+"/api/favorite/delete", {"auth_id": this.user_id, "user_id": this.bidder_id})
+    .pipe()
+    .subscribe((res:any)=> {
+      
+      this.presentAlertFavorite(res.msg)
+      this.checkFavorite()
+
+    })
+
+  }
+
+  createHiring() {
+   
+    this.tokenCode = localStorage.getItem('tokenCode');
+    if(this.comingFrom != "favorite")
+      this.services_id = localStorage.getItem('services_id');
+    
+    if(this.services_id != null){
+
+      this.loading = this.loadingController.create({content: 'Por favor espere...'});
+      this.loading.present();
+      var headers = new Headers();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json' );
+
+      return  this.httpClient.post(this.url+"/api/hiring", {"bidder_id":this.bidder_id,"service_id":this.services_id,"description":this.comments, "token":this.tokenCode})
+      .pipe()
+      .subscribe((res:any)=> {
+        this.loading.dismiss();
+        this.presentAlert();
+        this.superTabsCtrl.slideTo(1);
+        this.events.publish('getHiringsEvent',res);
+        this.events.publish("countHirings", "count")
+        this.comments='';
+      },err => {
+        this.loading.dismiss();
+        console.log(err.error.errors);
+      } ); //subscribe
+
+    }else{
+
+      this.presentAlertFavorite("Debe seleccionar el servicio para enviar la solicitud!")
+
+    }
   }
   showOpinions(){
     this.navCtrl.push("UserOpinionsPage",{data:this.usersServices});

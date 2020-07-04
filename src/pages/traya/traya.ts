@@ -30,20 +30,33 @@ export class TrayaPage {
   constructor(private statusBar: StatusBar, public loadingController: LoadingController, private menu: MenuController,public modalCtrl: ModalController,public events: Events,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private serviceUrl:ServiceUrlProvider) {
     this.hiringCount = 0;
     this.url=serviceUrl.getUrl();
-      this.plt.ready().then((readySource) => {
-    this.localNotifications.on('click', (notification, state) => {
-      let json = JSON.parse(notification.data);
+      
+    this.events.subscribe('countHirings', (data) =>{
+      this.countActiveHirings()
+    });
 
-      let alert = alertCtrl.create({
-        title: notification.title,
-        subTitle: json.mydata
-      });
-      alert.present();
-    })
-  });
-
-  // let status bar overlay webview
-  //this.statusBar.overlaysWebView(true);
+    this.plt.ready().then((readySource) => {
+      this.localNotifications.on('click', (notification, state) => {
+       
+        this.loading = this.loadingController.create({
+            content: 'Por favor espere...'
+        });
+        console.log("traya-notification changeUser")
+        //this.loading.present()
+        this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
+        .pipe()
+          .subscribe((res:any)=> {
+            //this.loading.dismiss()
+            if(res.bidder.id == this.user_id){
+  
+              alert("Debes dirigirte al modo trabajador")
+  
+            }
+        });
+        
+  
+      })
+    });
 
   this.statusBar.backgroundColorByHexString('#7f0093');
 
@@ -61,6 +74,7 @@ export class TrayaPage {
 
   ionViewDidEnter(){
     this.storeAction()
+    this.checkContactReview()
   }
 
   ionViewDidLoad() {
@@ -190,6 +204,20 @@ export class TrayaPage {
    console.log("sesion expirada");
  }
 
+
+}
+
+checkContactReview(){
+
+  var headers = new HttpHeaders({
+    Authorization: localStorage.getItem('token'),
+  });
+  this.httpClient.post(this.url+'/api/contact-review/check', { headers })
+  .subscribe((res:any) => {
+
+    console.log("test-check-contact-review", res)
+
+  })
 
 }
 
