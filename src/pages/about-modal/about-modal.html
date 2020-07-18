@@ -11,6 +11,15 @@
 </ion-header>
 <img src="assets/imgs/bg.png" class="bg">
 
+<div id="buttons" class="row" padding style="position: fixed; bottom: 0; width: 100%; left: 0; z-index: 9">
+  <div col col-50>
+  <button ion-button full (click)="dontSee()">No ver más</button>
+
+  </div>
+  <div col col-50>
+    <button ion-button full (click)="closeModal()">Cerrar</button>
+  </div>
+</div>
 
 <ion-content padding class="myview" >
   <ion-grid>
@@ -45,19 +54,9 @@
     </ion-list>
       </div>
 
-    <div id="footer" padding>
+    <div id="footer" padding style="margin-bottom: 40px;">
       <small>TRAYA actúa solo como nexo entre trabajadores y usuarios, incentiva los buenos trabajos, pero no se responsabiliza por ellos. TRAYA no cobra por sus servicios, es GRATIS!</small>
       </div>
-
-         <div id="buttons" class="row" padding >
-          <div col col-50>
-          <button ion-button full (click)="dontSee()">No ver más</button>
-
-          </div>
-          <div col col-50>
-            <button ion-button full (click)="closeModal()">Cerrar</button>
-          </div>
-        </div>
 
   </ion-grid>
 

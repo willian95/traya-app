@@ -109,12 +109,12 @@ export class ServicesPage {
     if(localStorage.getItem("notificationId") == null){
       this.getServices();
     }
-    if (localStorage.getItem('valueServices') !=null) {
+    /*if (localStorage.getItem('valueServices') !=null) {
       if(localStorage.getItem('terms') == 'true'){
         this.toastTweet();
       }
      this.storage.removeItem('valueServices');
-    }
+    }*/
 
     /***LLAMA LA FUNCION EN UN INTERVALO DE TIEMPO***/
     // Observable.interval(200000).subscribe(()=>{
@@ -359,17 +359,22 @@ export class ServicesPage {
 
   async toastTweet() {
 
-    var notification = localStorage.getItem('location_description')
+    let rol_id = localStorage.getItem("user_rol")
     
-    if(notification != "null"){
-      const toast = await this.toastController.create({
-        message: notification,
-        showCloseButton: true,
-        closeButtonText: 'Cerrar',
-        cssClass: 'your-toast-css-class'
-      });
-      toast.present();
+    if(rol_id != "3"){
+      var notification = localStorage.getItem('location_description')
+      //console.log("test-rolId", rol_id, notification)
+      if(notification != "null"){
+        const toast = await this.toastController.create({
+          message: notification,
+          showCloseButton: true,
+          closeButtonText: 'Cerrar',
+          cssClass: 'your-toast-css-class'
+        });
+        toast.present();
+      }
     }
+    
     
   }
 

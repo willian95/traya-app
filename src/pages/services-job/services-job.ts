@@ -201,11 +201,22 @@ async presentAlert() {
     toast.present();
   }
 
+  checkNewServices(){
+  
+    if(this.services_id.length > 5){
+
+      this.services_id = this.originalServices
+      this.errorAlert("Es posible asociar hasta un máximo de 5 servicios por trabajador")
+    }
+
+  }
+
   getServices() {
   this.httpClient.get(this.url+'/api/services')
   .pipe()
     .subscribe((res:any)=> {
       this.servicesArray=res.data;
+      console.log("services", this.servicesArray)
   },err => {
         //this.loading.dismiss();
         if (err.error.errors == undefined) {
@@ -291,7 +302,7 @@ async presentAlert() {
             setInterval(() => {
 
               
-              
+             
               for(let e = 0; e < this.originalServices.length; e++){
                 
                 var validateOriginal = false;

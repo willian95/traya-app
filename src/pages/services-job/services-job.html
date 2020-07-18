@@ -7,13 +7,13 @@
     <ion-title>
       <strong>Mis Servicios</strong>
     </ion-title>
-    <ion-buttons end>
+    <!--<ion-buttons end>
       <button ion-button tappable (click)="presentNotifications()">
         <ion-icon name="notifications">
-          <!-- ({{notificationNumber}}) -->
+      
         </ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons>-->
   </ion-navbar>
 </ion-header>
 
@@ -34,12 +34,12 @@
 
   <ion-item padding>
     <ion-label>Asociar servicios</ion-label>
-    <ion-select [(ngModel)]="services_id" multiple="true">
+    <ion-select [(ngModel)]="services_id" multiple="true" (ionChange)="checkNewServices()">
       <ion-option  *ngFor="let items of servicesArray"  value="{{items.id}}">{{items.name}}</ion-option>
     </ion-select>
+    
   </ion-item>
 
- 
   <!--<ion-item>
     <span *ngFor="let items of servicesNameArray; let i = index">
         {{items.name}}

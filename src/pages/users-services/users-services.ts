@@ -113,9 +113,6 @@ export class UsersServicesPage {
 		this.user_id = localStorage.getItem('user_id');
 		this.getNotifications();
 
-		this.getLowerAds()
-		this.getUpperAds()
-
 		if(localStorage.getItem('noUpperAdDueTime') != null){
 			let dueTime = localStorage.getItem('noUpperAdDueTime')
 			let currentDate = new Date()
@@ -164,7 +161,12 @@ export class UsersServicesPage {
 
 		ionViewDidEnter(){
 			this.storeAction()
-		  }
+			this.getUpperAds()
+			window.setTimeout(() => {
+				this.getLowerAds()
+			}, 5000)
+			
+		}
 		
 		  storeAction(){
 			var user_id = localStorage.getItem('user_id')
@@ -369,28 +371,28 @@ export class UsersServicesPage {
 			.pipe()
 			.subscribe((res:any)=> {
 
+				console.log("upper", res)
 
-				
-				if(res.fewerAds.length == 1){
-					this.upperAdArray.push(res.fewerAds[0])
-				}
-				else if(res.fewerAds.length == 2){
-					this.upperAdArray.push(res.fewerAds[0])
-				}
-				else if(res.fewerAds.length == 3){
-					this.upperAdArray.push(res.fewerAds[2])
-				}
+				if(res.noAds == true){
+					this.showUpperAds = false
+				}else{
 
-				else{
-					if(res.noAds == true){
-						this.showUpperAds = false
-					}else{
-	
-						if(res.ads.length > 0 && res.exists > 0){
-	
-							if(res.ads[0]){
-								if((res.ads[0].ad_type_id + this.upperAdWeight) <= 3 && this.upperAdWeight <= 3){
+					if(res.ads.length > 0 && res.exists > 0){
+
+						if(res.ads[0]){
+							if((res.ads[0].ad_type_id + this.upperAdWeight) <= 3 && this.upperAdWeight <= 3){
 								
+								var exists = false
+								this.upperAdArray.forEach((data, index) => {
+										
+										
+									if(data.name == res.ads[0].name){
+										exists = true
+									}
+									
+								})
+							
+								if(exists == false){
 									this.upperAdWeight = this.upperAdWeight + res.ads[0].ad_type_id
 									this.upperAdArray.push(res.ads[0])
 									this.seenAds.push(res.ads[0].id)
@@ -406,20 +408,21 @@ export class UsersServicesPage {
 											return (a.ad_type_id > b.ad_type_id) ? -1 : 1;
 										}
 									})
-	
-									this.getUpperAds()
-				
-								}else if((res.ads[0].ad_type_id + this.upperAdWeight) > 3 && this.upperAdWeight < 3){
-			
-									this.getUpperAds()
-			
 								}
-							}
+
+								this.getUpperAds()
+			
+							}else if((res.ads[0].ad_type_id + this.upperAdWeight) > 3 && this.upperAdWeight < 3){
 		
+								this.getUpperAds()
+		
+							}
 						}
 	
 					}
+
 				}
+				
 				
 
 			},err => {
@@ -449,44 +452,59 @@ export class UsersServicesPage {
 			return  this.httpClient.post(this.url+"/api/ads", {location_id: localStorage.getItem('user_locality_id'), upperAdWeight: this.lowerAdWeight, seenAds: this.seenAds})
 			.pipe()
 			.subscribe((res:any)=> {
-				
-				console.log("lower", res)
-				if(res.fewerAds.length == 1){
 					
-				}
-				else if(res.fewerAds.length == 2){
+				if(res.noAds == true){
+					this.showLowerAds = false
+				}else{
 
-					this.lowerAdArray.push(res.fewerAds[1])
-				}else if(res.fewerAds.length == 3){
-					this.lowerAdArray.push(res.fewerAds[1])
-				}
-				else{
-
-					if(res.noAds == true){
-						this.showLowerAds = false
-					}else{
-	
+					//if(res.exists > 1){
 						if(res.ads.length > 0 && res.exists > 0){
-	
+
 							if(res.ads[0]){
 		
 								if((res.ads[0].ad_type_id + this.lowerAdWeight) <= 3 && this.lowerAdWeight <= 3){
 								
 									this.lowerAdWeight = this.lowerAdWeight + res.ads[0].ad_type_id
-									this.lowerAdArray.push(res.ads[0])
-									this.seenAds.push(res.ads[0].id)
-	
-									this.lowerAdArray.sort(function(a, b){
-										//return a.ad_type_id - b.ad_type_id
-										//console.log("sort-a", a)
-										//console.log("sort-b", b)
-										if (a.ad_type_id === b.ad_type_id) {
-											return 0;
+									var exists = false;
+									var existsLower = false
+									
+									this.upperAdArray.forEach((data, index) => {
+										
+										
+										if(data.name == res.ads[0].name){
+											exists = true
 										}
-										else {
-											return (a.ad_type_id > b.ad_type_id) ? -1 : 1;
-										}
+										console.log(data.name, res.ads[0].name, exists)
 									})
+
+									if(exists == false){
+
+										this.lowerAdArray.forEach((data, index) => {
+										
+										
+											if(data.name == res.ads[0].name){
+												existsLower = true
+											}
+											
+										})
+
+										if(existsLower == false){
+											this.lowerAdArray.push(res.ads[0])
+											this.seenAds.push(res.ads[0].id)
+			
+											this.lowerAdArray.sort(function(a, b){
+												//return a.ad_type_id - b.ad_type_id
+												//console.log("sort-a", a)
+												//console.log("sort-b", b)
+												if (a.ad_type_id === b.ad_type_id) {
+													return 0;
+												}
+												else {
+													return (a.ad_type_id > b.ad_type_id) ? -1 : 1;
+												}
+											})
+										}
+									}
 			
 									this.getLowerAds()
 				
@@ -499,11 +517,11 @@ export class UsersServicesPage {
 							}
 		
 						}
-	
-					}
+					//}
 
 				}
-				
+
+				console.log(this.upperAdArray, this.lowerAdArray)
 
 			},err => {
 				

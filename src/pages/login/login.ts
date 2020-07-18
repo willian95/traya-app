@@ -84,7 +84,6 @@ export class LoginPage {
         profileModal.present();
       }
     }
-
   }
 
   sendGoogleData(res){
@@ -190,8 +189,7 @@ export class LoginPage {
   sendFacebookData(name, email, userId){
 
     return  this.httpClient.post(this.url+"/api/social/socialAuth", {"email": email, "userId": userId, "name": name, "deviceToken": this.deviceToken, facebookLogin: true})
-      .pipe(
-        )
+      .pipe()
       .subscribe((res:any)=> {
         var token = res.token;
         var tokenCode = res.tokenCode;
@@ -291,10 +289,13 @@ export class LoginPage {
           if(this.config.active ==0){
             //console.log("entro al inactivo")
             this.openModal();
-             if (localStorage.getItem('terms') ==null) {
-               const termsModal = this.modalCtrl.create("TermsAndConditionsPage");
-              termsModal.present();
-             }
+            if(res.roles[0].id== 1 || res.roles[0].id== 2){
+              if (localStorage.getItem('terms') ==null) {
+                const termsModal = this.modalCtrl.create("TermsAndConditionsPage", {enableBackdropDismiss: false});
+               termsModal.present();
+              }
+            }
+             
 
              if(localStorage.getItem("is_register_completed") == "0"){
               this.events.publish('userLogged',res);

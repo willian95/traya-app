@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ViewController,ToastController,ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ViewController,ToastController,ModalController, Platform } from 'ionic-angular';
 import { TermsPage } from '../terms/terms'; //importo el modal
 
 /**
@@ -15,8 +15,11 @@ import { TermsPage } from '../terms/terms'; //importo el modal
   templateUrl: 'terms-and-conditions.html',
 })
 export class TermsAndConditionsPage {
+  unregister:any
+  canLeave:boolean = false
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController,public toastController: ToastController,  public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController,public toastController: ToastController,  public modalCtrl: ModalController, public platform: Platform) {
+
   }
   message:any;
   terms:any;
@@ -25,13 +28,17 @@ export class TermsAndConditionsPage {
     console.log('ionViewDidLoad TermsAndConditionsPage');
   }
 
+  ionViewCanLeave() {
+    return this.canLeave;
+  }
+
 
   acceptTerms() {
     if (this.terms == true) {
       var terms='true';
       localStorage.setItem('terms',terms);
        this.viewCtrl.dismiss();
-       this.toastTweet()
+       this.canLeave = true
     }else{
       this.message="Debe aceptar los Términos y Condiciones para continuar."
       this.alert(this.message);
@@ -40,20 +47,6 @@ export class TermsAndConditionsPage {
 
   goBack(){
     this.navCtrl.pop();
-  }
-
-  async toastTweet() {
-    var notification = localStorage.getItem('location_description')
-
-    if(notification != "null"){
-      const toast = await this.toastController.create({
-        message: notification,
-        showCloseButton: true,
-        closeButtonText: 'Cerrar',
-        cssClass: 'your-toast-css-class'
-      });
-      toast.present();
-    }
   }
 
    async alert(message) {
