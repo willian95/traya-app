@@ -35,8 +35,9 @@
             <ion-input [(ngModel)]="description" type="text"></ion-input>
           </ion-item>
           <ion-item>
-            <input type="file" name="file" id="file" class="inputfile" accept="image/*" (change)="convertBase64($event)"/>
-            <label for="file">Imagen del servicio</label>
+            <!--<input type="file" name="file" id="file" class="inputfile" accept="image/*" (change)="convertBase64($event)"/>
+            <label for="file">Imagen del servicio</label>-->
+            <button ion-button (click)="openGallery()">Selecionar Imagen</button>
           </ion-item>
         </div>
 

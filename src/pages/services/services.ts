@@ -7,22 +7,21 @@ import { NotificationPage } from '../notification/notification';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
 
-import { Observable } from 'rxjs';
-
-
-import { Subscription } from "rxjs/Subscription"
+var interval = null
 
 @IonicPage()
 @Component({
   selector: 'page-services',
   templateUrl: 'services.html',
 })
+
+
 export class ServicesPage {
   url:any;
 
   constructor(public events: Events,public toastController: ToastController,private alertCtrl: AlertController,private plt: Platform,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider, public modalCtrl: ModalController, public menu: MenuController) {
 
-    console.log("nav", this.navCtrl)
+
 
      this.storage = localStorage;
     this.loading = this.loadingController.create({
@@ -30,12 +29,10 @@ export class ServicesPage {
          });
          this.url=serviceUrl.getUrl();
 
-         this.checkNotificationId()
-
     this.plt.ready().then((readySource) => {
     this.localNotifications.on("click", (notification, state) =>{
       
-      this.checkNotificationId()
+      //this.checkNotificationId()
     })
   });
 
@@ -55,28 +52,27 @@ export class ServicesPage {
   isListShowed:any = false
 
   checkNotificationId(){
-
+    
     if(localStorage.getItem("notificationId") != null){
 
-      this.loading = this.loadingController.create({
+      /*this.loading = this.loadingController.create({
           content: 'Por favor espere...'
-      });
+      });*/
       //this.loading.present()
+      
+      window.clearInterval(interval)
       this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
       .pipe()
         .subscribe((res:any)=> {
 
           //this.loading.dismiss()
+          /*if(res.bidder.id == this.user_id){
 
-          if(res.bidder.id == this.user_id){
-
-            
-
-          }else{
+          }else{*/
             localStorage.removeItem("notificationId")
             this.navCtrl.push("HiringDetailsPage",{data:res});
-            
-          }
+            //interval = window.setInterval(() => {this.checkNotificationId()}, 1000)
+          //}
       });
 
       //this.loading.dismiss()
@@ -105,10 +101,20 @@ export class ServicesPage {
       self.scheduleNotification(data.message,data.hiring.id);
     });
 
+    
+    interval = window.setInterval(() => {this.checkNotificationId()}, 1000)
+
+
     this.user_id = localStorage.getItem('user_id');
-    if(localStorage.getItem("notificationId") == null){
-      this.getServices();
-    }
+   
+      
+      if(localStorage.getItem("services_array")){
+        this.servicesArray = JSON.parse(localStorage.getItem("services_array"))
+      }else{
+        this.getServices();
+      }
+
+    
     /*if (localStorage.getItem('valueServices') !=null) {
       if(localStorage.getItem('terms') == 'true'){
         this.toastTweet();
@@ -128,10 +134,15 @@ export class ServicesPage {
   ionViewDidEnter(){
     this.storeAction()
     
-    //if(this.)
+ 
     this.searchText = ""
     this.search()
     this.hideWordsList()
+
+    this.user_id = localStorage.getItem('user_id');
+    /*if(localStorage.getItem("notificationId") == null){
+      this.getServices();
+    }*/
 
     //this.checkContactReview()
   }
@@ -154,6 +165,7 @@ export class ServicesPage {
    }
 
  doRefresh(refresher) {
+    localStorage.removeItem("services_array")
     setTimeout(() => {
       refresher.complete();
       this.getServicesRefresh();
@@ -167,14 +179,14 @@ export class ServicesPage {
 
 
  getServicesRefresh() {
-     var location_id = localStorage.getItem('user_locality_id');
+    var location_id = localStorage.getItem('user_locality_id');
     this.httpClient.get(this.url+"/api/services?"+'filters={"location_id":"'+location_id+'"}')
-  .pipe()
-    .subscribe((res:any)=> {
-    this.servicesArray=res.data;
-    this.servicesSearch = res.data
+    .pipe()
+      .subscribe((res:any)=> {
+      this.servicesArray=res.data;
+      this.servicesSearch = res.data
 
-  });
+    });
   }
 
   getServices() {
@@ -187,6 +199,9 @@ export class ServicesPage {
      this.loading.dismiss();
     this.servicesArray=res.data;
     this.servicesSearch = res.data
+
+    localStorage.setItem("services_array", JSON.stringify(this.servicesArray))
+    
 
   });
   }

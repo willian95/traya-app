@@ -43,16 +43,23 @@ export class TrayaPage {
         });
         console.log("traya-notification changeUser")
         //this.loading.present()
-        this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
-        .pipe()
-          .subscribe((res:any)=> {
-            //this.loading.dismiss()
-            if(res.bidder.id == this.user_id){
-  
-              alert("Debes dirigirte al modo trabajador")
-  
-            }
-        });
+
+        if(localStorage.getItem("notificationId") != "undefined"){
+          this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
+          .pipe()
+            .subscribe((res:any)=> {
+              //this.loading.dismiss()
+              if(res.bidder.id == this.user_id){
+    
+                alert("Debes dirigirte al modo trabajador")
+    
+              }
+          });
+        }else{
+          localStorage.removeItem("notificationId")
+        }
+
+        
         
   
       })
@@ -72,7 +79,30 @@ export class TrayaPage {
   });
 }
 
+checkChatId(){
+
+  if(localStorage.getItem("chatId") != null){
+    
+    let chatId = localStorage.getItem("chatId")
+    localStorage.removeItem("chatId")
+
+    this.httpClient.get(this.url+"/api/user/"+chatId)
+    .subscribe((res:any) => {
+
+      console.log("chat-res",res)
+      this.navCtrl.push("ChatPage", {username: res.user.name,userimage:res.image, bidder_id: res.user.id})
+
+    })
+
+    //this.navCtrl.push("ChatPage", {username: username,userimage:userimage, bidder_id: bidder_id})
+    //this.navCtrl.push("HiringDetailsPage",{data:res});
+  
+  }
+
+}
+
   ionViewDidEnter(){
+    this.checkChatId()
     this.storeAction()
     this.checkContactReview()
   }

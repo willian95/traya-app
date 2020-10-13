@@ -29,9 +29,7 @@ export class HiringsPage {
 
     this.url=serviceUrl.getUrl();
     // LOCALNOTIFACTION
-    if(localStorage.getItem("notificationId") == null){
-      this.getHirings()
-    }
+    
     this.checkNotificationId()
    this.plt.ready().then((readySource) => {
     this.localNotifications.on("click", (notification, state) =>{
@@ -149,10 +147,16 @@ changeUserType(){
 }
 
 doRefresh(refresher) {
+  window.localStorage.removeItem("traya_hirings")
   setTimeout(() => {
     refresher.complete();
     this.getHirings();
   }, 2000);
+}
+
+refreshButton(){
+  window.localStorage.removeItem("traya_hirings")
+  this.getHirings();
 }
 
 
@@ -182,6 +186,19 @@ ionViewDidLoad() {
 ionViewDidEnter(){
   this.storeAction()
   this.checkContactReview()
+
+  if(localStorage.getItem("notificationId") == null){
+      
+    if(window.localStorage.getItem("traya_hirings") == null){
+     
+      this.getHirings()
+    }else{
+     
+      this.hiringsArray = JSON.parse(window.localStorage.getItem("traya_hirings"))
+    }
+    
+  }
+  
 }
 
 presentNotifications(){
@@ -204,6 +221,7 @@ getHirings() {
     
     this.loading.dismiss();
     this.hiringsArray=res.data;
+    window.localStorage.setItem("traya_hirings", JSON.stringify(this.hiringsArray))
     for (var i = this.hiringsArray.length - 1; i >= 0; i--) {
       this.averageRatingInt=this.hiringsArray[i].bidder.averageRatingInt;
     }
@@ -333,10 +351,10 @@ secondQuestion(receiverName, serviceName, id){
       {
         text: 'Sí',
         handler: () => {
-          this.events.publish("countHirings", "count")
+         
           this.httpClient.post(this.url+"/api/contact-review/second-question-answer", {answer: true, contact_review_id: id})
           .subscribe((res:any) => {
-
+            this.events.publish("countHirings", "count")
             this.httpClient.get(this.url+"/api/hiring/"+res.hiring.id)
             .pipe()
               .subscribe((res:any)=> {

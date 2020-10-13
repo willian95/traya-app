@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="20" id="com.ionicframework.traya" version="1.0.3" xmlns:android="http://schemas.android.com/apk/res/android">
+<widget android-versionCode="24" id="com.ionicframework.traya" version="1.0.7" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>TRAYA</name>
     <description>TRAYA/APP</description>
     <author email="sistemaslhurtado@gmail.com">Ingenia Venezuela</author>

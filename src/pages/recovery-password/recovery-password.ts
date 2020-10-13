@@ -39,7 +39,7 @@ export class RecoveryPasswordPage {
 
    async presentAlert() {
     const toast = await this.toastController.create({
-      message: 'Enviado con éxito.',
+      message: '¡Bien! La contraseña aleatoria fue enviada, revisa tu email.',
       duration: 10000,
       showCloseButton: true,
       closeButtonText: 'Cerrar',

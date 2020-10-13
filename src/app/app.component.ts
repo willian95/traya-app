@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform,ActionSheetController,AlertController  } from 'ionic-angular';
+import { Nav, Platform,ActionSheetController,AlertController, LoadingController, ToastController  } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -8,13 +8,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { ServiceUrlProvider } from '../providers/service-url/service-url';
 import { PusherProvider } from '../providers/pusher/pusher';
-import { BackgroundMode } from '@ionic-native/background-mode';
+//import { BackgroundMode } from '@ionic-native/background-mode';
 
 import { LocalNotifications } from '@ionic-native/local-notifications';
 
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { FCM } from '@ionic-native/fcm';
+
+import { File } from '@ionic-native/file';
+import { Transfer, TransferObject  } from '@ionic-native/transfer';
+import { FilePath } from '@ionic-native/file-path';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+
+declare var cordova: any;
 
 
 @Component({
@@ -33,6 +40,8 @@ export class MyApp {
   rol_id:any;
   config:any
   showNotifications:any
+  userimage:any
+  lastImage:any
   // hiring_id:any;
   text = '¡Descárgate Traya! es una App de Servicios…';
   textBody = 'te permite de manera rápida y sencilla conectarte con un profesional. \n'+
@@ -43,7 +52,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
   appMenuItems:any;
-  constructor(private localNotifications: LocalNotifications,private alertCtrl: AlertController,private socialSharing: SocialSharing,public actionSheetController: ActionSheetController,public backgroundMode: BackgroundMode,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public httpClient: HttpClient,public events: Events,private serviceUrl:ServiceUrlProvider,private pusher:PusherProvider, private push: Push, private fcm: FCM) {
+  constructor(private localNotifications: LocalNotifications,private alertCtrl: AlertController,private socialSharing: SocialSharing,public actionSheetController: ActionSheetController, public loadingCtrl: LoadingController, /*public backgroundMode: BackgroundMode,*/ public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public httpClient: HttpClient,public events: Events,private serviceUrl:ServiceUrlProvider,private pusher:PusherProvider, private push: Push, private fcm: FCM, private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath, private toastController: ToastController) {
 
     this.appMenuItems = [];
     this.initializeApp();
@@ -51,54 +60,10 @@ export class MyApp {
 
     this.storage = localStorage;
     this.validateHeaderMain=false;
-    this.backgroundMode.disable();
+    //this.backgroundMode.enable();
     this.getConfig()
 
     this.pushSetup();
-
-     /*platform.ready().then(() => {
-
-      if (platform.is('cordova')){
-
-        //Subscribe on pause i.e. background
-        this.platform.pause.subscribe(() => {
-          //console.log("paused");
-          this.showNotifications = false
-        });
-
-        //Subscribe on resume i.e. foreground 
-        this.platform.resume.subscribe(() => {
-          window['paused'] = 0;
-          this.showNotifications = true
-          //console.log("resume");
-        });
-       }
-    });*/
-
-
-    /*this.fcm.onNotification().subscribe(notification => {
-      if(notification.wasTapped){
-        console.log("Received in background");
-      } else {
-        let alert = alertCtrl.create({
-          title: "titulo",
-          subTitle: "subtitulo"
-        });
-        alert.present();
-      };
-    })*/
-
-      /*if(this.showNotifications == true){
-        this.localNotifications.on('click', (notification, state) => {
-          let json = JSON.parse(notification.data);
-    
-          let alert = alertCtrl.create({
-            title: notification.title,
-            subTitle: json.mydata
-          });
-          alert.present();
-        })
-      }*/
 
   }
 
@@ -127,13 +92,16 @@ export class MyApp {
     if(this.rol_id == 1){
       this.appMenuItems.push(
         {title: 'Servicios', component: "TrayaPage", icon: 'people'},
-        {title: 'Favoritos', component: "FavoriteTabsPage", icon: 'heart'}
+        {title: 'Favoritos', component: "FavoriteTabsPage", icon: 'heart'},
+        {title: 'Chats', component: "ChatsPage", icon: 'chatboxes'},
         /**,{title: 'Acerca de TRAYA', component: AboutTrayaPage, icon: 'information-circle'}*/);
     }else if(this.rol_id ==2){
       this.appMenuItems.push(
         {title: 'Solicitudes de Trabajo', component: "TrayaBidderPage", icon: 'list'},
-        {title: 'Mis Servicios', component: "ServicesJobPage", icon: 'add-circle'}/*,{title: 'Acerca de TRAYA', component: AboutTrayaBidderPage, icon: 'information-circle'}*/);
-    }else if(this.rol_id ==3){
+        {title: 'Mis Servicios', component: "ServicesJobPage", icon: 'add-circle'},
+        {title: 'Chats', component: "ChatsPage", icon: 'chatboxes'}
+      )
+      }else if(this.rol_id ==3){
       this.appMenuItems.push(
         {title: 'Registrar Servicios', component: "RegisterServicesLocationsPage", icon: 'add-circle'},
         {title: 'Actualizar Servicios', component: "UpdateServicesPage", icon: 'refresh-circle'},
@@ -281,7 +249,7 @@ initializeApp() {
       this.splashScreen.hide();
     });
   
-
+ 
     this.events.subscribe('userRol',(res)=>{
         this.rol_id=res;
         this.getConfig()
@@ -308,6 +276,15 @@ initializeApp() {
        let rand = Math.random()
        this.image = ""
       this.image = res.image+"?"+rand;
+      window.localStorage.setItem('userimage', this.image)
+    })
+
+    this.events.subscribe("userCamera", () => {
+
+      let rand = Math.random()
+       this.image = ""
+       let userId = localStorage.getItem('user_id');
+      this.image = this.url+"/profiles/"+userId+".jpg"+"?"+rand;
       window.localStorage.setItem('userimage', this.image)
     })
 
@@ -453,7 +430,12 @@ initializeApp() {
       }*/
 
       var serverNotification = notification
-      localStorage.setItem("notificationId", serverNotification.additionalData.hiring_id)
+      
+      if(serverNotification.additionalData.type == "chat"){
+        localStorage.setItem("chatId", serverNotification.additionalData.bidder_id)  
+      }else if(serverNotification.additionalData.hiring_id){
+        localStorage.setItem("notificationId", serverNotification.additionalData.hiring_id)
+      }
 
       if (notification.additionalData.foreground) {
 
@@ -463,14 +445,27 @@ initializeApp() {
           text: notification.message
         });
 
-        localStorage.setItem("notificationId", serverNotification.additionalData.hiring_id)
+        console.log("test-foreground", serverNotification)
+
+        if(serverNotification.additionalData.type == "chat"){
+          localStorage.setItem("chatId", serverNotification.additionalData.bidder_id)  
+        }else if(serverNotification.additionalData.hiring_id){
+          localStorage.setItem("notificationId", serverNotification.additionalData.hiring_id)
+        }
 
       }
       
       if(notification.additionalData.coldstart){
 
         //alert("hey")
-        localStorage.setItem("notificationId", serverNotification.additionalData.hiring_id)
+
+        console.log("test-coldstart", serverNotification)
+
+        if(serverNotification.additionalData.type == "chat"){
+          localStorage.setItem("chatId", serverNotification.additionalData.bidder_id)  
+        }else if(serverNotification.additionalData.hiring_id){
+          localStorage.setItem("notificationId", serverNotification.additionalData.hiring_id)
+        }
         /*this.localNotifications.schedule({
           id: 1,
           title: notification.title,
@@ -516,6 +511,186 @@ initializeApp() {
     }
     
 
+  }
+
+  chooseImageSource() {
+    const actionSheet = this.actionSheetController.create({
+      //title: 'Modify your albu',
+      buttons: [
+        {
+          text: 'Cámara',
+          handler: () => {
+            this.takePicture(this.camera.PictureSourceType.CAMERA)
+          }
+        },{
+          text: 'Archivos',
+          handler: () => {
+            this.openGallery()
+            //document.getElementById('image-change-app').click();
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+  convertBase64(event) {
+    var input = event.target;
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (e:any) => {
+        this.userimage = e.target.result;
+        this.updateProfileImage()
+      }
+      reader.readAsDataURL(input.files[0]);
+      
+    }
+  }
+
+  public pathForImage(img) {
+    if (img === null) {
+      return '';
+    } else {
+      return cordova.file.dataDirectory + img;
+    }
+  }
+
+  public uploadImage() {
+    let userId = localStorage.getItem('user_id');
+    var url = this.url+"/api/user/update/camera/"+userId;
+    var targetPath = this.pathForImage(this.lastImage);
+    var filename = this.lastImage;
+    var options = {
+      fileKey: "file",
+      fileName: filename,
+      chunkedMode: false,
+      mimeType: "multipart/form-data",
+      params : {'fileName': filename}
+    };
+
+    const fileTransfer: TransferObject = this.transfer.create();
+    var loading = this.loadingCtrl.create({
+      content: 'Subiendo imagen...',
+    });
+    loading.present();
+    fileTransfer.upload(targetPath, url, options).then(data => {
+      console.log(data)
+      loading.dismissAll()
+      this.events.publish('userCamera');
+      
+      this.presentToast('Imagen actualizada');
+    }, err => {
+      console.log(err)
+      loading.dismissAll()
+      this.presentToast('Hubo un error en el servidor');
+    });
+  }
+
+  updateProfileImage(){
+    
+      var loading = this.loadingCtrl.create({
+          content: 'Por favor espere...'
+      });
+      loading.present();
+      var headers = new Headers();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json');
+      this.token = localStorage.getItem('tokenCode');
+      let userId = localStorage.getItem('user_id');
+
+      return  this.httpClient.post(this.url+"/api/user/update/image", {image: this.userimage, userId: userId, token: this.token})
+      .pipe()
+      .subscribe((res:any)=> {
+     
+        loading.dismiss();
+        this.events.publish('userImage',res);
+        this.userimage = null
+        this.presentToast('Imagen actualizada');
+        //document.getElementById('image-change-app').value = null;
+
+      },err => {
+         loading.dismiss();
+        console.log(err.error);
+        this.presentToast('Hubo un error al subir la imagen');
+      } ); //subscribe
+  }
+
+  private createFileName() {
+    var d = new Date(),
+    n = d.getTime(),
+    newFileName =  n + ".jpg";
+    return newFileName;
+  }
+
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 10000,
+      showCloseButton: true,
+      closeButtonText: 'Cerrar',
+      cssClass: 'urgent-notification'
+    });
+    toast.present();
+  }
+
+  public takePicture(sourceType) {
+    var options = {
+      quality: 40,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+    this.camera.getPicture(options).then((imageData) => {
+      this.userimage  = 'data:image/jpeg;base64,' + imageData;
+      this.updateProfileImage()
+      /*if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+        this.filePath.resolveNativePath(imagePath)
+          .then(filePath => {
+            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+            
+          });
+      } else {
+        var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+        var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+        console.log("test-take-picture", currentName, correctPath)
+        this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+        //this.uploadImage()
+      }*/
+    }, (err) => {
+      console.log(err)
+    });
+  }
+
+  openGallery(){
+
+    const options: CameraOptions = {
+      quality: 40,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      this.userimage  = 'data:image/jpeg;base64,' + imageData;
+      this.updateProfileImage()
+    }, (err) => {
+      // Handle error
+    })
+  }
+
+  private copyFileToLocalDir(namePath, currentName, newFileName) {
+    this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
+      this.lastImage = newFileName;
+      this.uploadImage()
+    }, error => {
+      console.log(error)
+      //this.presentToast('Error while storing file.');
+    });
   }
 
 

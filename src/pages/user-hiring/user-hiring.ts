@@ -193,6 +193,7 @@ export class UserHiringPage {
 
     let actionSheet = this.actionSheetController.create({
       title: 'Servicios Asociados',
+      cssClass:"customRows"
     });
     options.forEach(option => {
       actionSheet.addButton({
@@ -412,8 +413,16 @@ export class UserHiringPage {
     }
   }
   showOpinions(){
+    console.log("opinions", this.usersServices)
     this.navCtrl.push("UserOpinionsPage",{data:this.usersServices});
 
+  }
+
+
+  
+
+  openChat(username, userimage, bidder_id, from){
+    this.navCtrl.push("ChatPage", {username: username,userimage:userimage, bidder_id: bidder_id, from: from})
   }
 
   

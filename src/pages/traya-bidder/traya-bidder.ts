@@ -82,12 +82,41 @@ notificationNumber:any;
 checkNotificationId(){
 
   if(localStorage.getItem("notificationId") != null){
-    this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
-    .pipe()
-      .subscribe((res:any)=> {
-        localStorage.removeItem("notificationId")
-        this.navCtrl.push("HiringDetailsPage",{data:res});
-    });
+
+    if(localStorage.getItem("notificationId") != "undefined"){
+
+      this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
+      .pipe()
+        .subscribe((res:any)=> {
+          localStorage.removeItem("notificationId")
+          this.navCtrl.push("HiringDetailsPage",{data:res});
+      });
+
+    }else{
+      localStorage.removeItem("notificationId")
+    }
+  }
+
+}
+
+checkChatId(){
+
+  if(localStorage.getItem("chatId") != null){
+    
+    let chatId = localStorage.getItem("chatId")
+    localStorage.removeItem("chatId")
+
+    this.httpClient.get(this.url+"/api/user/"+chatId)
+    .subscribe((res:any) => {
+
+      console.log("chat-res",res)
+      this.navCtrl.push("ChatPage", {username: res.user.name,userimage:res.image, bidder_id: res.user.id})
+
+    })
+
+    //this.navCtrl.push("ChatPage", {username: username,userimage:userimage, bidder_id: bidder_id})
+    //this.navCtrl.push("HiringDetailsPage",{data:res});
+  
   }
 
 }
@@ -117,6 +146,7 @@ checkNotificationId(){
   ionViewDidEnter(){
 
     this.storeAction()
+    this.checkChatId()
 
   }
 

@@ -55,19 +55,27 @@
     </ion-item>
 
     <ion-row *ngIf="usersServices.email != authEmail">
-      <ion-col width-50 *ngIf="usersServices.email != authEmail">
+      <ion-col width-30 *ngIf="usersServices.email != authEmail">
         <button ion-button full (click)="callNow()">
           <ion-icon ios="ios-call" md="md-call"></ion-icon>
         </button>
 
       </ion-col>
-      <ion-col width-50 *ngIf="usersServices.email != authEmail">
+      <ion-col width-30 *ngIf="usersServices.email != authEmail">
        <!--<a ion-button full color="secondary" (click)="storeContact(1)"  href="https://wa.me/{{phone}}">-->
         <a ion-button full color="secondary" (click)="sendWhatsapp( phone )"  href="#">
         <!--a ion-button full color="secondary"  href="whatsapp://send?phone={{phone}}"-->
          <ion-icon ios="logo-whatsapp" md="logo-whatsapp"></ion-icon>
        </a>
       </ion-col>
+
+      <ion-col width-30 *ngIf="usersServices.email != authEmail">
+        
+         <button ion-button full color="header" (click)="openChat(username, userimage, bidder_id, 'userHiring')" >
+        
+          <ion-icon ios="ios-chatbubbles" md="md-chatbubbles"></ion-icon>
+        </button>
+       </ion-col>
     </ion-row>
     
     

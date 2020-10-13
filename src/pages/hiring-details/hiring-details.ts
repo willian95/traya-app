@@ -42,10 +42,15 @@ export class HiringDetailsPage {
   applicantAddress:any
   bidderAddress:any
   location:any
+  from:any = null
   
   constructor(private superTabsCtrl: SuperTabsController,public modalCtrl: ModalController,public toastController: ToastController,public events: Events,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public actionSheetController: ActionSheetController,public callNumber: CallNumber,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications, private geolocation: Geolocation, public viewCtrl: ViewController, public appCtrl: App, private launchNavigator: LaunchNavigator, private nativeGeocoder: NativeGeocoder) {
     this.detailsHirings = navParams.get('data');
-    
+    this.from = navParams.get("from")
+
+
+
+    console.log("test-details", this.detailsHirings)
     this.showMap = false
     this.opinionCount = 0
     //console.log("applicant", this.detailsHirings.applicant.address)
@@ -157,6 +162,10 @@ export class HiringDetailsPage {
 
     });
 
+  }
+
+  openChat(username, userimage, bidder_id, from){
+    this.navCtrl.push("ChatPage", {username: username,userimage:userimage, bidder_id: bidder_id, from: from})
   }
 
   ionViewDidLoad() {
@@ -282,6 +291,43 @@ export class HiringDetailsPage {
       alert.present();
     }
 
+    deleteFromHistory(){
+
+      this.httpClient.post(this.url+"/api/hiring-history/delete", {"hiring_id": this.detailsHirings.id}).subscribe((res:any) => {
+
+        if(res.success == true){
+          this.navCtrl.pop()
+        }
+
+      })
+
+    }
+
+    confirmAlertOk() {
+      let alert = this.alertCtrl.create({
+        title: ' <img src="assets/imgs/info.png" class="logo2" />',
+        message: '¿Desea borrar la solicitud del historial?',
+        enableBackdropDismiss: false,
+        buttons: [
+          {
+            text: 'Si',
+            role: 'cancel',
+            handler: () => {
+              this.deleteFromHistory();
+            }
+          },
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: () => {
+              console.log('Buy clicked');
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+
   showDescription() {
   let alert = this.alertCtrl.create({
     title: "Descripción de la solicitud",
@@ -300,6 +346,7 @@ export class HiringDetailsPage {
 
       let actionSheet = this.actionSheetController.create({
         title: 'Servicios Asociados',
+        cssClass:"customRows"
       });
        options.forEach(option => {
         actionSheet.addButton({
@@ -446,7 +493,7 @@ async presentActionSheet() {
       //alert('hey')
       //window.location.href="https://wa.me/"+this.bidderPhone.substr(1);
       this.storeContact(1)
-      window.open("whatsapp://send?text=¡Hola, te contacto desde Traya App de Servicios!&phone="+this.bidderPhone,"_system","location=yes");
+      window.open("whatsapp://send?text=¡Hola! Te contacto desde Traya App de Servicios!&phone="+this.bidderPhone,"_system","location=yes");
       //window.open("whatsapp://send?text=¡Hola, te contacto desde Traya App de Servicios!&phone="+this.bidderPhone.substr(1),"_system","location=yes");
       /*https://api.whatsapp.com/send?phone="+this.bidderPhone.substr(1)+"&text=&source=&data=";*/
 
@@ -517,6 +564,7 @@ async presentActionSheet() {
       return  this.httpClient.post(this.url+"/api/hiring", {"status_id":2, "_method":this.method,"hiring_id":this.hiring_id,"token":this.tokenCode})
         .pipe()
         .subscribe((res:any)=> {
+          window.localStorage.removeItem("active_hirings_worker")
           //this.loading.dismiss();
           this.presentAlert(res.msg);
           this.navCtrl.setRoot("ActiveHiringsPage");
@@ -527,6 +575,7 @@ async presentActionSheet() {
          
       }); //subscribe
     }
+
 
   /***METODO PARA CANCELAR LA CONTRATACION : DEMANDANTE***/
   cancelHiring(){
@@ -591,6 +640,7 @@ async presentActionSheet() {
       .subscribe((res:any)=> {
         this.loading.dismiss();
         this.presentAlert(res.msg);
+        window.localStorage.removeItem("traya_hirings")
         this.navCtrl.setRoot("HiringsPage");
         this.getHiringsActive();
        },err => {
@@ -621,6 +671,7 @@ async presentActionSheet() {
         )
         .subscribe((res:any)=> {
           this.loading.dismiss();
+          window.localStorage.removeItem("traya_hirings")
           this.presentAlert(res.msg);
           this.events.publish("countHirings", "count")
           /*this.navCtrl.push(ServicesPage)*/

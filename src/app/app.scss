@@ -18,6 +18,14 @@ font-weight: normal;
 src: url('../assets/fonts/FSEX300.woff');
 }
 
+.customRows button{
+  margin-bottom: -5px;
+  margin-top: -5px;
+}
+
+.customRows button:first-child { margin-top:0px; }
+.customRows button:last-child { margin-bottom:0px; }
+
 .side-menu-badge{
   float: right;
 }

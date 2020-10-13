@@ -1,0 +1,104 @@
+<!--
+  Generated template for the ChatPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header *ngIf="registerComplete != '0'">
+  <ion-navbar color="light">
+   <button ion-button menuToggle >
+ <ion-icon name="menu"></ion-icon>
+</button>
+    <ion-title>
+      <span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px;"> <ion-icon style="font-size:1.5rem; padding-right: 10px" ios="ios-chatbubbles" md="md-chatbubbles"></ion-icon> {{receiverName}}</span>
+    </ion-title>
+    <!--<ion-buttons end *ngIf="rol_id < 3">
+      <button ion-button tappable (click)="presentNotifications()">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+    </ion-buttons>-->
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content style="overflow: hidden;">
+
+  <div class="chat-container" id="chat-container" *ngIf="from != 'userHiring'">
+    <div *ngIf="hasMoreMessages == true">
+      <p text-center>
+        <button style="border-radius: 50%;" ion-button (click)="fetchMessages()" ><ion-icon ios="ios-refresh" md="md-refresh"></ion-icon></button>
+      </p>
+    </div>
+    <ion-list>
+      <div *ngFor="let message of messages">
+        <ion-card *ngIf="message.sender_id == senderId" style="background-color: #dff9fb; max-width: 80%; float:right;">
+      
+          <ion-card-content>
+            {{ message.message }}
+            <p><small>{{ message.time }}</small> <!--<ion-icon name="trash" style="float: right" (click)="deleteMessage(message.id)"></ion-icon>--></p>
+          </ion-card-content>
+        
+        </ion-card>
+
+        <ion-card *ngIf="message.receiver_id == senderId" style="background-color: #f6e58d; max-width: 80%; float:left;">
+      
+          <ion-card-content>
+            {{ message.message }}
+
+            <p><small>{{ message.time }}</small></p>
+          </ion-card-content>
+        
+        </ion-card>
+
+      </div>
+
+    </ion-list>
+  </div>
+  <div class="chat-container-userHiring" id="chat-container" *ngIf="from == 'userHiring'">
+    <div *ngIf="hasMoreMessages == true">
+      <p text-center>
+        <button style="border-radius: 50%;" ion-button (click)="fetchMessages()" ><ion-icon ios="ios-refresh" md="md-refresh"></ion-icon></button>
+      </p>
+    </div>
+    <ion-list>
+      <div *ngFor="let message of messages">
+        <ion-card *ngIf="message.sender_id == senderId" style="background-color: #dff9fb; max-width: 80%; float:right;">
+      
+          <ion-card-content>
+            {{ message.message }}
+            <p><small>{{ message.time }}</small><!--<ion-icon name="trash" style="float: right" (click)="deleteMessage(message.id)"></ion-icon>--></p>
+          </ion-card-content>
+        
+        </ion-card>
+
+        <ion-card *ngIf="message.receiver_id == senderId" style="background-color: #f6e58d; max-width: 80%; float:left;">
+      
+          <ion-card-content>
+            {{ message.message }}
+
+            <p><small>{{ message.time }}</small></p>
+          </ion-card-content>
+        
+        </ion-card>
+
+      </div>
+
+    </ion-list>
+  </div>
+  <ion-grid style="position: fixed;
+  bottom: 0;">
+    <ion-row>
+      <ion-col col-12>
+       <div style="display: flex; align-items: center;">
+        <ion-textarea rows="3" style="background-color:#eeee; width: 90%; height: 40px; font-size: 16px;" placeholder="Escriba su mensaje"  [(ngModel)]="text"></ion-textarea>
+        <button ion-button (click)="send()" style="width: 10%; height: 40px;">
+         <ion-icon name="send"></ion-icon>
+       </button>
+       </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+ 
+
+</ion-content>

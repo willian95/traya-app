@@ -1,5 +1,5 @@
     import { Component } from '@angular/core';
-    import { IonicPage, NavController, NavParams,LoadingController,Platform,ToastController,Events } from 'ionic-angular';
+    import { IonicPage, NavController, NavParams,LoadingController,Platform,ToastController,Events, ActionSheetController } from 'ionic-angular';
 
     import { AlertController } from 'ionic-angular';
     import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
@@ -12,7 +12,12 @@
     import { TrayaBidderPage } from '../traya-bidder/traya-bidder';
     import { LocalNotifications } from '@ionic-native/local-notifications';
 
+import { File } from '@ionic-native/file';
+import { Transfer, TransferObject  } from '@ionic-native/transfer';
+import { FilePath } from '@ionic-native/file-path';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
+declare var cordova: any;
 
     @IonicPage()
     @Component({
@@ -23,7 +28,7 @@
       url:any;
       pusher2:any;
       registerComplete:any
-      constructor(public events: Events,public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams,public loadingController: LoadingController,public httpClient: HttpClient,private alertCtrl: AlertController,private serviceUrl:ServiceUrlProvider, private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications) {
+      constructor(public actionSheetController: ActionSheetController, public events: Events,public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams,public loadingController: LoadingController,public httpClient: HttpClient,private alertCtrl: AlertController,private serviceUrl:ServiceUrlProvider, private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications,private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath) {
         this.loading = this.loadingController.create({
                  content: 'Por favor espere...'
              });
@@ -70,6 +75,9 @@
       servicesArray:any;
       myRand:any;
       locationName:any
+      lastImage:any
+      image:any
+      beforeChangeLocationId:any
 
         ionViewDidLoad() {
         const channel = this.pusherNotify.init();
@@ -128,6 +136,27 @@
         this.getServices();
         this.getUserRefresh();
     }, 2000);
+  }
+
+  initializeApp(){
+    this.events.subscribe('userImage',(res)=>{
+      //this.myRand=this.random();
+      let rand = Math.random()
+      this.image = ""
+     this.image = res.image+"?"+rand;
+     this.userimage2 = this.image
+     window.localStorage.setItem('userimage', this.image)
+   })
+
+   this.events.subscribe("userCamera", () => {
+    
+     let rand = Math.random()
+      this.image = ""
+      let userId = localStorage.getItem('user_id');
+     this.image = this.url+"/profiles/"+userId+".jpg"+"?"+rand;
+     this.userimage2 = this.image
+     window.localStorage.setItem('userimage', this.image)
+   })
   }
 
 alertChange(){
@@ -234,6 +263,7 @@ alertChange(){
               console.log(this.userimage2);
             }
             this.location_id=response.profile.location_id;
+            this.beforeChangeLocationId = response.profile.location_id;
             this.domicile=response.profile.domicile;
             this.services_id=[];
              for(var i=0;i<response.services.length;i++){
@@ -269,9 +299,10 @@ alertChange(){
             this.phone=response.profile.phone;
             this.description=response.profile.description;
             this.userimage = response.image;
+
              if(response.image.includes("http")){
               this.userimage2=response.image+'?'+Math.floor(Math.random()*40)+1;
-    
+              console.log("test-image", this.userimage2)
             }
             this.location_id=response.profile.location_id;
             this.domicile=response.profile.domicile;
@@ -290,6 +321,27 @@ alertChange(){
       }else{
         console.log("sesion expirada");
       }
+    }
+
+    openGallery(){
+
+      const options: CameraOptions = {
+        quality: 40,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM
+      }
+  
+      this.camera.getPicture(options).then((imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64:
+        this.userimage  = 'data:image/jpeg;base64,' + imageData;
+        this.userimage2 = 'data:image/jpeg;base64,' + imageData
+        //this.updateProfileImage()
+      }, (err) => {
+        // Handle error
+      })
     }
       
 
@@ -335,6 +387,11 @@ alertChange(){
         })
 
         this.locationName = location_name
+
+        if(this.beforeChangeLocationId != this.location_id){
+          window.localStorage.removeItem("traya_hirings")
+          window.localStorage.removeItem("services_array")
+        }
 
         if (this.userimage !=null) 
           data.image=this.userimage;
@@ -420,5 +477,182 @@ alertChange(){
           } ); //subscribe
         }
       }
+
+      
+
+
+      chooseImageSource() {
+        const actionSheet = this.actionSheetController.create({
+          //title: 'Modify your albu',
+          buttons: [
+            {
+              text: 'Cámara',
+              handler: () => {
+                this.takePicture2(this.camera.PictureSourceType.CAMERA)
+              }
+            },{
+              text: 'Archivos',
+              handler: () => {
+                this.openGallery()
+                //document.getElementById('image-change-app2').click();
+              }
+            }
+          ]
+        });
+        actionSheet.present();
+      }
+    
+      convertBase6422(event) {
+       
+        var input = event.target;
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = (e:any) => {
+            this.userimage = e.target.result;
+            this.updateProfileImage()
+          }
+          reader.readAsDataURL(input.files[0]);
+          
+        }
+      }
+    
+      public pathForImage(img) {
+        if (img === null) {
+          return '';
+        } else {
+          return cordova.file.dataDirectory + img;
+        }
+      }
+    
+      public uploadImage2() {
+        let userId = localStorage.getItem('user_id');
+        var url = this.url+"/api/user/update/camera/"+userId;
+        var targetPath = this.pathForImage(this.lastImage);
+        var filename = this.lastImage;
+        var options = {
+          fileKey: "file",
+          fileName: filename,
+          chunkedMode: false,
+          mimeType: "multipart/form-data",
+          params : {'fileName': filename}
+        };
+    
+        const fileTransfer: TransferObject = this.transfer.create();
+        var loading = this.loadingController.create({
+          content: 'Subiendo imagen...',
+        });
+        loading.present();
+        fileTransfer.upload(targetPath, url, options).then(data => {
+          console.log(data)
+          loading.dismissAll()
+          this.events.publish('userCamera');
+          this.getUserRefresh()
+          
+          console.log("uploadImage1")
+          this.presentToast('Imagen actualizada');
+        }, err => {
+          console.log(err)
+          loading.dismissAll()
+          console.log("uploadImage2")
+          this.presentToast('Hubo un error en el servidor');
+        });
+      }
+    
+      updateProfileImage(){
+        
+          var loading = this.loadingController.create({
+              content: 'Por favor espere...'
+          });
+          loading.present();
+
+          var headers = new Headers();
+          headers.append("Accept", 'application/json');
+          headers.append('Content-Type', 'application/json');
+          this.token = localStorage.getItem('tokenCode');
+          let userId = localStorage.getItem('user_id');
+          
+          return  this.httpClient.post(this.url+"/api/user/update/image", {image: this.userimage, userId: userId, token: this.token})
+          .pipe()
+          .subscribe((res:any)=> {
+            
+            loading.dismiss();
+            
+            
+            this.events.publish('userCamera');
+            this.getUserRefresh()
+        
+            this.userimage = null
+            console.log("uploadImage3")
+            this.presentToast('Imagen actualizada');
+            //document.getElementById('image-change-app2').value = null;
+    
+          },err => {
+             loading.dismiss();
+            console.log(err.error);
+            console.log("uploadImage4")
+            this.presentToast('Hubo un error al subir la imagen');
+          } ); //subscribe
+      }
+    
+      private createFileName2() {
+        var d = new Date(),
+        n = d.getTime(),
+        newFileName =  n + ".jpg";
+        return newFileName;
+      }
+    
+      async presentToast(message) {
+        const toast = await this.toastController.create({
+          message: message,
+          duration: 10000,
+          showCloseButton: true,
+          closeButtonText: 'Cerrar',
+          cssClass: 'urgent-notification'
+        });
+        toast.present();
+      }
+    
+      public takePicture2(sourceType) {
+        var options = {
+          quality: 40,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          encodingType: this.camera.EncodingType.JPEG,
+          mediaType: this.camera.MediaType.PICTURE
+        };
+        this.camera.getPicture(options).then((imageData) => {
+
+          this.userimage  = 'data:image/jpeg;base64,' + imageData;
+          this.userimage2 = 'data:image/jpeg;base64,' + imageData
+
+          /*if (this.plt.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+            this.filePath.resolveNativePath(imagePath)
+              .then(filePath => {
+                let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+                let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+                this.copyFileToLocalDir2(correctPath, currentName, this.createFileName2());
+                
+              });
+          } else {
+            var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+            var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+            console.log("test-take-picture", currentName, correctPath)
+            this.copyFileToLocalDir2(correctPath, currentName, this.createFileName2());
+            //this.uploadImage()
+          }*/
+        }, (err) => {
+          console.log(err)
+        });
+      }
+    
+      private copyFileToLocalDir2(namePath, currentName, newFileName) {
+        this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
+          this.lastImage = newFileName;
+          this.uploadImage2()
+        }, error => {
+          console.log(error)
+          //this.presentToast('Error while storing file.');
+        });
+      }
+
 
     }

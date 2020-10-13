@@ -38,7 +38,8 @@
     </ion-item>
 
     <ion-item>
-      <input type="file" name="file" id="file" class="inputfile" accept="image/*" (change)="convertBase64($event)"/>
+      <!--input type="file" name="file" id="file" class="inputfile" accept="image/*" (change)="convertBase64($event)"/-->
+      <button ion-button (click)="openGallery()">Selecionar Imagen</button>
     </ion-item>
 
     <ion-item *ngIf="showImage">

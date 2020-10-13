@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, AlertController, LoadingController} from 'ionic-angular';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 /**
  * Generated class for the AdminAdsPage page.
@@ -17,7 +18,7 @@ import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 })
 export class AdminAdsPage {
 
-  file:File
+  file:any
   adTypes:any
   adType:any
   url:any
@@ -31,7 +32,7 @@ export class AdminAdsPage {
   locality:any
   userLocationId:any
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient, private serviceUrl:ServiceUrlProvider, private toastController:ToastController, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient, private serviceUrl:ServiceUrlProvider, private toastController:ToastController, public alertCtrl: AlertController, public loadingCtrl: LoadingController, private camera: Camera) {
     this.url=serviceUrl.getUrl();
     
     this.adType = ""
@@ -77,6 +78,27 @@ export class AdminAdsPage {
     
   }
 
+  openGallery(){
+
+    const options: CameraOptions = {
+      quality: 40,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      this.file  = 'data:image/jpeg;base64,' + imageData;
+      this.showImage = true;
+      //this.updateProfileImage()
+    }, (err) => {
+      // Handle error
+    })
+  }
+
   uploadAd(){
 
     let formData = new FormData();
@@ -99,7 +121,7 @@ export class AdminAdsPage {
 
       this.toastAlert(response.msg)
       this.adType = "";
-      ((document.getElementById("file") as HTMLInputElement).value = "")
+      //((document.getElementById("file") as HTMLInputElement).value = "")
 
       this.loading.dismiss()
       this.getAds()

@@ -78,6 +78,9 @@ export class ContactPage {
           this.loading.dismiss();
           this.presentAlertToast1();
           this.cleanInput();
+
+          this.navCtrl.setRoot("TrayaPage");
+
         },err => {
               this.loading.dismiss();
               this.errorAlertToast1(err.error);

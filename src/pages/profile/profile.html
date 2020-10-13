@@ -4,7 +4,7 @@
      <ion-icon name="menu"></ion-icon>
   </button>
         <ion-title>
-          <strong>Perfil</strong>
+          <strong>Mi Perfil</strong>
         </ion-title>
         <!--<ion-buttons end *ngIf="rol_id < 3">
           <button ion-button tappable (click)="presentNotifications()">
@@ -35,8 +35,8 @@
       </div>
 
       <div align="right">
-       <input type="file" name="file" id="file" class="inputfile" accept="image/*" (change)="convertBase64($event)"/>
-       <label id="plus" *ngIf="rol_id != 3"  for="file"><ion-icon ios="ios-camera" md="md-camera"></ion-icon></label>
+       <input type="file" id="image-change-app2" style="display:none" accept="image/*" (change)="convertBase6422($event)"/>
+       <button id="plus" *ngIf="rol_id != 3"  for="file" ion-button icon-only (click)="chooseImageSource()"><ion-icon ios="ios-camera" md="md-camera"></ion-icon></button>
      </div>
      <ion-item >
       <span color="dark">

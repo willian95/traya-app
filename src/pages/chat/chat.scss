@@ -1,0 +1,25 @@
+page-chat {
+
+    .profile-image{
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        position: relative;
+        bottom: 30px;
+    }
+    
+    .chat-container{
+        height: 75vh;
+        overflow-y: scroll;
+    }
+
+    .chat-container-userHiring{
+        height: 62vh;
+        overflow-y: scroll;
+    }
+
+    .scroll-content{
+        overflow-y: hidden;
+    }
+
+}

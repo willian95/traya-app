@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,MenuController,LoadingController,ToastController,ModalController,Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,MenuController,LoadingController,ToastController,ModalController,Events, ActionSheetController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { AlertController } from 'ionic-angular';
 import { TermsAndConditionsPage } from '../terms-and-conditions/terms-and-conditions';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { AboutModalPage } from '../about-modal/about-modal';
 import { AboutTrayaBidderPage } from '../about-traya-bidder/about-traya-bidder';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HomeAdminPage } from '../home-admin/home-admin';
 import { TrayaPage } from '../traya/traya';
 import { TrayaBidderPage } from '../traya-bidder/traya-bidder';
@@ -18,7 +19,7 @@ import { ServicesJobPage } from '../services-job/services-job';
 })
 export class RegisterPage {
   url:any;
-  constructor(public events: Events,public modalCtrl: ModalController,public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient, private alertCtrl: AlertController,private menu: MenuController,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
+  constructor(public events: Events,public modalCtrl: ModalController,public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient, private alertCtrl: AlertController,private menu: MenuController,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider, private camera: Camera, public actionSheetController: ActionSheetController) {
     this.loading = this.loadingController.create({
              content: 'Por favor espere...'
          });
@@ -388,8 +389,11 @@ async errorAlert(message) {
               this.loading.dismiss();
               var errors=JSON.parse(err.error.errors);
           if("email" in errors){
-              this.errorAlert(errors.email);
-               }
+            this.errorAlert(errors.email);
+          }
+          else if("password" in errors){
+            this.errorAlert(errors.password);
+          }
 
               
 
@@ -427,6 +431,64 @@ async toastLocationNotification(description) {
       cssClass: 'your-toast-css-class'
     });
     toast.present();
+  }
+
+  chooseImageSource() {
+    const actionSheet = this.actionSheetController.create({
+      //title: 'Modify your albu',
+      buttons: [
+        {
+          text: 'Cámara',
+          handler: () => {
+            this.takePicture2(this.camera.PictureSourceType.CAMERA)
+          }
+        },{
+          text: 'Archivos',
+          handler: () => {
+            this.openGallery()
+            //document.getElementById('image-change-app2').click();
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+
+  public takePicture2(sourceType) {
+    var options = {
+      quality: 40,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+    this.camera.getPicture(options).then((imageData) => {
+
+      this.image  = 'data:image/jpeg;base64,' + imageData;
+
+    }, (err) => {
+      console.log(err)
+    });
+  }
+
+  openGallery(){
+
+    const options: CameraOptions = {
+      quality: 40,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      this.image  = 'data:image/jpeg;base64,' + imageData;
+      //this.updateProfileImage()
+    }, (err) => {
+      // Handle error
+    })
   }
 
 }

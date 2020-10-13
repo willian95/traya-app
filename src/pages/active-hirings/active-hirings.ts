@@ -10,6 +10,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
 import { HistoryHiringsPage } from '../history-hirings/history-hirings';
 
+var interval = null
 
 @IonicPage()
 @Component({
@@ -56,23 +57,24 @@ export class ActiveHiringsPage {
   rol_id:any;
  storage:any;
   ionViewDidLoad() {
+
+    interval = window.setInterval(() => {this.checkNotificationId()}, 1000)
+
     const channel = this.pusherNotify.init();
     let self = this;
     /*channel.bind('notificationUser', function(data) {
       self.scheduleNotification(data.message,data.hiring.id);
     });*/
-
-
-    this.getHiringsActive();
+    
     this.rol_id = localStorage.getItem('user_rol');
     this.url=this.serviceUrl.getUrl();
-      if (localStorage.getItem('valueServicesBidder') !=null) {
+      /*if (localStorage.getItem('valueServicesBidder') !=null) {
      
         if(localStorage.getItem('terms') == 'true'){
           this.toastTweet();
         }
      this.storage.removeItem('valueServicesBidder');
-    }
+    }*/
 
   }
 
@@ -193,32 +195,33 @@ export class ActiveHiringsPage {
   }
 
   checkNotificationId(){
-
     
     if(localStorage.getItem("notificationId") != null){
-      this.loading = this.loadingController.create({
-          content: 'Por favor espere active hirings...'
-      });
+
+      /*this.loading = this.loadingController.create({
+          content: 'Por favor espere...'
+      });*/
       //this.loading.present()
-      console.log("active-hirings-notification")
+      
+      window.clearInterval(interval)
       this.httpClient.get(this.url+"/api/hiring/"+localStorage.getItem("notificationId"))
       .pipe()
         .subscribe((res:any)=> {
-          //this.loading.dismiss()
-          if(res.applicant.id == this.user_id){
 
-        
-     
-          }else{
-           
+          //this.loading.dismiss()
+          /*if(res.bidder.id == this.user_id){
+
+          }else{*/
+            localStorage.removeItem("active_hirings_worker")
             localStorage.removeItem("notificationId")
             this.navCtrl.push("HiringDetailsPage",{data:res});
-          }
-          
+            //interval = window.setInterval(() => {this.checkNotificationId()}, 1000)
+          //}
       });
 
       //this.loading.dismiss()
-      
+
+
     }
 
   }
@@ -246,12 +249,13 @@ export class ActiveHiringsPage {
     .subscribe((res:any)=> {
      this.loading.dismiss()
       this.hiringsArray=res.data;
+      localStorage.setItem("active_hirings_worker", JSON.stringify(this.hiringsArray))
       console.log(this.hiringsArray);
   });
   }
 
    doRefresh(refresher) {
-
+    localStorage.removeItem("active_hirings_worker")
     setTimeout(() => {
       console.log('Async operation has ended');
       refresher.complete();
@@ -260,8 +264,6 @@ export class ActiveHiringsPage {
   }
 
   viewDetails(items:any,i:any){
-
-    console.log(items)
 
     var contratactionNumber = items.id;
     localStorage.setItem('contratactionNumber',contratactionNumber);
@@ -299,6 +301,11 @@ showHistory(){
 
   ionViewDidEnter(){
     this.storeAction()
+    if(localStorage.getItem("active_hirings_worker") == null){
+      this.getHiringsActive();
+    }else{
+      this.hiringsArray= JSON.parse(localStorage.getItem("active_hirings_worker"))
+    }
     //this.checkContactReview()
   }
 

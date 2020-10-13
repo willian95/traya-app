@@ -62,6 +62,7 @@ export class ServicesJobPage {
   originalServices:any
   originalServicesLength:any
   newServices:any
+  user_locality_id:any
   private timeoutId: number;
       descriptionCount:any;
 
@@ -85,6 +86,7 @@ export class ServicesJobPage {
 
 
     this.user_id = localStorage.getItem('user_id');
+    this.user_locality_id = localStorage.getItem('user_locality_id');
     //this.showUser();
     this.getServices();
     this.getNotifications();
@@ -215,8 +217,9 @@ async presentAlert() {
   this.httpClient.get(this.url+'/api/services')
   .pipe()
     .subscribe((res:any)=> {
-      this.servicesArray=res.data;
-      console.log("services", this.servicesArray)
+      let services = res.data;
+      this.servicesArray = services.filter((x) => { return x.location_id == 0 || x.location_id == this.user_locality_id; })
+      
   },err => {
         //this.loading.dismiss();
         if (err.error.errors == undefined) {
@@ -395,7 +398,7 @@ async presentAlert() {
                 this.descriptionCount = this.description.length
 
             }
-            this.userimage = response.image;
+            this.userimage = response.image+"?"+Math.random().toString(36).substring(7);
       this.loading.dismiss();
 
     }

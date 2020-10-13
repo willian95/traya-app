@@ -23,12 +23,22 @@
       <ion-icon ios="ios-add-circle" md="md-add"></ion-icon>
     </button>-->
     <button ion-button (click)="confirmAlert()" style="float: right; background-color: #bdc3c7; position: absolute; right: 5px;
-    bottom: 11px;" *ngIf="hiringDescription?.length <= 35">
+    bottom: 11px;" *ngIf="hiringDescription?.length <= 35 && from == null">
       <ion-icon ios="ios-close" md="md-close"></ion-icon>
     </button>
     <button ion-button (click)="confirmAlert()" style="float: right; background-color: #bdc3c7; position: absolute; right: 5px;
-    bottom: 18px;" *ngIf="hiringDescription?.length > 35">
+    bottom: 18px;" *ngIf="hiringDescription?.length > 35 && from == null">
       <ion-icon ios="ios-close" md="md-close"></ion-icon>
+    </button>
+
+    <button ion-button (click)="confirmAlertOk()" style="float: right; background-color: #bdc3c7; position: absolute; right: 5px;
+    bottom: 11px;" *ngIf="hiringDescription?.length <= 35 && from == 'history'">
+      <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+    </button>
+
+    <button ion-button (click)="confirmAlertOk()" style="float: right; background-color: #bdc3c7; position: absolute; right: 5px;
+    bottom: 18px;" *ngIf="hiringDescription?.length > 35 && from == 'history'">
+      <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
     </button>
   </ion-navbar>
 </ion-header>
@@ -41,36 +51,7 @@
       <ion-grid *ngIf="hide ==0" >
         <!--DATOS DEL APLICANTE  -->
         <ion-row style="border-bottom: none; border-radius: 50%;">
-          <ion-col>
-            
-          </ion-col>
-          <ion-col>
-              <!--<button ion-button (click)="confirmAlert()" style="float: right; margin-right: -20px; background-color: #bdc3c7">
-                  <ion-icon ios="ios-close" md="md-close"></ion-icon>
-                </button>-->
-          </ion-col>
-        </ion-row>
-        <ion-row >
-          <ion-col col col-6 >
-            <!-- <button ion-button full (click)="presentActionSheet()">
-              Llamar
-            </button> -->
-            <ion-row>
-              <ion-col width-50>
-                <button ion-button full (click)="callNow()">
-                  <ion-icon ios="ios-call" md="md-call"></ion-icon>
-                </button>
-
-              </ion-col>
-              <ion-col width-50>
-                <button id="secondary" ion-button full color="secondary" (click)="sendWhatsapp()">
-                  <ion-icon ios="logo-whatsapp" md="logo-whatsapp"></ion-icon>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-
-          <ion-col col col-5>
+          <ion-col col col-11>
             <ion-item id="pr1" style="padding-left: 0px;">
               <ion-icon name="person" slot="start"></ion-icon>
               <ion-label color="dark" style="margin-top: 6px;">
@@ -89,6 +70,33 @@
               <ion-icon ios="ios-heart" md="md-heart" (click)="deleteFavorite()" *ngIf="favoriteCheck == true"></ion-icon>
             </button>
           </ion-col>
+        </ion-row>
+        <ion-row >
+          
+            <!-- <button ion-button full (click)="presentActionSheet()">
+              Llamar
+            </button> -->
+      
+          <ion-col width-30>
+            <button ion-button full (click)="callNow()">
+              <ion-icon ios="ios-call" md="md-call"></ion-icon>
+            </button>
+
+          </ion-col>
+          <ion-col width-30>
+            <button id="secondary" ion-button full color="secondary" (click)="sendWhatsapp()">
+              <ion-icon ios="logo-whatsapp" md="logo-whatsapp"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col width-30>
+    
+            <button ion-button full color="header" (click)="openChat(bidderName, bidderImage, bidder_id, 'userHiring')" >
+            
+              <ion-icon ios="ios-chatbubbles" md="md-chatbubbles"></ion-icon>
+            </button>
+          </ion-col>
+        
+       
 
 
         </ion-row>
@@ -332,11 +340,17 @@
         </ion-col>-->
       </ion-row>
    <ion-row >
-          <ion-col col col-6 >
+    <ion-col col style="padding-top: 18px;">
+    
+        <h5 class="mbsc-bold">{{applicantName}}</h5>
+     
+    </ion-col>
+          <ion-col col col-12 >
             <!-- <button ion-button full (click)="presentActionSheet()">
               Llamar
             </button> -->
             <ion-row>
+              
               <ion-col width-50>
                 <button ion-button full (click)="callNowApplicant()">
                   <ion-icon ios="ios-call" md="md-call"></ion-icon>
@@ -348,13 +362,16 @@
                   <ion-icon ios="logo-whatsapp" md="logo-whatsapp"></ion-icon>
                 </button>
               </ion-col>
+              <ion-col width-30>
+    
+                <button ion-button full color="header" (click)="openChat(applicantName, applicantImage, applicant_id, 'userHiring')" >
+                
+                  <ion-icon ios="ios-chatbubbles" md="md-chatbubbles"></ion-icon>
+                </button>
+              </ion-col>
             </ion-row>
           </ion-col>
-          <ion-col col col-6 style="padding-top: 18px;">
-            <div >
-              <h5 class="mbsc-card-title mbsc-bold">{{applicantName}}</h5>
-            </div>
-          </ion-col>
+          
         </ion-row>
 
 

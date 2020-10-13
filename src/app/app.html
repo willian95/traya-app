@@ -11,9 +11,13 @@
               <div class="user-avatar" text-center style="margin-left: 90px;">
                 <img [src]="image" *ngIf="image && rol_id != 3" style="height: 85px;width: 85px;">
                 <img src="assets/imgs/logo_traya.png" *ngIf="rol_id == 3" style="height: 85px;width: 85px;">
-                <button *ngIf="rol_id != 3" id="viewProfilePage" ion-button  (click)="viewProfilePage()" menuClose>
+                <!--<button *ngIf="rol_id != 3" id="viewProfilePage" ion-button  (click)="viewProfilePage()" menuClose>
+                  <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+                </button>-->
+                <button *ngIf="rol_id != 3" id="viewProfilePage" ion-button  (click)="chooseImageSource()" menuClose>
                   <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
                 </button>
+                <input type="file" name="file" id="image-change-app" class="inputfile" style="display:none" accept="image/*" (change)="convertBase64($event)"/>
               </div>
 
           </ion-col>

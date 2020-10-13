@@ -2,8 +2,13 @@
   <ion-navbar >
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-    </button>
-    <span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px; font-weight: bold;">Historial</span>
+	</button>
+
+	<span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px; font-weight: bold;">Historial</span>
+	
+	<button ion-button (click)="confirmAlertDeleteAll()" style="float: right;" *ngIf="hiringsArray.length > 0">
+		<ion-icon name="trash"></ion-icon>
+	</button>
   </ion-navbar>
 </ion-header>
 <ion-content padding >
@@ -12,7 +17,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
  </div>
-	<ion-list *ngIf="hiringsArray != null">
+	<ion-list *ngIf="hiringsArray != null && loading == false">
 		<button ion-item *ngFor="let items of hiringsArray ; let i =index" (click)="viewDetails(items,i)">
 			<ion-card no-margin margin-bottom class="full-width">
 				<ion-item tappable  class="border-bottom">
@@ -25,7 +30,8 @@
 
 
 					<ion-avatar item-start>
-						<img [src]="items.bidder.image" *ngIf="items.bidder.image">
+						<img [src]="items.applicant.image" *ngIf="items.applicant.image && user_rol == 2">
+						<img [src]="items.bidder.image" *ngIf="items.bidder.image && user_rol == 1">
 					</ion-avatar>
 				</ion-item>
 

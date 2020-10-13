@@ -32,6 +32,10 @@ export class TermsAndConditionsPage {
     return this.canLeave;
   }
 
+  ionViewDidEnter(){
+    this.canLeave = false
+  }
+
 
   acceptTerms() {
     if (this.terms == true) {
@@ -61,6 +65,7 @@ export class TermsAndConditionsPage {
     }
 
     openTerms(){
+      this.canLeave = true
     let modal=this.modalCtrl.create("TermsPage");
     modal.present();
     }

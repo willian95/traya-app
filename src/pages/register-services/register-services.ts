@@ -7,6 +7,7 @@ import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
 import { HomeAdminPage } from '../home-admin/home-admin';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 @IonicPage()
 @Component({
@@ -15,7 +16,7 @@ import { HomeAdminPage } from '../home-admin/home-admin';
 })
 export class RegisterServicesPage {
   url:any;
-  constructor(public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private alertCtrl: AlertController,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
+  constructor(public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private alertCtrl: AlertController,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider,private camera: Camera) {
 
     
     this.rolId = window.localStorage.getItem('user_rol');
@@ -162,6 +163,27 @@ ionViewDidLoad() {
 
     
 
+  }
+
+  openGallery(){
+
+    const options: CameraOptions = {
+      quality: 40,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      this.image  = 'data:image/jpeg;base64,' + imageData;
+
+      //this.updateProfileImage()
+    }, (err) => {
+      // Handle error
+    })
   }
 
   fetchLocaltions(){

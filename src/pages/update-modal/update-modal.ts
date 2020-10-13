@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ViewController   } from 'ionic-angular';
-import { AppUpdate } from '@ionic-native/app-update';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
@@ -25,7 +24,7 @@ export class UpdateModalPage {
   downProg:any = null
   showView = false
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController, private appUpdate: AppUpdate, private serviceUrl:ServiceUrlProvider, private transfer: FileTransfer, private file: File, private fileOpener: FileOpener, private ngZone: NgZone, private androidPermissions: AndroidPermissions) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl: ViewController, private serviceUrl:ServiceUrlProvider, private transfer: FileTransfer, private file: File, private fileOpener: FileOpener, private ngZone: NgZone, private androidPermissions: AndroidPermissions) {
     this.url=serviceUrl.getUrl();
   }
 
@@ -44,8 +43,9 @@ export class UpdateModalPage {
   }
 
   update(){
-
-    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE).then( (result) => {
+    this.viewCtrl.dismiss();
+    window.location.href="market://details?id=com.ionicframework.traya";
+    /*this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE).then( (result) => {
       if(result.hasPermission){
 
         this.showView = true
@@ -83,15 +83,15 @@ export class UpdateModalPage {
         );
 
       }
-      /**/
-      })
+      
+      })*/
 
   }
 
-  runNewVersionApk(path) {
+  /*runNewVersionApk(path) {
     //this.fileOpener is from '@ionic-native/file-opener';
     this.fileOpener.open(path, 'application/vnd.android.package-archive');
-  }
+  }*/
 
   
  

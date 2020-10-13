@@ -39,7 +39,7 @@ export class HistoryHiringsPage {
   }
   user_id:any;
   user_rol:any;
-  hiringsArray:any;
+  hiringsArray:any = [];
   notificationArray:any;
   notificationNumber:any;
   averageRatingInt:any;
@@ -98,7 +98,7 @@ export class HistoryHiringsPage {
   .pipe()
     .subscribe((res:any)=> {
     this.hiringsArray=res.data;
-    console.log("hiring");
+    console.log(res.data);
     this.loading = false
     for (var i = this.hiringsArray.length - 1; i >= 0; i--) {
       this.averageRatingInt=this.hiringsArray[i].bidder.averageRatingInt;
@@ -112,12 +112,51 @@ export class HistoryHiringsPage {
     this.httpClient.get(this.url+"/api/hiring/"+items.id)
   .pipe()
     .subscribe((res:any)=> {
-      this.navCtrl.push("HiringDetailsPage",{data:res});
+      this.navCtrl.push("HiringDetailsPage",{data:res, from: "history"});
   });
+  }
+
+  deleteAll(){
+
+    //alert(this.user_rol)
+    this.httpClient.post(this.url+"/api/hiring-history/delete-all", {"user_id": this.user_id, "user_rol": this.user_rol}).pipe().subscribe((res:any) => {
+      console.log("test-res", res)
+      if(res.success == true){
+        this.getHiringsActive()
+      }
+
+    })
+
+  }
+
+  confirmAlertDeleteAll() {
+    let alert = this.alertCtrl.create({
+      title: ' <img src="assets/imgs/info.png" class="logo2" />',
+      message: '¿Desea borrar todas las solicitudes de su Historial?',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Si',
+          role: 'cancel',
+          handler: () => {
+            this.deleteAll();
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Buy clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   ionViewDidEnter(){
     this.storeAction()
+    this.getHiringsActive()
   }
 
   storeAction(){

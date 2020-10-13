@@ -12,7 +12,6 @@ import { UpdateModalPage } from '../update-modal/update-modal'; //importo el mod
 import { AppVersion } from '@ionic-native/app-version';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicPage } from 'ionic-angular';
-import { AppUpdate } from '@ionic-native/app-update';
 import { UserHiringPage } from '../user-hiring/user-hiring';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
@@ -31,7 +30,7 @@ export class HomePage {
   downProg = 0
   
 
-  constructor(private statusBar: StatusBar, public toastController: ToastController,public navCtrl: NavController, public modalCtrl: ModalController,private menu: MenuController,public httpClient: HttpClient,public events: Events,private localNotifications: LocalNotifications,private alertCtrl: AlertController, private plt: Platform,public viewCtrl: ViewController, private app: AppVersion, private appUpdate: AppUpdate, private transfer: FileTransfer, private file: File, private serviceUrl: ServiceUrlProvider, private fileOpener: FileOpener, private ngZone: NgZone) {
+  constructor(private statusBar: StatusBar, public toastController: ToastController,public navCtrl: NavController, public modalCtrl: ModalController,private menu: MenuController,public httpClient: HttpClient,public events: Events,private localNotifications: LocalNotifications,private alertCtrl: AlertController, private plt: Platform,public viewCtrl: ViewController, private app: AppVersion, private transfer: FileTransfer, private file: File, private serviceUrl: ServiceUrlProvider, private fileOpener: FileOpener, private ngZone: NgZone) {
 
     this.url = this.serviceUrl.getUrl()
     this.plt.ready().then((readySource) => {
@@ -117,6 +116,38 @@ presentAlert(data) {
   validateSession(){
     
     if(localStorage.getItem('token') != null){
+      let data = {
+        user:{
+          name:localStorage.getItem('user')
+        },
+        image:localStorage.getItem('userimage'),
+        token:localStorage.getItem('token'),
+        tokenCode:localStorage.getItem('tokenCode'),
+        roles:[
+          {
+            id:localStorage.getItem('user_rol')
+          }
+        ]
+      }
+
+      //console.log("test-data", data)
+
+      if(localStorage.getItem('user_rol') == "1"){
+        this.navCtrl.setRoot("TrayaPage");
+        this.events.publish('userLogged',data);
+      }else if(localStorage.getItem('user_rol') == "2"){
+        this.navCtrl.setRoot("TrayaBidderPage");
+        this.events.publish('userLogged',data);
+      }else if(localStorage.getItem('user_rol') == "3"){
+        this.navCtrl.setRoot("HomeAdminPage");
+        this.events.publish('userLogged',data);
+      }else if(localStorage.getItem('user_rol') == "4"){
+        this.navCtrl.setRoot("HomeAdminPage");
+        this.events.publish('userLogged',data);
+      }
+    }
+
+    /*if(localStorage.getItem('token') != null){
       var headers = new HttpHeaders({
         Authorization: localStorage.getItem('token'),
       });
@@ -131,6 +162,8 @@ presentAlert(data) {
           .subscribe((res:any) => {
             console.log("validate", res)
             this.navCtrl.setRoot("TrayaPage");
+               //this.navCtrl.insert(0,"TrayaPage");
+               //this.navCtrl.popToRoot();
             this.events.publish('userLogged',response);
           })
 
@@ -170,7 +203,7 @@ presentAlert(data) {
     );
   }else{
     console.log("sesion expirada");
-  }
+  }*/
 }
 
 updateTest(){

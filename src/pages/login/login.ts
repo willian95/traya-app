@@ -302,8 +302,9 @@ export class LoginPage {
               this.navCtrl.setRoot("ProfilePage");
              }
              else if(res.roles[0].id== 1){
-               console.log('traya');
+               
                this.navCtrl.setRoot("TrayaPage");
+         
                this.events.publish('userLogged',res);
                localStorage.setItem('valueServices',valueServices);
              }else if(res.roles[0].id==2 && res.services ==''){
