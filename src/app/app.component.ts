@@ -42,6 +42,7 @@ export class MyApp {
   showNotifications:any
   userimage:any
   lastImage:any
+  showClaimButton:any = false
   // hiring_id:any;
   text = '¡Descárgate Traya! es una App de Servicios…';
   textBody = 'te permite de manera rápida y sencilla conectarte con un profesional. \n'+
@@ -57,6 +58,7 @@ export class MyApp {
     this.appMenuItems = [];
     this.initializeApp();
     this.url=serviceUrl.getUrl();
+    this.fetchClaim()
 
     this.storage = localStorage;
     this.validateHeaderMain=false;
@@ -107,6 +109,7 @@ export class MyApp {
         {title: 'Actualizar Servicios', component: "UpdateServicesPage", icon: 'refresh-circle'},
         {title: 'Crear Localidades', component: "CreateLocalityPage", icon: 'locate'},
         {title: 'Gestionar Localidades', component: "UpdateLocalityPage", icon: 'refresh'},
+        {title: 'Línea de reclamos', component: "AdminClaimsPage", icon: 'information-circle'},
         {title: 'Usuarios Activos', component: "ManageUsersPage", icon: 'contacts'},
         {title: 'Usuarios Inactivos', component: "DisabledUsersPage", icon: 'close'},
         {title: 'Modo mantenimiento', component: "MaintenanceModePage", icon: 'build', badge: this.config},
@@ -308,6 +311,7 @@ initializeApp() {
         localStorage.setItem('descriptionEventTweet',res);
         this.toastTweet(res);
     });
+
   }
 
  toastTweet(message) {
@@ -693,5 +697,27 @@ initializeApp() {
     });
   }
 
+  viewClaims(){
+    this.nav.push("ClaimsPage");
+  }
+
+  fetchClaim(){
+
+    this.httpClient.get(this.url+"/api/claim-locality")
+    .subscribe((response:any) => {
+      
+      var userLocality = window.localStorage.getItem("user_locality_id")
+
+      response.locations.forEach((data) => {
+
+        if(data.location.id == userLocality){
+          this.showClaimButton = true
+        }
+
+      })
+
+    })
+
+  }
 
 }

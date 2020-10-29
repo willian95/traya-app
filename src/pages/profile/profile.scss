@@ -1,4 +1,13 @@
 page-profile {
+
+    ::-webkit-scrollbar {
+        width: 3px;
+        background-color: white;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #7f0093;
+    }
+
   .hide {
   display: none;
 }

@@ -20,6 +20,7 @@ export class ChatsPage {
   url:any
   userId:any
   userRol:any
+  loading:any= false
   chats:any = []
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public httpClient: HttpClient, private serviceUrl:ServiceUrlProvider, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
@@ -39,11 +40,11 @@ export class ChatsPage {
   
 
   fetchChats(){
-
+    this.loading = true
     this.httpClient.post(this.url+"/api/my-chats", {userId: this.userId})
     .subscribe((res:any)=> {
-
-      if(res.success == true){
+      this.loading = false
+      if(res.success == true){  
 
         this.chats = res.users
 

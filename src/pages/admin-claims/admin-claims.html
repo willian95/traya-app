@@ -1,0 +1,45 @@
+<!--
+  Generated template for the AdminClaimsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- -->
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Localidades</strong>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <div *ngFor="let items of locations ; let i =index">
+
+    <div ion-item >
+      <div class="row">
+        <div col col-50>
+          <h2>{{items.location.name}}</h2>
+          <p *ngIf="items.active == 1">Activo</p>
+          <p *ngIf="items.active == 0">Inactivo</p>
+        </div>
+        <div col col-50>
+          <button ion-button (click)="showPrompt(items.emails, items.id)">
+            <span *ngIf="items.active == 0">Activar</span>
+            <span *ngIf="items.active == 1">Editar</span>
+          </button>
+          <button ion-button (click)="deactivate(items.id)" *ngIf="items.active == 1">
+            Desactivar
+          </button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

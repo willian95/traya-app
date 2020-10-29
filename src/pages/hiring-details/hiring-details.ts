@@ -493,9 +493,8 @@ async presentActionSheet() {
       //alert('hey')
       //window.location.href="https://wa.me/"+this.bidderPhone.substr(1);
       this.storeContact(1)
-      window.open("whatsapp://send?text=¡Hola! Te contacto desde Traya App de Servicios!&phone="+this.bidderPhone,"_system","location=yes");
-      //window.open("whatsapp://send?text=¡Hola, te contacto desde Traya App de Servicios!&phone="+this.bidderPhone.substr(1),"_system","location=yes");
-      /*https://api.whatsapp.com/send?phone="+this.bidderPhone.substr(1)+"&text=&source=&data=";*/
+      window.open("whatsapp://send?text=¡Hola! te contacto desde Traya App de Servicios...&phone="+this.bidderPhone,"_system","location=yes");
+      
 
     }
 
@@ -535,7 +534,7 @@ async presentActionSheet() {
       this.storeContact(1)
       //alert('hey')
       //window.location.href="https://wa.me/"+this.applicantPhone.substr(1);
-      window.open("whatsapp://send?text=¡Hola, te contacto desde Traya App de Servicios!&phone="+this.applicantPhone,"_system","location=yes");
+      window.open("whatsapp://send?text=¡Hola! te contacto desde Traya App de Servicios...!&phone="+this.applicantPhone,"_system","location=yes");
       /*https://api.whatsapp.com/send?phone="+this.applicantPhone.substr(1)+"&text=&source=&data=";*/
 
     }

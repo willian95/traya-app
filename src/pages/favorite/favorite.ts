@@ -20,7 +20,9 @@ export class FavoritePage {
   
   url:any
   user_id:any
-  favorites:any
+  favorites:any = []
+  loading:any = false
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private serviceUrl:ServiceUrlProvider, public httpClient: HttpClient, private app : App) {
     this.url=serviceUrl.getUrl();
     this.user_id = localStorage.getItem("user_id")
@@ -39,10 +41,11 @@ export class FavoritePage {
   }
 
   fetchFavorites(){
-
+    this.loading = true
     this.httpClient.post(this.url+"/api/favorite/fetch", {auth_id: this.user_id})
     .pipe()
     .subscribe((res:any)=> {
+      this.loading = false
       console.log(res.favorites)
       this.favorites = res.favorites
     })

@@ -227,7 +227,7 @@ callNow() {
     //window.location.href="https://wa.me/"+this.bidderPhone.substr(1);
     /*https://api.whatsapp.com/send?phone="+this.bidderPhone.substr(1)+"&text=&source=&data="*/
     this.storeContact(1)
-    window.open("whatsapp://send?text=¡Hola, te contacto desde Traya App de Servicios!&phone="+this.applicantPhone,"_system","location=yes");
+    window.open("whatsapp://send?text=¡Hola! te contacto desde Traya App de Servicios...!&phone="+this.applicantPhone,"_system","location=yes");
   }
 
   callNowApplicant(){
@@ -243,7 +243,7 @@ callNow() {
     //window.location.href="https://wa.me/"+this.applicantPhone.substr(1);
     /*https://api.whatsapp.com/send?phone="+this.applicantPhone.substr(1)+"&text=&source=&data=*/
     this.storeContact(1)
-    window.open("whatsapp://send?text=¡Hola, te contacto desde Traya App de Servicios!&phone="+this.applicantPhone,"_system","location=yes");
+    window.open("whatsapp://send?text=¡Hola! te contacto desde Traya App de Servicios...!&phone="+this.applicantPhone,"_system","location=yes");
   }
 
   /****METODO PARA CREAR LA CONTRATACION***/

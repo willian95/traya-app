@@ -72,6 +72,11 @@
           <span ion-text color="primary">Acerca de TRAYA</span>
         </button>
 
+        <!--<button ion-item menuClose class="text-1x"  (click)="viewClaims()" *ngIf="rol_id < 3">
+          <ion-icon item-left name="information-circle" color="primary"></ion-icon>
+          <span ion-text color="primary">Línea de reclamos</span>
+        </button>-->
+
         <button ion-item menuClose class="text-1x"  (click)="viewContactPage()" *ngIf="rol_id < 3">
           <ion-icon item-left name="mail" color="primary"></ion-icon>
           <span ion-text color="primary">Contáctanos</span>
@@ -79,9 +84,17 @@
 
         
        
-      <ion-item>
-        <button id="share"ion-button full (click)="shareApplication()">Compartir APP</button>
+      <ion-item *ngIf = "showClaimButton">
+        <button id="share"ion-button menuClose full (click)="viewClaims()"><ion-icon item-left name="information-circle" color="light"></ion-icon> Línea de reclamos</button>
       </ion-item>
+      
+      <div style="float: right;
+      margin-top: 2rem;
+      color:#999;
+      margin-right: 20px;
+      font-size: 30px;">
+        <ion-icon name="share" (click)="shareApplication()"></ion-icon>
+      </div>
 
     </ion-list>
   </ion-content>

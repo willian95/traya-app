@@ -113,7 +113,7 @@ export class DetailsLocalityPage {
           locationId = this.userLocationId
         }
 
-        return  this.httpClient.post(this.url+"/api/locations-update/"+locationId, {"_method":'PUT','name':this.name,"description":this.description,"token":this.tokenCode})
+        return  this.httpClient.post(this.url+"/api/update_locality/"+locationId, {"_method":'POST','name':this.name,"description":this.description,"token":this.tokenCode})
         .pipe(
         )
         .subscribe((res:any)=> {
@@ -130,7 +130,7 @@ export class DetailsLocalityPage {
         }); //subscribe
     }
 
-     deleteNotification() {
+    deleteNotification() {
       this.loading = this.loadingController.create({
         content: 'Por favor espere...'
     });

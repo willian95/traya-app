@@ -37,6 +37,13 @@
         <ion-icon name="close" style="margin-top: -5px;" (click)="showConfirm('¿Desea borrar el chat con '+chat.user.name+'?', 'one', chat.user.id)"></ion-icon>
       </div>
     </ion-item>
+    <!--<ion-item >
+      <h4 text-center>No tienes chats activos </h4>
+    </ion-item>-->
+  </ion-list>
+
+  <ion-list *ngIf="loading == false && chats.length == 0" padding>
+    <h4 text-center padding>No tienes chats activos</h4>
   </ion-list>
 
 </ion-content>

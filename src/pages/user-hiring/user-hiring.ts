@@ -280,7 +280,7 @@ export class UserHiringPage {
   sendWhatsapp(tel){
     this.storeContact(1)
 
-    window.open("whatsapp://send?text=¡Hola, te contacto desde Traya App de Servicios!&phone="+tel,"_system","location=yes");
+    window.open("whatsapp://send?text=¡Hola! te contacto desde Traya App de Servicios...!&phone="+tel,"_system","location=yes");
 
   }
 
