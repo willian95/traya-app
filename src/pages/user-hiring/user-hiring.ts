@@ -1,5 +1,5 @@
 import { Component,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController,Events,Platform,ToastController,ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController,Events,Platform,ToastController,ActionSheetController, ModalController } from 'ionic-angular';
 import { CallNumber } from '@ionic-native/call-number';
 // import { HttpClient } from '@angular/common/http';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
@@ -21,7 +21,7 @@ export class UserHiringPage {
   url:any;
   comingFrom:any
 
-  constructor( private superTabsCtrl: SuperTabsController,public actionSheetController: ActionSheetController,public toastController: ToastController,private plt: Platform,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,public navCtrl: NavController, public navParams: NavParams,public callNumber: CallNumber,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public events: Events,private serviceUrl:ServiceUrlProvider) {
+  constructor( private superTabsCtrl: SuperTabsController,public actionSheetController: ActionSheetController,public toastController: ToastController,private plt: Platform,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,public navCtrl: NavController, public navParams: NavParams,public callNumber: CallNumber,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,public events: Events,private serviceUrl:ServiceUrlProvider, public modalCtrl: ModalController) {
     this.usersServices = navParams.get('data');
     
     this.comingFrom = navParams.get("comingFrom")
@@ -423,6 +423,17 @@ export class UserHiringPage {
 
   openChat(username, userimage, bidder_id, from){
     this.navCtrl.push("ChatPage", {username: username,userimage:userimage, bidder_id: bidder_id, from: from})
+  }
+
+  openModal(){
+    
+    this.tokenCode = localStorage.getItem('tokenCode');
+    if(this.comingFrom != "favorite")
+      this.services_id = localStorage.getItem('services_id');
+
+    const quickRequestModal = this.modalCtrl.create("QuickRequestPage", { "bidder_id":this.bidder_id,"service_id":this.services_id,"token":this.tokenCode });
+    quickRequestModal.present();
+
   }
 
   

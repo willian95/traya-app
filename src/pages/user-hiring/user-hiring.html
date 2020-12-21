@@ -22,17 +22,23 @@
       </ion-col>
 
       <ion-col col col-6>
-        <ion-item id="pr1" >
+        <ion-item id="pr1" style="margin-top: -18px;">
           <ion-icon name="person" slot="start"></ion-icon>
           <ion-label color="dark">
               <h2>
                 {{username}}
               </h2>
               <div id="pr2">
-                <span *ngIf="comingFrom != 'favorite'">{{servicesName}}</span>
-                <button ion-button  small (click)="presentActionSheet()" style="margin-top: -6px;">
+                <span *ngIf="comingFrom != 'favorite'" (click)="presentActionSheet()">{{servicesName}}</span>
+                <!--<button ion-button  small (click)="presentActionSheet()" style="margin-top: -6px;">
                   <ion-icon ios="ios-add" md="md-add"></ion-icon>
-                </button> 
+                </button>-->
+
+                <ion-item *ngIf="usersServices.email != authEmail" style="padding-left: 0px;">
+                  <ion-label>
+                    <small>{{last_conection}}</small>
+                  </ion-label>
+                </ion-item>
                 
               </div>
           </ion-label>
@@ -48,12 +54,6 @@
         <p *ngIf="description ==null || description ==''">El trabajador no ha descrito aún su trabajo</p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="usersServices.email != authEmail">
-      <ion-label>
-        <small>Última conexión: {{last_conection}}</small>
-      </ion-label>
-    </ion-item>
-
     <ion-row *ngIf="usersServices.email != authEmail">
       <ion-col width-30 *ngIf="usersServices.email != authEmail">
         <button ion-button full (click)="callNow()">
@@ -79,7 +79,7 @@
     </ion-row>
     
     
-      <ion-grid *ngIf="usersServices.email != authEmail">
+      <!--<ion-grid *ngIf="usersServices.email != authEmail">
         <ion-row>
           <ion-col col-12 *ngIf="comingFrom == 'favorite'">
             <ion-item>
@@ -98,7 +98,7 @@
               </ion-item>
             </ion-col>
         </ion-row>
-      </ion-grid>  
+      </ion-grid>-->
     
     <div *ngIf="usersServices.email == authEmail" style="margin-top: 15px;">
     <h4 text-center style="font-size: 1.5rem; margin-bottom: -2px;">Mis estrellas</h4>
@@ -118,8 +118,9 @@
 
     
     <ion-item *ngIf="usersServices.email != authEmail" class="item-no-border">
-      <button  ion-button full (click)="createHiring()">
-        ¿PODÉS  HACERLO?
+      <!--<button  ion-button full (click)="createHiring()">-->
+      <button  ion-button full (click)="openModal()">
+        SOLICITUD RÁPIDA
       </button>
     </ion-item >
       <small class="bottom-border" *ngIf="usersServices.email != authEmail">Este paso no implica contratación, solo le preguntas al trabajador si está disponible para realizar el trabajo</small>

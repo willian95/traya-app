@@ -1,5 +1,5 @@
 page-home {
-  #pruebaFonts{
+  /*#pruebaFonts{
     font-family: "Myriad";
      font-size: 2rem;
      color: #795C9B;
@@ -65,6 +65,27 @@ h1 {
     margin: 0.4rem 0.2rem;
     padding: 0 1em;
     font-family: "Myriad";
-}
+}*/
+
+  .contact-btn{
+      margin-left: 10px;
+  }
+
+  .count-badge{
+      position: absolute;
+      z-index: 9;
+      right: 10px;
+      margin-top: 13px;
+  }
+
+
+  .toast-container{
+
+    background:black;
+  }
+
+  .toast-md .toast-message{
+    color: white;
+  }
 
 }

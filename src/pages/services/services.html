@@ -1,5 +1,5 @@
 <ion-toolbar >
-	<ion-searchbar [(ngModel)]="searchText" (ionInput)="search()" (ionFocus)="lookForSeachedWords()" (ionCancel)="onCancelSearch()" placeholder="Buscar" [showCancelButton]="true" cancelButtonText="close"></ion-searchbar>
+	<ion-searchbar [(ngModel)]="searchText" (ionInput)="search()" (ionFocus)="lookForSeachedWords()" (ionCancel)="onCancelSearch()" placeholder="¿Qué servicio necesitas?" [showCancelButton]="true" cancelButtonText="close"></ion-searchbar>
 	<!--<ion-icon *ngIf="isListShowed" (click)="hideWordsList()" name="close" style="float: right; margin-right: 20px; margin-top: -36px; font-size: 30px; z-index: 10012; position: absolute; right: 0;"></ion-icon>-->
   </ion-toolbar>
 
@@ -26,7 +26,7 @@
 	</ion-list>
 	<ion-list *ngIf="servicesArray != null">
 		<div *ngFor="let items of servicesSearch ; let i =index">
-			<button ion-item  (click)="viewUsers(items,i)" *ngIf="items.location_id == userLocationId || items.location_id == 0">
+			<button ion-item   *ngIf="items.location_id == userLocationId || items.location_id == 0" (click)="viewUsers(items,i)">
 				<ion-avatar item-start>
 					<img class="imgServices" [src]="items.logo" *ngIf="items.logo">
 					<div id="countBidders" *ngIf="items.usersPerLocality!=0">{{items.usersPerLocality}}</div>
@@ -34,6 +34,21 @@
 				<h2>{{items.name}}</h2>
 		  		<small>{{items.description}}</small>
 			</button>
+		</div>
+		<div>
+
+			<ion-grid>
+				<ion-row>
+					<ion-col col-8>
+						<p style="font-size: 12px;">¡Gracias por ser parte de la comunidad Traya!</p>
+					</ion-col>
+					<ion-col col-4>
+						<ion-icon style="font-size: 40px;" name="logo-instagram" (click)="openInstagram()"></ion-icon>
+						<ion-icon style="font-size: 40px; margin-left: 10px;" name="logo-facebook" (click)="openFacebook()"></ion-icon>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+
 		</div>
 	</ion-list>
 

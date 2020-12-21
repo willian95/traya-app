@@ -62,6 +62,7 @@ export class ServicesJobPage {
   originalServices:any
   originalServicesLength:any
   newServices:any
+  locations:any
   user_locality_id:any
   private timeoutId: number;
       descriptionCount:any;

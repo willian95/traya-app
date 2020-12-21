@@ -35,14 +35,17 @@ export class MyApp {
   image:any;
   token:any;
   tokenCode:any;
+  locations:any;
+  location:any;
   myRand:any;
   storage:any;
-  rol_id:any;
+  rol_id:any = 0;
   config:any
   showNotifications:any
   userimage:any
   lastImage:any
   showClaimButton:any = false
+  userLocalityName:any = "Teodelina"
   // hiring_id:any;
   text = '¡Descárgate Traya! es una App de Servicios…';
   textBody = 'te permite de manera rápida y sencilla conectarte con un profesional. \n'+
@@ -58,7 +61,7 @@ export class MyApp {
     this.appMenuItems = [];
     this.initializeApp();
     this.url=serviceUrl.getUrl();
-    this.fetchClaim()
+    
 
     this.storage = localStorage;
     this.validateHeaderMain=false;
@@ -69,6 +72,67 @@ export class MyApp {
 
   }
 
+  showModalLocation(){
+    this.fetchLocaltions()
+
+  }
+
+  fetchLocaltions(){
+
+    
+    this.httpClient.get(this.url+"/api/locations")
+    .subscribe((response:any) => {
+      this.locations = response.data
+  
+      let options = []
+      this.locations.forEach((data)=>{
+  
+        options.push({"type": "radio", "label": data.name, "value": data.id})
+  
+      })
+
+
+      console.log("modal locations Show")
+  
+      let alert = this.alertCtrl.create({
+        title: 'Selecciona una localidad',
+        inputs: options,
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'OK',
+            handler: (data) => {
+              if(data){
+                this.location = data
+                var locationChangeName = ""
+                this.locations.forEach((data) =>{
+
+                  if(this.location == data.id)
+                    locationChangeName = data.name
+
+                })
+
+                //console.log("locality_name", locationChangeName)
+                localStorage.setItem("user_locality_id", this.location)
+                localStorage.setItem("user_locality_name", locationChangeName)
+
+                this.events.publish("userLocationChanged")
+              }
+              // I NEED TO GET THE VALUE OF THE SELECTED RADIO BUTTON HERE
+            }
+          }
+        ]
+      });
+      alert.present();
+    })
+  
+  }
 
   tokenRefresh(){
       var headers = new HttpHeaders({
@@ -137,6 +201,8 @@ export class MyApp {
   viewServicesJobPage(){
     this.nav.push("ServicesJobPage")
   }
+
+  
 
   viewAboutTrayaPage(){
     if(this.rol_id == 1){
@@ -258,6 +324,20 @@ initializeApp() {
         this.getConfig()
         //this.validarMenu();
     })
+
+    this.events.subscribe('userLocationChanged',(res)=>{
+      //if(localStorage.getItem('token')==null){
+        this.userLocalityName = localStorage.getItem("user_locality_name")
+      //}
+      
+      //this.validarMenu();
+    })
+
+    this.events.subscribe('localityChange',(res)=>{
+      this.rol_id=res;
+      this.getConfig()
+      //this.validarMenu();
+    })
     
 
     this.events.subscribe('userLogged',(res)=>{
@@ -270,6 +350,7 @@ initializeApp() {
       this.rol_id = res.roles[0].id;
       //this.validarMenu();
       this.getConfig()
+      this.fetchClaim()
       this.validateHeaderMain=true;
     });
 
@@ -301,6 +382,8 @@ initializeApp() {
       this.myRand=this.random();
       this.name = res.user.name
       window.localStorage.setItem('user', this.name)
+      this.userLocalityName = localStorage.getItem("user_locality_name")
+      this.fetchClaim()
     })
 
      this.events.subscribe('userLogout',(res)=>{
@@ -392,8 +475,10 @@ initializeApp() {
     .subscribe((res:any)=> {
       this.appMenuItems=[];
       this.clearKeys();
+      this.showClaimButton = false
       this.events.publish('userLogout',res);
       this.nav.setRoot("HomePage");
+      
     },err => {
     } ); //subscribe
   }
@@ -702,7 +787,7 @@ initializeApp() {
   }
 
   fetchClaim(){
-
+    this.showClaimButton = false
     this.httpClient.get(this.url+"/api/claim-locality")
     .subscribe((response:any) => {
       
@@ -710,7 +795,7 @@ initializeApp() {
 
       response.locations.forEach((data) => {
 
-        if(data.location.id == userLocality){
+        if(data.location.id == userLocality && data.emails != null){
           this.showClaimButton = true
         }
 

@@ -24,6 +24,7 @@ export class HistoryHiringsPage {
 
   constructor(public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider) {
     this.url=serviceUrl.getUrl();
+    this.token = window.localStorage.getItem("tokenCode")
 
      /*this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
@@ -44,6 +45,7 @@ export class HistoryHiringsPage {
   notificationNumber:any;
   averageRatingInt:any;
   loading:any
+  token:any
 
     scheduleNotification(message,hiring_id) {
   this.localNotifications.schedule({
@@ -65,9 +67,16 @@ export class HistoryHiringsPage {
 
     this.user_id = localStorage.getItem('user_id');
     this.user_rol = localStorage.getItem('user_rol');
+    
     console.log(this.user_rol);
-    this.getHiringsActive();
-    this.getNotifications()
+    if(this.token){
+    
+      this.getHiringsActive();
+      this.getNotifications()
+    }else{
+      this.loading = false
+    }
+    
   }
 
    doRefresh(refresher) {
@@ -155,8 +164,11 @@ export class HistoryHiringsPage {
   }
 
   ionViewDidEnter(){
-    this.storeAction()
-    this.getHiringsActive()
+    if(this.token){
+      this.storeAction()
+      this.getHiringsActive()
+    }
+    
   }
 
   storeAction(){

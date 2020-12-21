@@ -47,6 +47,8 @@ import { Transfer } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
 
 //const config: SocketIoConfig = {url: "wss://traya-chat.sytes.net", options:{}}
@@ -96,6 +98,7 @@ const config: SocketIoConfig = {url: "wss://chat.traya.com.ar", options:{}}
     FileTransfer,
     LoginProvider,
     HelperProvider,
+    InAppBrowser,
     AppVersion,
     Geolocation,
     Push,

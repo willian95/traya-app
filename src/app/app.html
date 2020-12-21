@@ -3,7 +3,7 @@
     <ion-toolbar class="user-profile">
     <div id="header" [class.hide]="validateHeaderMain" padding>
         <img src="assets/imgs/logo_traya.png" class="logo2" alt="Traya"/>
-        <small>TRAYA</small>
+        
     </div>
       <ion-grid [class.hide]="!validateHeaderMain">
         <ion-row>
@@ -28,7 +28,7 @@
             </h2>
           </ion-col>
         </ion-row>
-
+        <p style="color: #fff" (click)="showModalLocation()"><ion-icon name="pin" style="margin-right: 10px;"></ion-icon>{{ userLocalityName }}</p>
         <ion-row no-padding class="other-data">
           <ion-col no-padding class="column">
             <button ion-button icon-left small full   menuClose (click)="viewProfilePage()" text-center>
@@ -46,8 +46,30 @@
 
       </ion-grid>
 
+      <ion-grid [class.hide]="validateHeaderMain" style="margin-top: -18px;">
+        <p style="color: #fff"><ion-icon name="pin" style="margin-right: 10px;"></ion-icon>{{ userLocalityName }}</p>
+        <p style="color: #fff; font-size: 15px;">Para acceder a Traya debes Iniciar Sesión con un usuario registrado, si aún no creaste tu usuario por favor regístrate con tus datos</p>
+        <ion-row no-padding class="other-data">
+          <ion-col no-padding class="column">
+            <button ion-button icon-left small full   menuClose (click)="viewLoginPage()" text-center>
+              <ion-icon name="contact"></ion-icon>
+              Iniciar sesión
+            </button>
+          </ion-col>
+          <ion-col no-padding class="column" style="margin-left: 3px;">
+            <button ion-button icon-left small full  menuClose  (click)="viewRegisterPage()">
+              <ion-icon name="log-out"></ion-icon>
+              Registrarse
+            </button>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+
     </ion-toolbar>
   </ion-header>
+
+  
 
   <ion-content color="primary">
 
@@ -57,7 +79,7 @@
         <span ion-text color="primary">{{menuItem.title}}</span><span class="side-menu-badge" *ngIf="menuItem.badge == 0">Off</span><span class="side-menu-badge" *ngIf="menuItem.badge == 1">On</span>
       </button>
 
-         <button ion-item menuClose class="text-1x"  (click)="viewLoginPage()" [class.hide]="validateHeaderMain" *ngIf="rol_id < 3">
+         <!--<button ion-item menuClose class="text-1x"  (click)="viewLoginPage()" [class.hide]="validateHeaderMain" *ngIf="rol_id < 3">
           <ion-icon item-left name="log-in" color="primary"></ion-icon>
           <span ion-text color="primary">Conectarse</span>
         </button>
@@ -65,7 +87,7 @@
          <button ion-item menuClose class="text-1x"  (click)="viewRegisterPage()" [class.hide]="validateHeaderMain" *ngIf="rol_id < 3">
           <ion-icon item-left name="contact" color="primary"></ion-icon>
           <span ion-text color="primary">Registrarse</span>
-        </button>
+        </button>-->
 
         <button ion-item menuClose class="text-1x"  (click)="viewAboutTrayaPage()" *ngIf="rol_id < 3">
           <ion-icon item-left name="information-circle" color="primary"></ion-icon>
@@ -90,9 +112,16 @@
       
       <div style="float: right;
       margin-top: 2rem;
-      color:#999;
+      color: #999;
       margin-right: 20px;
-      font-size: 30px;">
+      font-size: 20px;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      padding: 13px;
+      -webkit-box-shadow: 4px 8px 23px -3px rgba(0,0,0,0.5);
+-moz-box-shadow: 4px 8px 23px -3px rgba(0,0,0,0.5);
+box-shadow: 4px 8px 23px -3px rgba(0,0,0,0.5);">
         <ion-icon name="share" (click)="shareApplication()"></ion-icon>
       </div>
 

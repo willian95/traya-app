@@ -66,10 +66,19 @@ export class ContactPage {
       if(this.name=="" || this.name==null){
        this.message = "Por favor ingrese su nombre.";
        this.errorAlertToast1(this.message);
-      }else if(this.comments=="" || this.comments==null){
+      }
+      
+      else if(this.email=="" || this.email==null){
+        this.message="Por favor ingrese su correo electrónico.";
+        this.errorAlertToast1(this.message);
+      }
+
+      else if(this.comments=="" || this.comments==null){
         this.message="Por favor ingrese su comentario.";
         this.errorAlertToast1(this.message);
-      }else{
+      }
+      
+      else{
         this.loading.present();
         return  this.httpClient.post(this.url+"/api/contact", {"name":this.name,"email":this.email,"message":this.comments})
         .pipe(

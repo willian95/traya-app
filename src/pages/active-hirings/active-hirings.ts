@@ -20,8 +20,10 @@ var interval = null
 export class ActiveHiringsPage {
 
   url:any;
+  token:any
   constructor(public toastController: ToastController,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private serviceUrl:ServiceUrlProvider,private pusherNotify: PusherProvider,private plt: Platform,private localNotifications: LocalNotifications,private alertCtrl: AlertController, public modalCtrl: ModalController, public menu: MenuController) {
     this.url=serviceUrl.getUrl();
+    this.token = window.localStorage.getItem("tokenCode")
  this.storage = localStorage;
  console.log(localStorage.getItem('valueServicesBidder'));
 
@@ -300,12 +302,16 @@ showHistory(){
   }
 
   ionViewDidEnter(){
-    this.storeAction()
-    if(localStorage.getItem("active_hirings_worker") == null){
-      this.getHiringsActive();
-    }else{
-      this.hiringsArray= JSON.parse(localStorage.getItem("active_hirings_worker"))
+
+    if(this.token){
+      this.storeAction()
+      if(localStorage.getItem("active_hirings_worker") == null){
+        this.getHiringsActive();
+      }else{
+        this.hiringsArray= JSON.parse(localStorage.getItem("active_hirings_worker"))
+      }
     }
+    
     //this.checkContactReview()
   }
 

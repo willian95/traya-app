@@ -1,0 +1,36 @@
+<!--
+  Generated template for the QuickRequestPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Solicitud Rápida</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closeModal()">
+          <ion-icon item-right name="ios-close-outline"></ion-icon>
+      </button>
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item>
+    <ion-label stacked>Solicitud</ion-label>
+    <ion-textarea [(ngModel)]="comments" placeholder="Explícale al trabajador tu necesidad, cuéntale en detalle que necesitas de su servicio y/o comercio.
+  Envíar una solicitud rápida te permitirá ver los estados actualizados del servicio en la solapa de solicitudes y calificar al trabajador una vez terminado su trabajo"></ion-textarea>
+  </ion-item>
+  
+
+  <p style="text-align: center;">
+    <button ion-button (click)="createHiring()">¿PODÉS HACERLO?</button>
+  </p>
+
+  <small class="bottom-border">Este paso no implica contratación, solo le preguntas al trabajador si está disponible para realizar el trabajo</small>
+
+</ion-content>

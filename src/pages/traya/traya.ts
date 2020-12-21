@@ -30,6 +30,7 @@ export class TrayaPage {
   constructor(private statusBar: StatusBar, public loadingController: LoadingController, private menu: MenuController,public modalCtrl: ModalController,public events: Events,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,private serviceUrl:ServiceUrlProvider) {
     this.hiringCount = 0;
     this.url=serviceUrl.getUrl();
+    this.token = window.localStorage.getItem("tokenCode")
       
     this.events.subscribe('countHirings', (data) =>{
       this.countActiveHirings()
@@ -59,7 +60,7 @@ export class TrayaPage {
           localStorage.removeItem("notificationId")
         }
 
-        
+        this.token = window.localStorage.getItem("token")
         
   
       })
@@ -170,46 +171,50 @@ checkChatId(){
 
  changeUserType(){
 
-    var data={
-      rol_id:'',
-      user_id:'',
-      token:'',
-    };
-
-    var headers = new Headers();
-    headers.append("Accept", 'application/json');
-    headers.append('Content-Type', 'application/json');
-    this.token = localStorage.getItem('tokenCode');
-    this.user_id = localStorage.getItem('user_id');
-    
-    var rol_id = localStorage.getItem('user_rol');
-    
-    //if(rol_id == "1"){
-      data.rol_id = "2"
-    //}else{
-      //data.rol_id = "1"
-    //}
-
-    data.token=this.token;
-          //return  this.httpClient.post(this.url+"/api/auth/user/update", {"password":this.password,"image":this.userimage,"location_id":this.location_id,"domicile":this.domicile,"name":this.name,"email":this.email,"phone":this.phone,"rol_id":this.rol_id,"description":this.description,"user_id":this.user_id,"token":this.token,'services':this.services_id})
-    return  this.httpClient.post(this.url+"/api/auth/user/update", data)
-    .pipe()
-    .subscribe((res:any)=> {
-      console.log(res);
-        
-      localStorage.setItem('user_rol', data.rol_id);
-        this.events.publish('userImage',res);
-        this.events.publish('userRol',data.rol_id);
+    if(this.token){
+      var data={
+        rol_id:'',
+        user_id:'',
+        token:'',
+      };
+  
+      var headers = new Headers();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json');
+      this.token = localStorage.getItem('tokenCode');
+      this.user_id = localStorage.getItem('user_id');
       
+      var rol_id = localStorage.getItem('user_rol');
       
-      // if(this.rol_id != this.old_rol_id){
-      //  this.navCtrl.setRoot(LoginPage);
+      //if(rol_id == "1"){
+        data.rol_id = "2"
+      //}else{
+        //data.rol_id = "1"
       //}
-        if (rol_id == "1") {
-          this.navCtrl.setRoot("TrayaBidderPage"); // nav*/
-        }
-
-      })
+  
+      data.token=this.token;
+            //return  this.httpClient.post(this.url+"/api/auth/user/update", {"password":this.password,"image":this.userimage,"location_id":this.location_id,"domicile":this.domicile,"name":this.name,"email":this.email,"phone":this.phone,"rol_id":this.rol_id,"description":this.description,"user_id":this.user_id,"token":this.token,'services':this.services_id})
+      return  this.httpClient.post(this.url+"/api/auth/user/update", data)
+      .pipe()
+      .subscribe((res:any)=> {
+        console.log(res);
+          
+        localStorage.setItem('user_rol', data.rol_id);
+          this.events.publish('userImage',res);
+          this.events.publish('userRol',data.rol_id);
+        
+        
+        // if(this.rol_id != this.old_rol_id){
+        //  this.navCtrl.setRoot(LoginPage);
+        //}
+          if (rol_id == "1") {
+            this.navCtrl.setRoot("TrayaBidderPage"); // nav*/
+          }
+  
+        })
+    }else{
+      this.navCtrl.setRoot("TrayaBidderPage");
+    }
  }
 
  getMode(){
@@ -252,6 +257,7 @@ checkContactReview(){
 }
 
 showConfirm() {
+  console.log("hey")
   const confirm = this.alertCtrl.create({
     message: '¿Desea cambiar de modo Usuario a modo Trabajador? ',
     buttons: [
@@ -264,6 +270,7 @@ showConfirm() {
       {
         text: 'Sí',
         handler: () => {
+          
           this.changeUserType()
         }
       }

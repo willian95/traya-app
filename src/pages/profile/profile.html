@@ -34,9 +34,16 @@
         </ion-refresher>
       </div>
 
-      <div align="right">
+      <div align="right" style="margin-top: -70px;">
        <input type="file" id="image-change-app2" style="display:none" accept="image/*" (change)="convertBase6422($event)"/>
-       <button id="plus" *ngIf="rol_id != 3"  for="file" ion-button icon-only (click)="chooseImageSource()"><ion-icon ios="ios-camera" md="md-camera"></ion-icon></button>
+       <button id="plus" *ngIf="rol_id != 3"  for="file" ion-button (click)="chooseImageSource()" style="right: 30%;
+       font-size: 10px;
+       bottom: 0px;">
+         <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+        </button>
+       <!--<button *ngIf="rol_id != 3" id="viewProfilePage" ion-button  (click)="chooseImageSource()" menuClose>
+        <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+      </button>-->
      </div>
      <ion-item >
       <span color="dark">

@@ -25,7 +25,7 @@ export class HiringsPage {
   url:any;
   constructor(public loadingController: LoadingController,public toastController: ToastController,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,private alertCtrl: AlertController,private plt: Platform,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public events: Events, private serviceUrl:ServiceUrlProvider, public modalCtrl: ModalController, public menu: MenuController) {
     
-    console.log("nav", this.navCtrl)
+    this.token = window.localStorage.getItem("tokenCode")
 
     this.url=serviceUrl.getUrl();
     // LOCALNOTIFACTION
@@ -103,7 +103,7 @@ checkNotificationId(){
 }
 
 changeUserType(){
-
+  
   var data={
     rol_id:'',
     user_id:'',
@@ -155,8 +155,11 @@ doRefresh(refresher) {
 }
 
 refreshButton(){
-  window.localStorage.removeItem("traya_hirings")
-  this.getHirings();
+  if(this.token){
+    window.localStorage.removeItem("traya_hirings")
+    this.getHirings();
+  }
+  
 }
 
 
@@ -187,17 +190,23 @@ ionViewDidEnter(){
   this.storeAction()
   this.checkContactReview()
 
-  if(localStorage.getItem("notificationId") == null){
+  if(this.token){
+
+    if(localStorage.getItem("notificationId") == null){
       
-    if(window.localStorage.getItem("traya_hirings") == null){
-     
-      this.getHirings()
-    }else{
-     
-      this.hiringsArray = JSON.parse(window.localStorage.getItem("traya_hirings"))
+      if(window.localStorage.getItem("traya_hirings") == null){
+       
+        this.getHirings()
+      }else{
+       
+        this.hiringsArray = JSON.parse(window.localStorage.getItem("traya_hirings"))
+      }
+      
     }
-    
+
   }
+
+  
   
 }
 

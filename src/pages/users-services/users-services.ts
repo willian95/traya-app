@@ -212,6 +212,24 @@ export class UsersServicesPage {
 			});
 		}
 
+		showContracts(amount){
+
+			if(amount == 1){
+				let alert = this.alertCtrl.create({
+					message: amount+" contratación al trabajador"
+				});
+				alert.present();
+			}else{
+
+				let alert = this.alertCtrl.create({
+					message: amount+" contrataciones al trabajador"
+				});
+				alert.present();
+
+			}
+
+		}
+
 		 async errorAlert(message) {
 		    const toast = await this.toastController.create({
 		      message: message,
