@@ -252,7 +252,8 @@ export class ServicesPage {
     
       this.loading.present();
       this.location = window.localStorage.getItem("user_locality_id");
-    //this.httpClient.get(this.url+'/api/services')
+      console.log("noAuthLocation", location)
+
       this.httpClient.get(this.url+"/api/services?"+'filters={"location_id":'+this.location+'}')
     .pipe()
       .subscribe((res:any)=> {
@@ -338,9 +339,6 @@ export class ServicesPage {
         options.push({"type": "radio", "label": data.name, "value": data.id})
   
       })
-
-
-      console.log("modal locations Show")
   
       let alert = this.alertCtrl.create({
         title: 'Selecciona una localidad',
@@ -358,7 +356,7 @@ export class ServicesPage {
             handler: (data) => {
               
              if(data){
-              console.log("data", data);
+              
               this.location = data
               var locationChangeName = ""
               this.locations.forEach((data) =>{
@@ -370,6 +368,7 @@ export class ServicesPage {
 
               //console.log("locality_name", locationChangeName)
               localStorage.setItem("user_locality_name", locationChangeName)
+              localStorage.setItem("user_locality_id", this.location)
 
               this.events.publish("userLocationChanged")
 

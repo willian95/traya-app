@@ -124,7 +124,10 @@ export class LoginPage {
         localStorage.setItem('user_locality_id',user_locality_id);
         localStorage.setItem('user_locality_name',user_locality_name);
         localStorage.setItem('is_register_completed', res.user.is_register_completed)
-       
+        
+        this.events.publish('userName', res);
+        this.events.publish("userLocationChanged")
+
          if(res.roles[0].id ==3 || res.roles[0].id ==4){
           this.navCtrl.setRoot("HomeAdminPage");
           this.events.publish('userLogged',res);
@@ -388,12 +391,18 @@ export class LoginPage {
         localStorage.setItem('user_domicile',user_domicile);
         localStorage.setItem('user_locality_id',user_locality_id);
         localStorage.setItem('user_locality_name',location_name);
-       
+        localStorage.removeItem("services_array")
+
+        this.events.publish('userName', res);
+        this.events.publish("userLocationChanged")
+
          if(res.roles[0].id ==3 || res.roles[0].id ==4){
           this.navCtrl.setRoot("HomeAdminPage");
           this.events.publish('userLogged',res);
-          
+          this.events.publish('userName');
+          this.events.publish("userLocationChanged")
         }
+        
         this.getMode(res,valueServices,valueServicesBidder);
 
       },err => {

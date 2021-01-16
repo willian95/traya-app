@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController,Platform,ToastController,MenuController,ModalController, ViewController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController,Platform,ToastController,MenuController,ModalController, ViewController, ActionSheetController} from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { NotificationPage } from '../notification/notification';
 import { ServiceUrlProvider } from '../../providers/service-url/service-url';
@@ -7,9 +7,11 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
 import { ActiveHiringsPage } from '../active-hirings/active-hirings';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-   import { TrayaPage } from '../traya/traya';
-    import { TrayaBidderPage } from '../traya-bidder/traya-bidder';
-    import { MaintenancePage } from '../maintenance/maintenance';
+import { TrayaPage } from '../traya/traya';
+import { TrayaBidderPage } from '../traya-bidder/traya-bidder';
+import { MaintenancePage } from '../maintenance/maintenance';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Events } from 'ionic-angular';
     
 
 // import * as moment from 'moment';
@@ -22,14 +24,16 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 export class ServicesJobPage {
 
   url:any;
+  imagesCount:any = 0
 
-  constructor(public modalCtrl: ModalController,private menu: MenuController,public toastController: ToastController,private plt: Platform,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,private serviceUrl:ServiceUrlProvider, public viewCtrl: ViewController) {
+  constructor(public modalCtrl: ModalController,private menu: MenuController,public toastController: ToastController,private plt: Platform,private pusherNotify: PusherProvider,private localNotifications: LocalNotifications,public navCtrl: NavController, public navParams: NavParams,public httpClient: HttpClient,public loadingController: LoadingController,private alertCtrl: AlertController,private serviceUrl:ServiceUrlProvider, public viewCtrl: ViewController, public actionSheetController: ActionSheetController, private camera: Camera, public events: Events) {
     this.newServices = []
     /*this.loading = this.loadingController.create({
              content: 'Cargando por favor espere...'
           });*/
     this.url=serviceUrl.getUrl();
-
+    this.images = []
+    this.fetchImages()
       /*this.plt.ready().then((readySource) => {
     this.localNotifications.on('click', (notification, state) => {
       let json = JSON.parse(notification.data);
@@ -44,6 +48,7 @@ export class ServicesJobPage {
 
   }
   token:any;
+  images:any;
   name:any;
   email:any;
   phone:any;
@@ -64,6 +69,7 @@ export class ServicesJobPage {
   newServices:any
   locations:any
   user_locality_id:any
+  secaondaryImage:any
   private timeoutId: number;
       descriptionCount:any;
 
@@ -420,5 +426,150 @@ async presentAlert() {
       }
 
     }
+
+
+    chooseImageSource() {
+      const actionSheet = this.actionSheetController.create({
+        //title: 'Modify your albu',
+        buttons: [
+          {
+            text: 'Cámara',
+            handler: () => {
+              this.takePicture(this.camera.PictureSourceType.CAMERA)
+            }
+          },{
+            text: 'Archivos',
+            handler: () => {
+              this.openGallery()
+              //document.getElementById('image-change-app').click();
+            }
+          }
+        ]
+      });
+      actionSheet.present();
+    }
+
+
+    public takePicture(sourceType) {
+      var options = {
+        quality: 40,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE
+      };
+      this.camera.getPicture(options).then((imageData) => {
+        this.secaondaryImage  = 'data:image/jpeg;base64,' + imageData;
+        this.uploadImage()
+      }, (err) => {
+        console.log(err)
+      });
+    }
+  
+    openGallery(){
+  
+      const options: CameraOptions = {
+        quality: 40,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM
+      }
+  
+      this.camera.getPicture(options).then((imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64:
+        this.secaondaryImage  = 'data:image/jpeg;base64,' + imageData;
+        this.uploadImage()
+      }, (err) => {
+        // Handle error
+      })
+    }
+
+    uploadImage(){
+    
+      var loading = this.loadingController.create({
+        content: 'Por favor espere...'
+      });
+      loading.present();
+      var headers = new Headers();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json');
+      this.token = localStorage.getItem('tokenCode');
+      //let userId = localStorage.getItem('user_id');
+
+      return  this.httpClient.post(this.url+"/api/user/secondary-image/store", {image: this.secaondaryImage, token: this.token})
+      .pipe()
+      .subscribe((res:any)=> {
+     
+        loading.dismiss();
+        this.userimage = null
+        this.errorAlert(res.msg);
+        this.fetchImages()
+        //document.getElementById('image-change-app').value = null;
+
+        },err => {
+          loading.dismiss();
+          console.log(err.error);
+          this.errorAlert("Ha ocurrido un problema");
+        }
+      ); //subscribe
+  }
+
+  fetchImages(){
+    var loading = this.loadingController.create({
+      content: 'Por favor espere...'
+    });
+    loading.present();
+
+    let headers = new HttpHeaders({
+      Authorization: localStorage.getItem('token'),
+    });
+
+    this.httpClient.get(this.url+"/api/user/secondary-image/fetch",  {headers})
+      .pipe()
+      .subscribe((res:any)=> {
+     
+        loading.dismiss();
+        this.images = res.images
+
+        },err => {
+          loading.dismiss();
+          console.log(err.error);
+          this.errorAlert("Ha ocurrido un problema");
+        }
+      ); 
+
+  }
+
+  deleteImage(id){
+    
+    var loading = this.loadingController.create({
+      content: 'Por favor espere...'
+    });
+    loading.present();
+    var headers = new Headers();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json');
+    this.token = localStorage.getItem('tokenCode');
+    //let userId = localStorage.getItem('user_id');
+
+    return  this.httpClient.post(this.url+"/api/user/secondary-image/delete", {id: id, token: this.token})
+    .pipe()
+    .subscribe((res:any)=> {
+   
+      loading.dismiss();
+      this.userimage = null
+      this.errorAlert(res.msg);
+      this.fetchImages()
+      //document.getElementById('image-change-app').value = null;
+
+      },err => {
+        loading.dismiss();
+        console.log(err.error);
+        this.errorAlert("Ha ocurrido un problema");
+      }
+    ); //subscribe
+
+  }
 
 }

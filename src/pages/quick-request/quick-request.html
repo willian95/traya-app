@@ -20,10 +20,19 @@
 
 <ion-content padding>
 
-  <ion-item>
+ 
+
+  <ion-item >
     <ion-label stacked>Solicitud</ion-label>
-    <ion-textarea [(ngModel)]="comments" placeholder="Explícale al trabajador tu necesidad, cuéntale en detalle que necesitas de su servicio y/o comercio.
-  Envíar una solicitud rápida te permitirá ver los estados actualizados del servicio en la solapa de solicitudes y calificar al trabajador una vez terminado su trabajo"></ion-textarea>
+    <ion-textarea rows="10" [(ngModel)]="comments" placeholder="Explícale al trabajador tu necesidad, cuéntale en detalle que necesitas de su servicio y/o comercio.\nEnvíar una solicitud rápida te permitirá ver los estados actualizados del servicio en la solapa de solicitudes y calificar al trabajador una vez terminado su trabajo"></ion-textarea>
+  </ion-item>
+
+  <ion-item *ngIf="comingFrom == 'favorite'">
+   
+    <ion-label>Servicios</ion-label>
+    <ion-select [(ngModel)]="services_id">
+      <ion-option value="{{ service.service.id }}" *ngFor="let service of userServices.services">{{ service.service.name }}</ion-option>
+    </ion-select>
   </ion-item>
   
 

@@ -28,7 +28,7 @@
             </h2>
           </ion-col>
         </ion-row>
-        <p style="color: #fff" (click)="showModalLocation()"><ion-icon name="pin" style="margin-right: 10px;"></ion-icon>{{ userLocalityName }}</p>
+        <p style="color: #fff"><ion-icon name="pin" style="margin-right: 10px;"></ion-icon>{{ userLocalityName }}</p>
         <ion-row no-padding class="other-data">
           <ion-col no-padding class="column">
             <button ion-button icon-left small full   menuClose (click)="viewProfilePage()" text-center>
@@ -47,7 +47,7 @@
       </ion-grid>
 
       <ion-grid [class.hide]="validateHeaderMain" style="margin-top: -18px;">
-        <p style="color: #fff"><ion-icon name="pin" style="margin-right: 10px;"></ion-icon>{{ userLocalityName }}</p>
+        <p style="color: #fff" (click)="showModalLocation()"><ion-icon name="pin" style="margin-right: 10px;"></ion-icon>{{ userLocalityName }}</p>
         <p style="color: #fff; font-size: 15px;">Para acceder a Traya debes Iniciar Sesión con un usuario registrado, si aún no creaste tu usuario por favor regístrate con tus datos</p>
         <ion-row no-padding class="other-data">
           <ion-col no-padding class="column">

@@ -69,6 +69,7 @@ export class MyApp {
     this.getConfig()
 
     this.pushSetup();
+    this.userLocalityName = localStorage.getItem("user_locality_name")
 
   }
 
@@ -351,6 +352,7 @@ initializeApp() {
       //this.validarMenu();
       this.getConfig()
       this.fetchClaim()
+      
       this.validateHeaderMain=true;
     });
 
@@ -360,6 +362,7 @@ initializeApp() {
        let rand = Math.random()
        this.image = ""
       this.image = res.image+"?"+rand;
+    
       window.localStorage.setItem('userimage', this.image)
     })
 
@@ -732,21 +735,7 @@ initializeApp() {
     this.camera.getPicture(options).then((imageData) => {
       this.userimage  = 'data:image/jpeg;base64,' + imageData;
       this.updateProfileImage()
-      /*if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        this.filePath.resolveNativePath(imagePath)
-          .then(filePath => {
-            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-            
-          });
-      } else {
-        var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        console.log("test-take-picture", currentName, correctPath)
-        this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-        //this.uploadImage()
-      }*/
+
     }, (err) => {
       console.log(err)
     });
@@ -792,11 +781,12 @@ initializeApp() {
     .subscribe((response:any) => {
       
       var userLocality = window.localStorage.getItem("user_locality_id")
-
+      console.log("fetchClaim", response, userLocality)
       response.locations.forEach((data) => {
 
-        if(data.location.id == userLocality && data.emails != null){
+        if(data.location.id == userLocality && data.emails != null && data.active == 1){
           this.showClaimButton = true
+          
         }
 
       })

@@ -19,9 +19,25 @@
 
 
 <ion-content padding>
+
   <div align="center">
     <img class="profile-image" [src]="userimage" *ngIf="userimage">
   </div>
+
+  <div padding *ngIf="images.length < 5">
+    <button ion-button full (click)="chooseImageSource()">Añadir imagenes</button>
+  </div>
+
+
+  <ion-row *ngFor="let image of images;">
+    <ion-col col-6>
+      <img [src]="image.image" alt="">
+    </ion-col>
+    <ion-col col-2 offset-2>
+      <button ion-button (click)="deleteImage(image.id)">X</button>
+    </ion-col>
+  </ion-row>
+
   <ion-item>
     <ion-label floating>Nombre</ion-label>
     <ion-input type="text" [(ngModel)]="name" name="name"  readonly></ion-input>

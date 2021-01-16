@@ -3,7 +3,11 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <span style="text-transform: uppercase; color: #b0428f; font-size: 14px; line-height: 48px; font-weight: bold;">{{name}}</span>
+    <span style="text-transform: uppercase;
+    color: #b0428f;
+    font-size: 14px;
+    line-height: 48px;
+    font-weight: bold;">Perfil</span>
     <ion-buttons end *ngIf="user_id != bidder_id">
       <button ion-button (click)="storeFavorite()" *ngIf="favoriteCheck == false"><ion-icon ios="ios-heart-outline" md="md-heart-outline"></ion-icon></button>
       <button ion-button (click)="deleteFavorite()" *ngIf="favoriteCheck == true"><ion-icon ios="ios-heart" md="md-heart"></ion-icon></button>
@@ -54,6 +58,19 @@
         <p *ngIf="description ==null || description ==''">El trabajador no ha descrito aún su trabajo</p>
       </ion-label>
     </ion-item>
+
+    <ion-item>
+      
+      <ion-row>
+        <ion-col *ngFor="let secondaryImage of secondaryImages; let i = index;">
+          <img  [src]="secondaryImage.image" alt="" (click)="openImageSliderModal(i)">
+        </ion-col>
+      </ion-row>
+      
+
+    </ion-item>
+
+
     <ion-row *ngIf="usersServices.email != authEmail">
       <ion-col width-30 *ngIf="usersServices.email != authEmail">
         <button ion-button full (click)="callNow()">

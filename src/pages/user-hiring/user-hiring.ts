@@ -12,6 +12,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PusherProvider } from '../../providers/pusher/pusher';
 import { HiringsPage } from '../hirings/hirings';
 import { SuperTabsController } from 'ionic2-super-tabs';
+
 @IonicPage()
 @Component({
   selector: 'page-user-hiring',
@@ -26,21 +27,10 @@ export class UserHiringPage {
     
     this.comingFrom = navParams.get("comingFrom")
     console.log("test-comingFrom", this.comingFrom)
-
+    
     this.loading = this.loadingController.create({content: 'Por favor espere...'});
     this.url=serviceUrl.getUrl();
-    // LOCALNOTIFACTION
-    /*this.plt.ready().then((readySource) => {
-      this.localNotifications.on('click', (notification, state) => {
-        let json = JSON.parse(notification.data);
-
-        let alert = alertCtrl.create({
-          title: notification.title,
-          subTitle: json.mydata
-        });
-        alert.present();
-      })
-    });*/
+    this.fetchImagesByUser(this.usersServices.id)
 
   }
   serviceFavorite:any
@@ -65,6 +55,7 @@ export class UserHiringPage {
   authEmail:any;
   rol_id:any
   authId:any
+  secondaryImages:any = []
   favoriteCheck:any = false
   
 
@@ -418,9 +409,6 @@ export class UserHiringPage {
 
   }
 
-
-  
-
   openChat(username, userimage, bidder_id, from){
     this.navCtrl.push("ChatPage", {username: username,userimage:userimage, bidder_id: bidder_id, from: from})
   }
@@ -431,8 +419,29 @@ export class UserHiringPage {
     if(this.comingFrom != "favorite")
       this.services_id = localStorage.getItem('services_id');
 
-    const quickRequestModal = this.modalCtrl.create("QuickRequestPage", { "bidder_id":this.bidder_id,"service_id":this.services_id,"token":this.tokenCode });
+    const quickRequestModal = this.modalCtrl.create("QuickRequestPage", { "bidder_id":this.bidder_id,"service_id":this.services_id,"token":this.tokenCode, "comingFrom":  this.comingFrom, "userServices": this.usersServices, "authEmail": this.authEmail});
+    quickRequestModal.onDidDismiss(data => {
+      if(window.localStorage.getItem("quickrequestsent") != null){
+        window.localStorage.removeItem("quickrequestsent")
+        this.superTabsCtrl.slideTo(1);
+      }
+    });
     quickRequestModal.present();
+
+  }
+
+  openImageSliderModal(index){
+    const imageSliderModal = this.modalCtrl.create("ImageSliderModalPage",{"secondaryImages": this.secondaryImages, "index": index})
+    imageSliderModal.present()
+  }
+
+  fetchImagesByUser(id){
+
+    this.httpClient.get(this.url+"/api/user/secondary-image/fetch-by-user/"+id).pipe().subscribe((res:any)=> {
+
+      this.secondaryImages = res.images
+
+    })
 
   }
 

@@ -112,20 +112,27 @@ ionViewDidEnter(){
 
 
   getNotifications(){
-  this.loading.present();
 
-    let worker = false
-    if(this.rol_id == 2){
-      worker = true
+    if(window.localStorage.getItem("token")!= null){
+
+      this.loading.present();
+
+      let worker = false
+      if(this.rol_id == 2){
+        worker = true
+      }
+
+      this.httpClient.get(this.url+"/api/notification/"+this.user_id+"/is_worker/"+worker+'?filters={"read":0}')
+      .pipe()
+      .subscribe((res:any)=> {
+        console.log(res.data);
+        this.loading.dismiss();
+        this.notificationArray=res.data;
+      });
+
     }
 
-    this.httpClient.get(this.url+"/api/notification/"+this.user_id+"/is_worker/"+worker+'?filters={"read":0}')
-    .pipe()
-    .subscribe((res:any)=> {
-      console.log(res.data);
-       this.loading.dismiss();
-      this.notificationArray=res.data;
-    });
+  
   }
 
   viewDetails(items){
