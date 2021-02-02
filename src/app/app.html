@@ -22,13 +22,18 @@
 
           </ion-col>
           <ion-col col-12>
-            <h2 ion-text class="no-margin bold text-white" style="margin-top: -20px;text-align: center; margin-bottom: 10px;">
+            <h2 ion-text class="no-margin bold text-white" style="margin-top: -20px;text-align: center; margin-bottom: 10px;" *ngIf="rol_id != 3">
+              <!-- {{username | async}} -->
+              {{name}}
+            </h2>
+
+            <h2 ion-text class="no-margin bold text-white" style="margin-top: 0px;text-align: center; margin-bottom: 10px;" *ngIf="rol_id == 3">
               <!-- {{username | async}} -->
               {{name}}
             </h2>
           </ion-col>
         </ion-row>
-        <p style="color: #fff"><ion-icon name="pin" style="margin-right: 10px;"></ion-icon>{{ userLocalityName }}</p>
+        <p style="color: #fff" (click)="showAuthModalLocation()" *ngIf="rol_id < 3"><ion-icon name="pin" style="margin-right: 10px;"></ion-icon>{{ userLocalityName }}</p>
         <ion-row no-padding class="other-data">
           <ion-col no-padding class="column">
             <button ion-button icon-left small full   menuClose (click)="viewProfilePage()" text-center>
@@ -79,16 +84,6 @@
         <span ion-text color="primary">{{menuItem.title}}</span><span class="side-menu-badge" *ngIf="menuItem.badge == 0">Off</span><span class="side-menu-badge" *ngIf="menuItem.badge == 1">On</span>
       </button>
 
-         <!--<button ion-item menuClose class="text-1x"  (click)="viewLoginPage()" [class.hide]="validateHeaderMain" *ngIf="rol_id < 3">
-          <ion-icon item-left name="log-in" color="primary"></ion-icon>
-          <span ion-text color="primary">Conectarse</span>
-        </button>
-
-         <button ion-item menuClose class="text-1x"  (click)="viewRegisterPage()" [class.hide]="validateHeaderMain" *ngIf="rol_id < 3">
-          <ion-icon item-left name="contact" color="primary"></ion-icon>
-          <span ion-text color="primary">Registrarse</span>
-        </button>-->
-
         <button ion-item menuClose class="text-1x"  (click)="viewAboutTrayaPage()" *ngIf="rol_id < 3">
           <ion-icon item-left name="information-circle" color="primary"></ion-icon>
           <span ion-text color="primary">Acerca de TRAYA</span>
@@ -106,7 +101,7 @@
 
         
        
-      <ion-item *ngIf = "showClaimButton">
+      <ion-item *ngIf = "showClaimButton && rol_id < 3">
         <button id="share"ion-button menuClose full (click)="viewClaims()"><ion-icon item-left name="information-circle" color="light"></ion-icon> Línea de reclamos</button>
       </ion-item>
       

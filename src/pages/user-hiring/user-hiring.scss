@@ -1,5 +1,14 @@
 page-user-hiring {
 
+  .pins{
+    column-count:3;
+  }
+
+  .pin{
+    display:inline-block;
+    margin: 0 2px 10px;
+    padding: 5px;
+  }
 
   .user-photo{
     padding: 20px;
@@ -150,6 +159,58 @@ small {
 .bottom-border{
   padding-bottom: 18px;
   border-bottom: 1px solid #dedede;
+}
+
+.masonry { /* Masonry container */
+  column-count: 4;
+  column-gap: 1em;
+}
+
+.item { /* Masonry bricks or child elements */
+  background-color: #eee;
+  display: inline-block;
+  margin: 0 0 1em;
+  width: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+/* The Masonry Container */
+.masonry {
+  margin: 1.5em auto;
+  max-width: 768px;
+  column-gap: 1.5em;
+}
+
+/* The Masonry Brick */
+.item {
+  background: #fff;
+  margin: 0 0 1.5em;
+}
+
+/* Masonry on large screens */
+@media only screen and (min-width: 1024px) {
+  .masonry {
+    column-count: 4;
+  }
+}
+
+/* Masonry on medium-sized screens */
+@media only screen and (max-width: 1023px) and (min-width: 768px) {
+  .masonry {
+    column-count: 3;
+  }
+}
+
+/* Masonry on small screens */
+@media only screen and (max-width: 767px) and (min-width: 120px) {
+  .masonry {
+    column-count: 4;
+  }
 }
 
 }

@@ -33,6 +33,7 @@ export class FavoriteTabsPage {
     this.url=serviceUrl.getUrl();
 
     this.countActiveHirings()
+    this.token = window.localStorage.getItem("tokenCode")
 
     this.events.subscribe('countHirings', (data) =>{
       this.countActiveHirings()
@@ -82,6 +83,7 @@ export class FavoriteTabsPage {
   }
 
   showConfirm() {
+    console.log("hey")
     const confirm = this.alertCtrl.create({
       message: '¿Desea cambiar de modo Usuario a modo Trabajador? ',
       buttons: [
@@ -94,6 +96,7 @@ export class FavoriteTabsPage {
         {
           text: 'Sí',
           handler: () => {
+            
             this.changeUserType()
           }
         }
@@ -145,10 +148,7 @@ export class FavoriteTabsPage {
           }
   
         })
-    }else{
-      this.navCtrl.setRoot("TrayaBidderPage");
     }
-
  }
  
 

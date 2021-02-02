@@ -59,18 +59,19 @@
       </ion-label>
     </ion-item>
 
-    <ion-item>
+    <ion-row>
+      <!--<ion-col col-4 *ngFor="let secondaryImage of secondaryImages; let i = index;" style="height: 80px; overflow-y: hidden;">
+        
+      </ion-col>-->
+
+      <div class="masonry">
       
-      <ion-row>
-        <ion-col *ngFor="let secondaryImage of secondaryImages; let i = index;">
-          <img  [src]="secondaryImage.image" alt="" (click)="openImageSliderModal(i)">
-        </ion-col>
-      </ion-row>
-      
+          <img class="item" *ngFor="let secondaryImage of secondaryImages; let i = index;"  [src]="secondaryImage.image" alt="" (click)="openImageSliderModal(i)">
+    
+     </div>
 
-    </ion-item>
-
-
+    </ion-row>
+    
     <ion-row *ngIf="usersServices.email != authEmail">
       <ion-col width-30 *ngIf="usersServices.email != authEmail">
         <button ion-button full (click)="callNow()">

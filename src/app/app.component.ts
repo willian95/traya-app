@@ -52,6 +52,13 @@ export class MyApp {
   'Comparte y Descarga nuestra aplicación: https://play.google.com/store/apps/details?id=com.ionicframework.traya';
   urlShare = 'https://play.google.com/store/apps/details?id=com.ionicframework.traya';
   validateHeaderMain:any;
+  loading:any
+  user_id:any
+  email:any
+  phone:any
+  description:any
+  location_id:any
+  domicile:any
 
 
   pages: Array<{title: string, component: any}>;
@@ -71,10 +78,17 @@ export class MyApp {
     this.pushSetup();
     this.userLocalityName = localStorage.getItem("user_locality_name")
 
+    this.getUser()
+
   }
 
   showModalLocation(){
     this.fetchLocaltions()
+
+  }
+
+  showAuthModalLocation(){
+    this.fetchAuthLocaltions()
 
   }
 
@@ -91,9 +105,6 @@ export class MyApp {
         options.push({"type": "radio", "label": data.name, "value": data.id})
   
       })
-
-
-      console.log("modal locations Show")
   
       let alert = this.alertCtrl.create({
         title: 'Selecciona una localidad',
@@ -124,6 +135,143 @@ export class MyApp {
                 localStorage.setItem("user_locality_name", locationChangeName)
 
                 this.events.publish("userLocationChanged")
+              }
+              // I NEED TO GET THE VALUE OF THE SELECTED RADIO BUTTON HERE
+            }
+          }
+        ]
+      });
+      alert.present();
+    })
+  
+  }
+
+  getUser(){
+    
+  if(localStorage.getItem('token') != null){
+    var headers = new HttpHeaders({
+      Authorization: localStorage.getItem('token'),
+    });
+    this.httpClient.get(this.url+'/api/auth/user', { headers })
+    .subscribe((response:any)=> {
+       
+       this.myRand=this.random();
+      this.rol_id =response.roles[0].id;
+      this.name=response.user.name;
+      this.email=response.user.email;
+      this.phone=response.profile.phone;
+      this.description=response.profile.description;
+      this.userimage = response.image;
+      this.location_id=response.profile.location_id;
+      this.domicile=response.profile.domicile;
+
+    }
+   
+  );
+}else{
+
+  console.log("sesion expirada");
+}
+}
+
+  fetchAuthLocaltions(){
+
+    
+    this.httpClient.get(this.url+"/api/locations")
+    .subscribe((response:any) => {
+      this.locations = response.data
+  
+      let options = []
+      this.locations.forEach((data)=>{
+  
+        options.push({"type": "radio", "label": data.name, "value": data.id})
+  
+      })
+  
+      let alert = this.alertCtrl.create({
+        title: 'Selecciona una localidad',
+        inputs: options,
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'OK',
+            handler: (data) => {
+              if(data){
+
+                this.location = data
+                var locationChangeName = ""
+                this.locations.forEach((data) =>{
+
+                  if(this.location == data.id)
+                    locationChangeName = data.name
+
+                  })
+
+                  var updateData={
+                    test:1,
+                    image:'',
+                    password:'',
+                    location_id:'',
+                    domicile:'',
+                    name:'',
+                    email:'',
+                    phone:'',
+                    rol_id:'',
+                    description:'',
+                    user_id:'',
+                    services_id:'',
+                    token:'',
+                    is_register_completed:true
+                  };
+
+                //console.log("locality_name", locationChangeName)
+                localStorage.setItem("user_locality_id", data)
+                localStorage.setItem("user_locality_name", locationChangeName)
+
+                this.loading = this.loadingCtrl.create({
+                  content: 'Por favor espere...'
+                });
+                this.loading.present();
+                var headers = new Headers();
+                headers.append("Accept", 'application/json');
+                headers.append('Content-Type', 'application/json');
+                this.token = localStorage.getItem('tokenCode');
+                this.user_id = localStorage.getItem('user_id');
+                updateData.image=this.userimage;
+                updateData.location_id=data;
+                updateData.domicile=this.domicile;
+                updateData.name=this.name;
+                updateData.email=this.email;
+                updateData.phone=this.phone;
+                updateData.rol_id=this.rol_id;
+                updateData.description=this.description;
+                updateData.user_id=this.user_id;
+                updateData.token=this.token;
+    
+              localStorage.setItem('user_locality_name', locationChangeName)
+              localStorage.setItem('user_domicile', this.domicile)
+
+              this.httpClient.post(this.url+"/api/auth/user/update", updateData)
+              .pipe()
+              .subscribe((res:any)=> {
+
+                this.loading.dismiss();
+                this.events.publish('userImage',res);
+                this.events.publish('userRol',this.rol_id);
+                this.events.publish('userName', res)
+                
+                this.events.publish("userLocationChangedAuth")
+
+              })
+
+
+                
               }
               // I NEED TO GET THE VALUE OF THE SELECTED RADIO BUTTON HERE
             }
@@ -174,13 +322,13 @@ export class MyApp {
         {title: 'Actualizar Servicios', component: "UpdateServicesPage", icon: 'refresh-circle'},
         {title: 'Crear Localidades', component: "CreateLocalityPage", icon: 'locate'},
         {title: 'Gestionar Localidades', component: "UpdateLocalityPage", icon: 'refresh'},
-        {title: 'Línea de reclamos', component: "AdminClaimsPage", icon: 'information-circle'},
         {title: 'Usuarios Activos', component: "ManageUsersPage", icon: 'contacts'},
         {title: 'Usuarios Inactivos', component: "DisabledUsersPage", icon: 'close'},
         {title: 'Modo mantenimiento', component: "MaintenanceModePage", icon: 'build', badge: this.config},
         {title: 'Administradores de localidades', component: "ManageAdministratorsPage", icon: 'pin'},
         {title: 'Estadísticas de usuarios', component: "StatisticsPage", icon: 'trending-up'},
-        {title: 'Publicidad', component: "AdsLocationsPage", icon: 'pricetag'});
+        {title: 'Publicidad', component: "AdsLocationsPage", icon: 'pricetag'},
+        {title: 'Línea de reclamos', component: "AdminClaimsPage", icon: 'information-circle'});
     }else if(this.rol_id == 4){
       this.appMenuItems.push(
         {title: 'Registrar Servicios', component: "RegisterServicesPage", icon: 'add-circle'},

@@ -241,19 +241,22 @@ export class ActiveHiringsPage {
     this.navCtrl.push("NotificationPage"); // nav
   }
   getHiringsActive() {
-     this.loading = this.loadingController.create({
+     if(this.token){
+      this.loading = this.loadingController.create({
         content: 'Por favor espere...'
       });
       this.loading.present();
-    this.user_id = localStorage.getItem('user_id');
-  this.httpClient.get(this.url+"/api/hiring?"+"user_id="+this.user_id+'&filters={"status_id":[1,2,3]}')
-  .pipe()
-    .subscribe((res:any)=> {
-     this.loading.dismiss()
-      this.hiringsArray=res.data;
-      localStorage.setItem("active_hirings_worker", JSON.stringify(this.hiringsArray))
-      console.log(this.hiringsArray);
-  });
+      this.user_id = localStorage.getItem('user_id');
+      this.httpClient.get(this.url+"/api/hiring?"+"user_id="+this.user_id+'&filters={"status_id":[1,2,3]}')
+      .pipe()
+      .subscribe((res:any)=> {
+        this.loading.dismiss()
+          this.hiringsArray=res.data;
+          localStorage.setItem("active_hirings_worker", JSON.stringify(this.hiringsArray))
+          console.log(this.hiringsArray);
+        });
+
+     }
   }
 
    doRefresh(refresher) {

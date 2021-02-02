@@ -49,6 +49,10 @@ export class ServicesPage {
       this.getServicesNoAuth()
     })
 
+    this.events.subscribe('userLocationChangedAuth',(res)=>{
+      this.getServices()
+    })
+
   });
 
   }
@@ -233,6 +237,8 @@ export class ServicesPage {
 
   getServices() {
     var location_id = localStorage.getItem('user_locality_id');
+    this.userLocationId = window.localStorage.getItem("user_locality_id")
+    console.log("location", location_id)
       this.loading.present();
     //this.httpClient.get(this.url+'/api/services')
       this.httpClient.get(this.url+"/api/services?"+'filters={"location_id":"'+location_id+'"}')
@@ -252,6 +258,7 @@ export class ServicesPage {
     
       this.loading.present();
       this.location = window.localStorage.getItem("user_locality_id");
+      this.userLocationId = window.localStorage.getItem("user_locality_id")
       console.log("noAuthLocation", location)
 
       this.httpClient.get(this.url+"/api/services?"+'filters={"location_id":'+this.location+'}')

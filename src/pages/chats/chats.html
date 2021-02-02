@@ -30,7 +30,8 @@
   <ion-list>
     <ion-item *ngFor="let chat of chats">
       <ion-avatar item-start  (click)="openChat(chat.name, chat.profile.image, chat.id)">
-        <img src="{{ chat.user.profile.image }}">
+        <img src="https://test.traya.com.ar/{{ chat.user.profile.image }}" *ngIf="chat.user.profile.image.indexOf('traya.com.ar') < 0">
+        <img src="{{ chat.user.profile.image }}" *ngIf="chat.user.profile.image.indexOf('traya.com.ar') >= 0">
       </ion-avatar>
       <div style="display: flex; align-items: center;">
         <h2 style="width: 90%"  (click)="openChat(chat.user.name, chat.user.profile.image, chat.user.id)">{{ chat.user.name }}</h2> 
